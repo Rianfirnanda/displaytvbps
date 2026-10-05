@@ -657,6 +657,26 @@
     @media (prefers-reduced-motion: reduce) { .wx-anim * { animation: none !important; } }
     @media (max-width: 639px) { .wx-sub { display: none; } .wx-ico { width: 46px; height: 46px; } .wx-temp { font-size: 24px; } .wx { gap: 8px; } .cal-week { display: none; } .wx-days .wx-day:nth-child(n+4) { display: none; } .wx-days { gap: 4px; } .wx-day { width: 48px; } }
     @media (max-width: 1023px) { .cal-week .cw { width: 40px; } .wx-day { width: 64px; } }
+
+    /* ====================== INDIKATOR JARINGAN ====================== */
+    :root { --net-ok: #34d399; --net-slow: #fbbf24; --net-bad: #fb7185; }
+    html[data-theme="light"] { --net-ok: #059669; --net-slow: #b45309; --net-bad: #e11d48; }
+    .hdr-net { display: flex; align-items: center; gap: 9px; padding: 5px 12px; border-radius: 12px; background: var(--fill); border: 1px solid var(--panel-border-soft); cursor: help; --nc: var(--net-ok); transition: border-color .4s ease; }
+    .hdr-net[data-state="slow"] { --nc: var(--net-slow); } .hdr-net[data-state="bad"], .hdr-net[data-state="down"] { --nc: var(--net-bad); }
+    .hdr-net[data-state="bad"], .hdr-net[data-state="down"] { border-color: var(--net-bad); animation: netAlert 1.2s ease-in-out infinite; }
+    @keyframes netAlert { 50% { box-shadow: 0 0 16px -2px var(--net-bad); } }
+    .net-bars { display: flex; align-items: flex-end; gap: 2px; height: 16px; }
+    .net-bars i { width: 4px; border-radius: 1px; background: var(--panel-border-soft); transition: background .4s ease; }
+    .net-bars i:nth-child(1) { height: 5px; } .net-bars i:nth-child(2) { height: 8px; } .net-bars i:nth-child(3) { height: 12px; } .net-bars i:nth-child(4) { height: 16px; }
+    .net-bars i.on { background: var(--nc); }
+    .net-text { display: flex; flex-direction: column; line-height: 1.15; min-width: 58px; }
+    .net-text b { font-size: 10px; font-weight: 800; letter-spacing: .12em; color: var(--nc); }
+    .net-text span { font-size: 11px; font-weight: 600; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+    .net-hist { display: flex; align-items: flex-end; gap: 2px; height: 16px; width: 44px; }
+    .net-hist i { flex: 0 0 3px; min-height: 3px; border-radius: 1px; background: var(--net-ok); opacity: .85; }
+    .net-hist i.w { background: var(--net-slow); } .net-hist i.x { background: var(--net-bad); }
+    @media (max-width: 1023px) { .net-hist { display: none; } }
+    @media (max-width: 639px) { .net-text span { display: none; } .net-text { min-width: 0; } .hdr-net { padding: 5px 8px; gap: 6px; } }
   </style>
 
 </head>
@@ -676,6 +696,11 @@
       </div>
 
       <div class="hdr-clockbox">
+        <div id="net" class="hdr-net" data-state="ok" title="Memeriksa jaringan...">
+          <div class="net-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          <div class="net-text"><b id="net-state">CEK</b><span id="net-ping">-- ms</span></div>
+          <div class="net-hist" aria-hidden="true"></div>
+        </div>
         <button id="theme-toggle" class="hdr-btn" aria-label="Ganti tema terang/gelap" title="Ganti tema (T)">
           <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
           <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -684,6 +709,62 @@
         <div class="hdr-live"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>LIVE</div>
       </div>
     </div>
+    <script>
+    // Indikator jaringan realtime: cek tiap 5 detik (ping ke internet), tampil sebagai bar sinyal + ping
+    (function () {
+      const el = document.getElementById('net');
+      if (!el) return;
+      const stateEl = document.getElementById('net-state'), pingEl = document.getElementById('net-ping');
+      const histEl = el.querySelector('.net-hist'), bars = Array.from(el.querySelectorAll('.net-bars i'));
+      const PROBES = ['https://www.gstatic.com/generate_204', 'https://www.cloudflare.com/cdn-cgi/trace'];
+      const hist = [];   // { ms | null }
+      async function probe() {
+        for (const url of PROBES) {
+          const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 4000), t0 = performance.now();
+          try {
+            await fetch(url + '?_=' + Date.now(), { mode: 'no-cors', cache: 'no-store', signal: ctl.signal });
+            clearTimeout(to);
+            return Math.round(performance.now() - t0);
+          } catch (e) { clearTimeout(to); }
+        }
+        return null;
+      }
+      function classify() {
+        const last = hist[hist.length - 1];
+        if (!last || last.ms === null) {
+          let n = 0; for (let i = hist.length - 1; i >= 0 && hist[i].ms === null; i--) n++;
+          return n >= 2 ? { s: 'down', label: 'TERPUTUS', bars: 0 } : { s: 'bad', label: 'GANGGUAN', bars: 1 };
+        }
+        const ok = hist.slice(-3).map(h => h.ms).filter(m => m !== null);
+        const avg = ok.reduce((a, b) => a + b, 0) / ok.length;
+        if (avg < 60) return { s: 'ok', label: 'AMAN', bars: 4 };
+        if (avg < 150) return { s: 'ok', label: 'AMAN', bars: 3 };
+        if (avg < 350) return { s: 'slow', label: 'LAMBAT', bars: 2 };
+        return { s: 'bad', label: 'GANGGUAN', bars: 1 };
+      }
+      function render() {
+        const c = classify(), last = hist[hist.length - 1];
+        el.dataset.state = c.s;
+        stateEl.textContent = c.label;
+        pingEl.textContent = last && last.ms !== null ? last.ms + ' ms' : 'timeout';
+        bars.forEach((b, i) => b.classList.toggle('on', i < c.bars));
+        const lost = hist.filter(h => h.ms === null).length;
+        const oks = hist.filter(h => h.ms !== null).map(h => h.ms);
+        const avg = oks.length ? Math.round(oks.reduce((a, b) => a + b, 0) / oks.length) : '-';
+        el.title = `Jaringan ${c.label} · ping ${last && last.ms !== null ? last.ms + ' ms' : 'timeout'} · rata-rata ${avg} ms · gagal ${lost}/${hist.length} dari pengecekan terakhir (tiap 5 detik)`;
+        histEl.innerHTML = hist.map(h => `<i class="${h.ms === null ? 'x' : h.ms < 150 ? '' : h.ms < 350 ? 'w' : 'x'}" style="height:${h.ms === null ? 100 : Math.max(18, Math.min(100, h.ms / 4))}%"></i>`).join('');
+      }
+      async function tick() {
+        const ms = navigator.onLine === false ? null : await probe();
+        hist.push({ ms }); if (hist.length > 12) hist.shift();
+        render();
+      }
+      tick();
+      setInterval(tick, 5000);
+      window.addEventListener('online', tick);
+      window.addEventListener('offline', tick);
+    })();
+    </script>
     <script>
             function updateClock() {
               const now = new Date();
@@ -862,7 +943,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', updateCuaca);
-setInterval(updateCuaca, 15 * 60 * 1000);
+setInterval(updateCuaca, 5 * 60 * 1000);
 </script>
     <script>
     // Ganti tema terang/gelap (tersimpan di browser). Pintasan: tombol T
@@ -987,7 +1068,7 @@ setInterval(updateCuaca, 15 * 60 * 1000);
                 </svg>
                 <span id="user-count" class="font-semibold text-white">0</span> User Aktif
               </span>
-              <span id="last-update" class="text-[color:var(--steel-500)]"></span>
+              <span class="flex items-center gap-1.5 text-[color:var(--steel-500)]"><i class="led led-ok"></i>Realtime</span>
             </div>
           </div>
 
@@ -1154,6 +1235,7 @@ setInterval(updateCuaca, 15 * 60 * 1000);
         }
     }
     loadRSS("bengkulu tengah");
+    setInterval(() => loadRSS("bengkulu tengah"), 5 * 60 * 1000);
     </script>
 
    <!-- Popup Azan -->
@@ -1325,6 +1407,15 @@ function updateSholatNext() {
 setInterval(updateSholatNext, 1000);
 // Tampilkan jadwal otomatis saat halaman dibuka (audio azan tetap butuh klik "Aktifkan Azan")
 fetchJadwalSholat(-3.763, 102.400).then(tampilkanJadwal);
+// ganti hari -> ambil jadwal sholat baru otomatis
+let shDay = new Date().toDateString();
+setInterval(async () => {
+  if (new Date().toDateString() === shDay) return;
+  shDay = new Date().toDateString();
+  const t = await fetchJadwalSholat(-3.763, 102.400);
+  tampilkanJadwal(t);
+  if (window._jadwalAzan) { setTimingsAzan(t); window._jadwalAzan = t; }
+}, 60 * 1000);
 
 let jadwalAzanState = {};
 let sudahAzan = { subuh: false, dzuhur: false, ashar: false, maghrib: false, isya: false };
@@ -1756,8 +1847,6 @@ function initMap() {
     });
 
     document.getElementById('user-count').textContent = activeCount;
-    document.getElementById('last-update').textContent =
-      new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
 
     updateActivitySlider();
     cleanInactiveMarkers(currentActiveIds);
@@ -2013,10 +2102,7 @@ function renderEventsToday(events) {
     }).join('');
   }
 
-  if (refreshEl) {
-    const jam = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta' });
-    refreshEl.innerHTML = `<span>Update terakhir: ${jam}</span>`;
-  }
+  if (refreshEl) refreshEl.innerHTML = '<i class="led led-ok"></i><span>Realtime</span>';
 }
 
 function subscribeEvents() {
