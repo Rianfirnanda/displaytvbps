@@ -24,19 +24,19 @@
   <style>
     /* ====================== DESIGN TOKENS ====================== */
     :root {
-      --ink-900: #040d1c;
-      --ink-800: #07142a;
-      --ink-700: #0c1f3d;
-      --ink-600: #112a52;
-      --gold-500: #3b9cf0;
-      --gold-400: #7cc0f7;
-      --gold-300: #c6e3fc;
-      --crimson-500: #0071c6;
-      --crimson-400: #2f94e6;
+      --ink-900: #060910;
+      --ink-800: #0b111c;
+      --ink-700: #111a2b;
+      --ink-600: #182338;
+      --gold-500: #d4af5a;
+      --gold-400: #e8ca8a;
+      --gold-300: #f3ddab;
+      --crimson-500: #b0303f;
+      --crimson-400: #d1495a;
       --steel-300: #a8b4c8;
       --steel-500: #7c8aa3;
       --panel-bg: rgba(255,255,255,0.04);
-      --panel-border: rgba(59,156,240,0.16);
+      --panel-border: rgba(212,175,90,0.16);
       --panel-border-soft: rgba(255,255,255,0.08);
     }
 
@@ -49,9 +49,9 @@
 
     body {
       background:
-        radial-gradient(ellipse 1300px 750px at 10% -12%, rgba(59,156,240,0.09), transparent 58%),
+        radial-gradient(ellipse 1300px 750px at 10% -12%, rgba(212,175,90,0.09), transparent 58%),
         radial-gradient(ellipse 1100px 850px at 102% 8%, rgba(59,110,180,0.10), transparent 55%),
-        radial-gradient(ellipse 900px 600px at 50% 115%, rgba(0,113,198,0.08), transparent 60%),
+        radial-gradient(ellipse 900px 600px at 50% 115%, rgba(212,175,90,0.06), transparent 60%),
         linear-gradient(160deg, var(--ink-900) 0%, var(--ink-800) 45%, #0a0f1c 100%);
     }
     /* fine engineering dot-grid texture — subtle "command center" feel */
@@ -82,8 +82,8 @@
     /* Custom scrollbar for a polished feel on scrollable panels */
     .styled-scroll::-webkit-scrollbar { width: 5px; }
     .styled-scroll::-webkit-scrollbar-track { background: transparent; }
-    .styled-scroll::-webkit-scrollbar-thumb { background: rgba(59,156,240,0.35); border-radius: 999px; }
-    .styled-scroll::-webkit-scrollbar-thumb:hover { background: rgba(59,156,240,0.55); }
+    .styled-scroll::-webkit-scrollbar-thumb { background: rgba(212,175,90,0.35); border-radius: 999px; }
+    .styled-scroll::-webkit-scrollbar-thumb:hover { background: rgba(212,175,90,0.55); }
 
     /* Unified card chrome — clipped corner + gold overline, broadcast-panel feel */
     .panel {
@@ -108,10 +108,10 @@
     /* Featured panel — for the sections that need to stand out (Kalender, EOQ) */
     .panel-featured {
       position: relative;
-      background: linear-gradient(165deg, rgba(59,156,240,0.08), rgba(255,255,255,0.03));
-      border: 1.5px solid rgba(59,156,240,0.45);
+      background: linear-gradient(165deg, rgba(212,175,90,0.08), rgba(255,255,255,0.03));
+      border: 1.5px solid rgba(212,175,90,0.45);
       border-radius: 4px 20px 20px 20px;
-      box-shadow: 0 22px 50px -16px rgba(59,156,240,0.26), 0 14px 34px -12px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.06);
+      box-shadow: 0 22px 50px -16px rgba(212,175,90,0.26), 0 14px 34px -12px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.06);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
       overflow: hidden;
@@ -129,7 +129,7 @@
       position: absolute;
       inset: 0;
       border-radius: 4px 20px 20px 20px;
-      box-shadow: 0 0 0 1px rgba(59,156,240,0.12), 0 0 34px rgba(59,156,240,0.10) inset;
+      box-shadow: 0 0 0 1px rgba(212,175,90,0.12), 0 0 34px rgba(212,175,90,0.10) inset;
       pointer-events: none;
     }
     .featured-badge {
@@ -145,7 +145,7 @@
       background: linear-gradient(135deg, var(--gold-300), var(--gold-500));
       padding: 4px 10px 4px 8px;
       border-radius: 999px;
-      box-shadow: 0 4px 14px -4px rgba(59,156,240,0.6);
+      box-shadow: 0 4px 14px -4px rgba(212,175,90,0.6);
     }
 
     /* Majestic backdrop for the spotlight section (Employee of the Quarter) */
@@ -159,17 +159,17 @@
       width: 260%; height: 260%;
       background: conic-gradient(
         from 0deg,
-        rgba(124,192,247,0.16) 0deg, transparent 8deg,
-        transparent 22deg, rgba(124,192,247,0.12) 30deg,
-        transparent 44deg, transparent 58deg, rgba(124,192,247,0.14) 66deg,
-        transparent 80deg, transparent 94deg, rgba(124,192,247,0.10) 102deg,
-        transparent 116deg, transparent 130deg, rgba(124,192,247,0.14) 138deg,
-        transparent 152deg, transparent 166deg, rgba(124,192,247,0.12) 174deg,
-        transparent 188deg, transparent 202deg, rgba(124,192,247,0.14) 210deg,
-        transparent 224deg, transparent 238deg, rgba(124,192,247,0.10) 246deg,
-        transparent 260deg, transparent 274deg, rgba(124,192,247,0.14) 282deg,
-        transparent 296deg, transparent 310deg, rgba(124,192,247,0.12) 318deg,
-        transparent 332deg, transparent 346deg, rgba(124,192,247,0.16) 354deg, transparent 360deg
+        rgba(232,202,138,0.16) 0deg, transparent 8deg,
+        transparent 22deg, rgba(232,202,138,0.12) 30deg,
+        transparent 44deg, transparent 58deg, rgba(232,202,138,0.14) 66deg,
+        transparent 80deg, transparent 94deg, rgba(232,202,138,0.10) 102deg,
+        transparent 116deg, transparent 130deg, rgba(232,202,138,0.14) 138deg,
+        transparent 152deg, transparent 166deg, rgba(232,202,138,0.12) 174deg,
+        transparent 188deg, transparent 202deg, rgba(232,202,138,0.14) 210deg,
+        transparent 224deg, transparent 238deg, rgba(232,202,138,0.10) 246deg,
+        transparent 260deg, transparent 274deg, rgba(232,202,138,0.14) 282deg,
+        transparent 296deg, transparent 310deg, rgba(232,202,138,0.12) 318deg,
+        transparent 332deg, transparent 346deg, rgba(232,202,138,0.16) 354deg, transparent 360deg
       );
       mix-blend-mode: screen;
       animation: sunburst-spin 90s linear infinite;
@@ -259,14 +259,14 @@
 
 
     /* ====================== GLASSMORPHISM ====================== */
-    html { background: #03070f; }
+    html { background: #060910; }
     body {
       background:
-        radial-gradient(circle 560px at 10% 8%, rgba(0,113,198,0.30), transparent 70%),
-        radial-gradient(circle 520px at 90% 20%, rgba(30,70,150,0.28), transparent 70%),
-        radial-gradient(circle 600px at 75% 98%, rgba(0,90,170,0.24), transparent 70%),
-        radial-gradient(circle 480px at 12% 92%, rgba(20,50,120,0.26), transparent 70%),
-        linear-gradient(160deg, #03070f 0%, #060f20 50%, #040a17 100%) !important;
+        radial-gradient(circle 620px at 8% 6%, rgba(212,175,90,0.16), transparent 70%),
+        radial-gradient(circle 560px at 96% 16%, rgba(90,110,150,0.14), transparent 70%),
+        radial-gradient(circle 620px at 70% 100%, rgba(212,175,90,0.10), transparent 70%),
+        radial-gradient(circle 520px at 6% 96%, rgba(176,48,63,0.10), transparent 70%),
+        linear-gradient(160deg, #060910 0%, #0b111c 50%, #080c15 100%) !important;
       background-attachment: fixed !important;
     }
     body::before { opacity: 0.10; }
@@ -278,22 +278,22 @@
       backdrop-filter: blur(24px) saturate(150%) !important;
       -webkit-backdrop-filter: blur(24px) saturate(150%) !important;
     }
-    .panel-featured { background: linear-gradient(145deg, rgba(59,156,240,0.14), rgba(255,255,255,0.03)) !important; border-color: rgba(124,192,247,0.30) !important; }
+    .panel-featured { background: linear-gradient(145deg, rgba(212,175,90,0.13), rgba(255,255,255,0.025)) !important; border-color: rgba(212,175,90,0.38) !important; }
     .panel::before { width: 100% !important; height: 100% !important; background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent 35%) !important; pointer-events: none; border-radius: inherit; }
     .panel-featured::before { height: 100% !important; background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent 35%) !important; pointer-events: none; }
     .panel-featured::after { box-shadow: none !important; }
     .sunburst-rays { opacity: 0.25 !important; }
-    #popupPlayer { background: rgba(6,15,32,0.70) !important; backdrop-filter: blur(22px) saturate(170%); -webkit-backdrop-filter: blur(22px) saturate(170%); border: 1px solid rgba(255,255,255,0.14) !important; }
+    #popupPlayer { background: rgba(18,26,44,0.70) !important; backdrop-filter: blur(22px) saturate(170%); -webkit-backdrop-filter: blur(22px) saturate(170%); border: 1px solid rgba(255,255,255,0.14) !important; }
     #tv-frame-container { border: 1px solid rgba(255,255,255,0.18) !important; box-shadow: 0 6px 24px -8px rgba(0,0,0,0.5); }
 
     /* Employee of the Quarter: grid 2 kolom, selalu di tengah kartu, ukuran mengikuti lebar & tinggi */
-    .panel-featured:has(#eomSlider) { container-type: inline-size; }
+    .panel-featured:has(#eomSlider) { container-type: size; }
     .panel-featured:has(#eomSlider) .max-w-xl { max-width: 100% !important; }
     #eomSlider > div {
       display: grid !important; grid-template-columns: auto minmax(0, max-content); justify-content: center; align-items: center;
       column-gap: clamp(12px, 5cqw, 28px); row-gap: 6px; padding: 30px 14px 16px !important; text-align: left;
     }
-    #eomSlider > div > .relative { width: clamp(72px, min(26cqw, 19vh), 150px); height: clamp(72px, min(26cqw, 19vh), 150px); }
+    #eomSlider > div > .relative { width: clamp(56px, min(26cqw, 48cqh), 150px); height: clamp(56px, min(26cqw, 48cqh), 150px); }
     #eomSlider > div > .relative > .rounded-full.overflow-hidden { width: 100% !important; height: 100% !important; }
     #eomSlider > div > .relative > .absolute.rounded-full { transform: scale(1.18) !important; filter: blur(8px) !important; }
     #eomSlider h3 { font-size: clamp(16px, 5.2cqw, 28px) !important; line-height: 1.15; }
@@ -306,15 +306,11 @@
       #eomSlider > div > div:last-child > div:last-child { justify-content: center !important; }
     }
 
-    /* Kotak waktu & cuaca: lebih lega */
-    div:has(> #cuacaBar) { margin-left: 10px !important; margin-right: 10px !important; padding: 8px 12px !important; gap: 10px !important; }
-    div:has(> #tanggalwaktu) { margin-left: 0 !important; margin-right: 0 !important; }
     /* Panel Jadwal Sholat ringkas (desktop) */
     @media (min-width: 1024px) { #app-root > .panel.flex-\[1\.5\] { flex: 0 0 auto !important; min-height: 92px; padding: 30px 16px 12px !important; } }
     /* Chip channel: pudar di tepi kanan agar tidak terpotong kasar */
     #tv-chips { -webkit-mask-image: linear-gradient(to right, #000 94%, transparent); mask-image: linear-gradient(to right, #000 94%, transparent); padding-right: 16px; }
 
-    @media (max-width: 639px) { #app-root > .panel:first-child .tracking-wide { display: none; } }
 
     /* Bar channel TV di footer */
     .glass-bar { display: flex; align-items: center; gap: 10px; padding: 6px 12px; flex-shrink: 0; border-radius: 16px !important; }
@@ -326,67 +322,97 @@
       backdrop-filter: blur(8px); transition: all .25s ease;
     }
     .tv-chip:hover, .tv-fs-btn:hover { background: rgba(255,255,255,0.22); transform: translateY(-1px); }
-    .tv-chip.active { color: #fff; background: linear-gradient(135deg, rgba(0,113,198,0.85), rgba(47,148,230,0.65)); border-color: rgba(255,255,255,0.45); box-shadow: 0 4px 16px -4px rgba(0,113,198,0.8); }
+    .tv-chip.active { color: #1a1305; background: linear-gradient(135deg, var(--gold-400), var(--gold-500)); border-color: rgba(255,255,255,0.35); box-shadow: 0 4px 16px -4px rgba(212,175,90,0.7); }
     .tv-fs-btn { display: inline-flex; align-items: center; gap: 6px; }
     #tv-toast { position: absolute; top: 12px; left: 12px; z-index: 5; padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; color: #fff;
-      background: rgba(6,15,32,0.65); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.14); opacity: 0; transition: opacity .4s ease; pointer-events: none; }
+      background: rgba(18,26,44,0.65); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.14); opacity: 0; transition: opacity .4s ease; pointer-events: none; }
     #tv-toast.show { opacity: 1; }
     #tv-stage:fullscreen { background: #000; }
     #tv-stage:fullscreen #tv-toast { top: 24px; left: 24px; font-size: 18px; }
+
+    /* ====================== HEADER (brand + slider + jam) ====================== */
+    #app-header { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,auto) minmax(0,1fr); align-items: center; gap: 16px; padding: 8px 20px 8px 22px; border-radius: 16px !important; }
+    .hdr-brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .hdr-logo { width: 44px; height: 44px; flex: 0 0 auto; border-radius: 12px; background: #fff; padding: 4px; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px -6px rgba(212,175,90,.55); }
+    .hdr-logo img { width: 100%; height: 100%; object-fit: contain; }
+    .hdr-slider { position: relative; height: 46px; width: clamp(280px, 40vw, 560px); overflow: hidden; }
+    .hdr-slide { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-align: center;
+      opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .7s cubic-bezier(.16,1,.3,1); pointer-events: none; }
+    .hdr-slide.active { opacity: 1; transform: none; }
+    .hdr-slide.leaving { opacity: 0; transform: translateY(-16px); }
+    .hdr-label { font-family: 'Sora', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-400); }
+    .hdr-line { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: nowrap; white-space: nowrap; font-size: clamp(12px, 1.15vw, 16px); font-weight: 600; color: #fff; }
+    .hdr-line b { font-family: 'Sora', sans-serif; font-weight: 700; color: var(--gold-300); }
+    .hdr-ico { font-size: 1.35em; line-height: 1; }
+    .hdr-dim { color: var(--steel-300); font-weight: 500; font-style: italic; }
+    .hdr-dot { color: var(--gold-500); }
+    .hdr-dots { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 4px; }
+    .hdr-dots i { width: 4px; height: 4px; border-radius: 999px; background: rgba(255,255,255,.25); transition: all .4s ease; }
+    .hdr-dots i.on { height: 12px; background: var(--gold-400); }
+    .hdr-clockbox { display: flex; align-items: center; justify-content: flex-end; gap: 14px; min-width: 0; }
+    .hdr-clock { font-family: 'Sora', sans-serif; font-weight: 700; font-size: clamp(26px, 2.5vw, 40px); line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+      background: linear-gradient(180deg, #fff, var(--gold-300)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .hdr-live { display: flex; align-items: center; gap: 6px; font-family: 'Sora', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .14em; color: var(--steel-300); padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05); }
+
+    /* ====================== GRID UTAMA ====================== */
+    /* Desktop/TV: peta (kiri, 2 baris) | TV 16:9 + EOQ (tengah) | agenda (kanan, 2 baris) */
+    #main-grid { grid-template-columns: repeat(3, minmax(0,1fr)); grid-template-rows: auto minmax(0,1fr); }
+    #main-grid > :nth-child(1) { grid-column: 1; grid-row: 1 / 3; }
+    #main-grid > :nth-child(2) { grid-column: 2; grid-row: 1; }
+    #main-grid > :nth-child(3) { grid-column: 3; grid-row: 1 / 3; }
+    #main-grid > :nth-child(4) { grid-column: 2; grid-row: 2; }
+    /* TV selalu 16:9 mengisi penuh kotaknya, tanpa pita hitam */
+    #tv-frame-container { flex: none !important; width: 100%; aspect-ratio: 16 / 9; background: #000; }
+    #tv-stage video, #tv-stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 0; }
 
     /* ====================== ANIMASI & LAYAR PENDEK ====================== */
     /* Laptop/TV: tinggi minimal 720px; kalau viewport lebih pendek halaman bisa di-scroll */
     @media (min-width: 1024px) {
       html, body { height: auto !important; overflow-x: hidden !important; overflow-y: auto !important; }
-      #app-root { height: 100vh !important; min-height: 720px; overflow: visible !important; }
-      #clock { font-size: clamp(44px, min(5.5vw, 10vh), 120px) !important; }
-      #tanggalwaktu, #hijri-date, #cuacaBar { font-size: clamp(11px, 1.05vw, 16px) !important; }
+      #app-root { height: 100vh !important; min-height: 760px; overflow: visible !important; }
     }
     /* animasi masuk bertahap + efek hover */
     #main-grid > :nth-child(1) { animation-delay: .05s; }
     #main-grid > :nth-child(2) { animation-delay: .15s; }
     #main-grid > :nth-child(3) { animation-delay: .25s; }
     #main-grid > :nth-child(4) { animation-delay: .35s; }
-    #main-grid > :nth-child(5) { animation-delay: .45s; }
     #main-grid > * { transition: transform .35s ease, box-shadow .35s ease; }
-    @media (hover: hover) { #main-grid > *:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -18px rgba(59,156,240,.35); } }
-    @media (prefers-reduced-motion: reduce) { .fade-in { animation-duration: .01s !important; } #main-grid > * { transition: none; } }
-
-    /* Slider (ponsel <640px): kotak digeser kiri-kanan, ada titik penanda */
-    #main-dots { display: none; }
-    @media (max-width: 639px) {
-      #main-grid {
-        display: flex !important; overflow-x: auto; overflow-y: hidden; gap: 8px;
-        scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
-        height: calc(100svh - 150px); min-height: 440px; scrollbar-width: none;
-      }
-      #main-grid::-webkit-scrollbar { display: none; }
-      #main-grid > * { flex: 0 0 100%; scroll-snap-align: center; min-height: 0 !important; height: 100%; }
-      #main-dots { display: flex; justify-content: center; gap: 8px; padding: 2px 0; }
-      #main-dots button { width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.25); transition: all .3s ease; }
-      #main-dots button.active { width: 22px; background: var(--gold-400); }
-    }
+    @media (hover: hover) { #main-grid > *:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -18px rgba(212,175,90,.35); } }
+    @media (prefers-reduced-motion: reduce) { .fade-in { animation-duration: .01s !important; } #main-grid > * { transition: none; } .hdr-slide { transition: none; } }
 
     /* ====================== RESPONSIVE ====================== */
-    /* Desktop/TV (>=1024px) tetap layout dashboard penuh tanpa scroll.
-       Di bawah itu, halaman bisa di-scroll dan kotak ditumpuk. */
+    /* Tablet (640-1023px): halaman bisa di-scroll, peta penuh, TV + agenda berdampingan, EOQ penuh */
     @media (max-width: 1023px) {
       html, body { height: auto !important; overflow-y: auto !important; overflow-x: hidden !important; }
       body { width: 100% !important; min-height: 100%; }
       #app-root { height: auto !important; width: 100% !important; overflow: visible !important; }
-      #main-grid {
-        display: grid; grid-template-columns: repeat(2, minmax(0,1fr)) !important;
-        grid-template-rows: none !important; grid-auto-rows: auto; flex: none !important;
-      }
-      #main-grid > * { min-height: 320px; }
-      #main-grid > .row-span-2 { grid-row: span 1 / span 1 !important; grid-column: 1 / -1; min-height: 420px; }
-      #tracking-map { min-height: 280px; }
-      #tv-frame-container { aspect-ratio: 16 / 9; flex: none !important; min-height: 0; }
-      #clock { font-size: clamp(48px, 12vw, 96px) !important; }
-      #app-root > .panel.flex-\[1\.5\] { flex: none !important; min-height: 160px; padding: 2.25rem 0.5rem 0.75rem !important; }
+      #app-header { grid-template-columns: minmax(0,1fr) auto; }
+      .hdr-slider { grid-column: 1 / -1; grid-row: 2; width: 100%; }
+      #main-grid { grid-template-columns: repeat(2, minmax(0,1fr)); grid-template-rows: none; grid-auto-rows: auto; flex: none !important; }
+      #main-grid > :nth-child(1) { grid-column: 1 / -1; grid-row: auto; min-height: 340px; }
+      #main-grid > :nth-child(2) { grid-column: 1; grid-row: auto; justify-content: center; }
+      #main-grid > :nth-child(3) { grid-column: 2; grid-row: auto; min-height: 300px; }
+      #main-grid > :nth-child(4) { grid-column: 1 / -1; grid-row: auto; min-height: 220px; }
+      #tracking-map { min-height: 260px; }
+      #app-root > .panel.flex-\[1\.5\] { flex: none !important; min-height: 140px; padding: 2.25rem 0.5rem 0.75rem !important; }
     }
+
+    /* Ponsel (<640px): kotak berupa slider geser dengan titik penanda */
+    #main-dots { display: none; }
     @media (max-width: 639px) {
-      #main-grid { grid-template-columns: minmax(0,1fr) !important; }
+      #app-header { padding: 8px 14px 8px 18px; gap: 8px 10px; }
+      .hdr-live { display: none; }
+      #main-grid {
+        display: flex !important; overflow-x: auto; overflow-y: hidden; gap: 8px;
+        scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+        height: calc(100svh - 200px); min-height: 420px; scrollbar-width: none;
+      }
+      #main-grid::-webkit-scrollbar { display: none; }
+      #main-grid > * { flex: 0 0 100%; scroll-snap-align: center; min-height: 0 !important; height: 100%; }
+      #main-grid > :nth-child(2) { height: auto; align-self: flex-start; }
+      #main-dots { display: flex; justify-content: center; gap: 8px; padding: 2px 0; }
+      #main-dots button { width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.25); transition: all .3s ease; }
+      #main-dots button.active { width: 22px; background: var(--gold-400); }
       #jadwalSholat th, #jadwalSholat td { padding: 0.4rem 0.25rem !important; font-size: 12px; }
     }
   </style>
@@ -396,112 +422,39 @@
 
   <div id="app-root" class="flex flex-col gap-2 p-2 h-screen w-screen overflow-hidden box-border">
 
-    <!-- HEADER BAR -->
-    <div class="panel fade-in flex-shrink-0 flex items-center justify-between px-5 py-2.5" style="border-radius: 16px;">
-      <span class="absolute top-0 left-0 h-full w-1" style="background: linear-gradient(180deg, #7cc0f7, #0071c6);"></span>
-      <div class="flex items-center gap-3 pl-2">
-        <div class="w-11 h-11 rounded-xl bg-white flex items-center justify-center flex-shrink-0 p-1" style="box-shadow: 0 4px 14px -4px rgba(0,113,198,.6);"><img src="logo-bps.png" alt="Logo BPS" class="w-full h-full object-contain"></div>
-        <div class="leading-tight">
-          <div class="font-display font-bold text-[15px] tracking-wide text-white">LINTAS BENTENG</div>
-          <div class="eyebrow" style="letter-spacing:0.12em;">BPS Kabupaten Bengkulu Tengah</div>
+    <!-- HEADER BAR: brand + slider (kalender / cuaca) + jam -->
+    <div id="app-header" class="panel fade-in flex-shrink-0">
+      <span class="absolute top-0 left-0 h-full w-1" style="background: linear-gradient(180deg, var(--crimson-500), var(--gold-500));"></span>
+      <div class="hdr-brand">
+        <div class="hdr-logo"><img src="logo-bps.png" alt="Logo BPS"></div>
+        <div class="leading-tight min-w-0">
+          <div class="font-display font-bold text-[15px] tracking-wide text-white truncate">LINTAS BENTENG</div>
+          <div class="eyebrow truncate" style="letter-spacing:0.12em; margin:0;">BPS Kabupaten Bengkulu Tengah</div>
         </div>
       </div>
-      <div class="flex items-center gap-4">
-        <div id="header-clock" class="font-display font-bold text-lg tabular-nums hidden sm:block" style="color: var(--gold-300);">--:--</div>
-        <div class="hidden sm:block w-px h-6" style="background: var(--panel-border-soft);"></div>
-        <div class="flex items-center gap-2 text-[11px] text-[color:var(--steel-300)] font-medium">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span class="font-display tracking-wide">DISPLAY INFORMASI · LIVE</span>
+
+      <div id="hdr-slider" class="hdr-slider" aria-live="off">
+        <div class="hdr-slide active">
+          <span class="hdr-label">Kalender</span>
+          <div class="hdr-line"><span id="tanggalwaktu">Memuat tanggal...</span><span class="hdr-dot">&bull;</span><span id="hijri-date" class="hdr-dim">Memuat Hijriyah...</span></div>
         </div>
+        <div class="hdr-slide">
+          <span class="hdr-label">Cuaca &middot; Bengkulu Tengah</span>
+          <div class="hdr-line" id="cuaca-bt">Memuat cuaca...</div>
+        </div>
+        <div class="hdr-slide">
+          <span class="hdr-label">Cuaca &middot; Kota Bengkulu</span>
+          <div class="hdr-line" id="cuaca-kb">Memuat cuaca...</div>
+        </div>
+        <div class="hdr-dots"></div>
+      </div>
+
+      <div class="hdr-clockbox">
+        <div id="clock" class="hdr-clock">--:--</div>
+        <div class="hdr-live"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>LIVE</div>
       </div>
     </div>
-
-    <!-- BARIS 1 & 2: MAP, TV, CALENDAR (rowspan 2) + EOQ + JAM/CUACA -->
-    <div id="main-grid" class="grid grid-cols-3 gap-2 flex-[7] min-h-0" style="grid-template-rows: repeat(2, minmax(0,1fr));">
-
-      <!-- KOTAK 1: LIVE TRACKING MAP -->
-      <div class="panel fade-in p-3 min-h-0 overflow-hidden flex flex-col">
-        <div class="relative font-inter flex-1 min-h-0 flex flex-col">
-          <div class="flex items-center justify-between mb-2 px-0.5">
-            <span class="eyebrow">Live Tracking</span>
-            <span class="flex items-center gap-1.5 text-[10px] font-semibold text-emerald-300">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              MONITORING
-            </span>
-          </div>
-
-          <div class="relative flex-1 min-h-0 flex flex-col rounded-xl overflow-hidden border border-[color:var(--panel-border-soft)]">
-            <div id="tracking-map" class="w-full flex-1 min-h-0"></div>
-
-            <div class="flex items-center justify-between text-xs text-[color:var(--steel-300)] px-3 py-1.5" style="background: rgba(4,13,28,0.85); border-top: 1px solid var(--panel-border-soft);">
-              <span class="flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5 text-[color:var(--gold-400)]" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
-                </svg>
-                <span id="user-count" class="font-semibold text-white">0</span> User Aktif
-              </span>
-              <span id="last-update" class="text-[color:var(--steel-500)]"></span>
-            </div>
-          </div>
-
-          <div class="mt-2 rounded-lg px-3 py-2 overflow-hidden" style="background: rgba(59,156,240,0.06); border: 1px solid var(--panel-border);">
-            <div id="activity-slider" class="text-xs text-[color:var(--steel-300)] font-medium h-[16px] transition-opacity duration-500 whitespace-nowrap overflow-hidden text-ellipsis">
-              <span class="opacity-60">Memuat aktivitas...</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- KOTAK 2: TV FRAME -->
-      <div class="panel fade-in p-3 min-h-0 overflow-hidden flex flex-col">
-        <div class="flex items-center justify-between mb-2 px-0.5">
-          <span class="eyebrow">Siaran TV</span>
-          <span class="flex items-center gap-1.5 text-[10px] font-semibold text-rose-300">
-            <span class="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse"></span>
-            LIVE
-          </span>
-        </div>
-        <div id="tv-frame-container" class="flex-1 min-h-0 flex flex-col rounded-xl overflow-hidden border border-[color:var(--panel-border-soft)]">
-          <p class="text-center text-[color:var(--steel-500)] text-sm">Memuat TV...</p>
-        </div>
-      </div>
-
-      <!-- KOTAK 3: GOOGLE CALENDAR - ROWSPAN 2 -->
-      <div class="panel-featured fade-in p-3 row-span-2 min-h-0 overflow-hidden flex flex-col">
-        <div class="rounded-xl w-full flex-1 min-h-0 bg-cover bg-center bg-no-repeat text-white flex flex-col p-3.5 border border-[color:var(--panel-border)]"
-             style="background-image: linear-gradient(165deg, rgba(3,7,15,0.55), rgba(6,15,32,0.45)), url('kantor2.png');">
-
-          <div class="flex items-center justify-center mb-2.5">
-            <span class="featured-badge">
-              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="#0c1220" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-              Agenda Kantor
-            </span>
-          </div>
-
-          <h2 id="calendar-title" class="font-display text-white text-2xl font-bold mb-1 text-center flex justify-center items-center gap-2">
-            <span id="calendar-label-text">Jadwal Hari Ini</span>
-          </h2>
-
-          <p id="refresh-time" class="text-[color:var(--steel-500)] text-[11px] text-center mb-3 flex items-center justify-center gap-1">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 1 1-3.22-6.84" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 3v6h-6" />
-            </svg>
-            <span>Memuat...</span>
-          </p>
-
-          <div id="calendar-events" class="styled-scroll flex flex-col gap-2.5 overflow-y-auto flex-1 min-h-0 pr-1"></div>
-        </div>
-      </div>
-
-      <!-- KOTAK 4: JAM, TANGGAL, CUACA -->
-      <div class="panel w-full bg-cover bg-center bg-no-repeat text-white fade-in p-3 min-h-0 overflow-hidden flex flex-col justify-center"
-           style="background-image: linear-gradient(155deg, rgba(3,7,15,0.55), rgba(6,15,32,0.45)), url('kantor.png');">
-        <span class="eyebrow block text-center mb-1">Waktu &amp; Cuaca</span>
-        <div class="text-center leading-tight">
-          <div class="font-display font-bold text-[5.5vw] leading-none text-center px-4" id="clock" style="background: linear-gradient(180deg, #fff, var(--gold-300)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.02em;"></div>
-
-          <script>
+    <script>
             function updateClock() {
               const now = new Date();
               let hours = now.getHours();
@@ -516,17 +469,7 @@
             setInterval(updateClock, 1000);
             updateClock();
           </script>
-
-          <div class="flex flex-col lg:flex-row items-center justify-between mt-3 text-white mx-4 lg:mx-8 px-4 py-2.5 rounded-xl gap-3 lg:gap-5 text-sm md:text-base" style="background: rgba(255,255,255,0.035); border: 1px solid var(--panel-border-soft);">
-            <div class="flex flex-col mx-3 lg:mx-5 items-center lg:items-start w-full lg:w-1/2 text-center lg:text-left leading-tight">
-              <div id="tanggalwaktu" class="text-[color:var(--steel-300)]">Memuat tanggal...</div>
-              <div id="hijri-date" class="italic mt-0.5 text-[color:var(--steel-500)]">Memuat tanggal Hijriyah...</div>
-            </div>
-            <div class="lg:hidden w-full h-px mt-2 mb-2" style="background: var(--panel-border-soft);"></div>
-            <div class="hidden lg:block w-px h-12" style="background: var(--panel-border-soft);"></div>
-            <div id="cuacaBar" class="flex items-center justify-center w-full lg:w-1/2 text-center text-[color:var(--steel-300)]">Memuat cuaca...</div>
-          </div>
-          <script>
+    <script>
 function gregorianToHijri(date) {
   const day = date.getDate();
   const month = date.getMonth() + 1;
@@ -593,37 +536,141 @@ const WEATHER_CODE_MAP = {
   99: { label: "Badai Petir Kuat", icon: "⛈️" }
 };
 
+const CITIES = [
+  { id: 'cuaca-bt', lat: -3.763,  lon: 102.400 },   // Bengkulu Tengah
+  { id: 'cuaca-kb', lat: -3.8004, lon: 102.2655 }   // Kota Bengkulu
+];
+
 async function updateCuaca() {
-  const el = document.getElementById('cuacaBar');
-  if (!el) return;
-  try {
-    const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-3.763&longitude=102.400&current_weather=true&timezone=Asia%2FJakarta');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    const cw = data.current_weather;
-    const info = WEATHER_CODE_MAP[cw.weathercode] || { label: "Cuaca tidak diketahui", icon: "🌡️" };
-    el.innerHTML = `<span class="text-2xl mr-2">${info.icon}</span><span>${info.label}, ${Math.round(cw.temperature)}°C</span>`;
-  } catch (err) {
-    console.warn('⚠️ Gagal ambil cuaca:', err.message);
-    el.textContent = 'Cuaca tidak tersedia';
-  }
+  await Promise.all(CITIES.map(async c => {
+    const el = document.getElementById(c.id);
+    if (!el) return;
+    try {
+      const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current_weather=true&timezone=Asia%2FJakarta`);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const cw = (await res.json()).current_weather;
+      const info = WEATHER_CODE_MAP[cw.weathercode] || { label: "Cuaca tidak diketahui", icon: "🌡️" };
+      el.innerHTML = `<span class="hdr-ico">${info.icon}</span><b>${Math.round(cw.temperature)}°C</b><span class="hdr-dim">${info.label}</span>`;
+    } catch (err) {
+      console.warn('⚠️ Gagal ambil cuaca:', err.message);
+      el.textContent = 'Cuaca tidak tersedia';
+    }
+  }));
 }
 
 updateCuaca();
 setInterval(updateCuaca, 15 * 60 * 1000);
 </script>
+    <script>
+    // Slider header: kalender -> cuaca Bengkulu Tengah -> cuaca Kota Bengkulu
+    (function () {
+      const box = document.getElementById('hdr-slider');
+      if (!box) return;
+      const slides = Array.from(box.querySelectorAll('.hdr-slide'));
+      const dots = box.querySelector('.hdr-dots');
+      slides.forEach((_, i) => { const d = document.createElement('i'); dots.appendChild(d); });
+      let cur = 0;
+      function show(n) {
+        slides[cur].classList.remove('active');
+        slides[cur].classList.add('leaving');
+        const old = slides[cur];
+        setTimeout(() => old.classList.remove('leaving'), 700);
+        cur = n;
+        slides[cur].classList.add('active');
+        Array.from(dots.children).forEach((d, i) => d.classList.toggle('on', i === cur));
+      }
+      dots.children[0].classList.add('on');
+      setInterval(() => show((cur + 1) % slides.length), 5000);
+    })();
+    </script>
+
+    <!-- BARIS 1 & 2: MAP, TV, CALENDAR (rowspan 2) + EOQ + JAM/CUACA -->
+    <div id="main-grid" class="grid grid-cols-3 gap-2 flex-[7] min-h-0">
+
+      <!-- KOTAK 1: LIVE TRACKING MAP -->
+      <div class="panel fade-in p-3 min-h-0 overflow-hidden flex flex-col">
+        <div class="relative font-inter flex-1 min-h-0 flex flex-col">
+          <div class="flex items-center justify-between mb-2 px-0.5">
+            <span class="eyebrow">Live Tracking</span>
+            <span class="flex items-center gap-1.5 text-[10px] font-semibold text-emerald-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              MONITORING
+            </span>
+          </div>
+
+          <div class="relative flex-1 min-h-0 flex flex-col rounded-xl overflow-hidden border border-[color:var(--panel-border-soft)]">
+            <div id="tracking-map" class="w-full flex-1 min-h-0"></div>
+
+            <div class="flex items-center justify-between text-xs text-[color:var(--steel-300)] px-3 py-1.5" style="background: rgba(7,11,20,0.85); border-top: 1px solid var(--panel-border-soft);">
+              <span class="flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-[color:var(--gold-400)]" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+                </svg>
+                <span id="user-count" class="font-semibold text-white">0</span> User Aktif
+              </span>
+              <span id="last-update" class="text-[color:var(--steel-500)]"></span>
+            </div>
+          </div>
+
+          <div class="mt-2 rounded-lg px-3 py-2 overflow-hidden" style="background: rgba(212,175,90,0.06); border: 1px solid var(--panel-border);">
+            <div id="activity-slider" class="text-xs text-[color:var(--steel-300)] font-medium h-[16px] transition-opacity duration-500 whitespace-nowrap overflow-hidden text-ellipsis">
+              <span class="opacity-60">Memuat aktivitas...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KOTAK 2: TV FRAME -->
+      <div class="panel fade-in p-3 min-h-0 overflow-hidden flex flex-col">
+        <div class="flex items-center justify-between mb-2 px-0.5">
+          <span class="eyebrow">Siaran TV</span>
+          <span class="flex items-center gap-1.5 text-[10px] font-semibold text-rose-300">
+            <span class="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse"></span>
+            LIVE
+          </span>
+        </div>
+        <div id="tv-frame-container" class="flex flex-col rounded-xl overflow-hidden border border-[color:var(--panel-border-soft)]">
+          <p class="text-center text-[color:var(--steel-500)] text-sm">Memuat TV...</p>
+        </div>
+      </div>
+
+      <!-- KOTAK 3: GOOGLE CALENDAR - ROWSPAN 2 -->
+      <div class="panel-featured fade-in p-3 row-span-2 min-h-0 overflow-hidden flex flex-col">
+        <div class="rounded-xl w-full flex-1 min-h-0 bg-cover bg-center bg-no-repeat text-white flex flex-col p-3.5 border border-[color:var(--panel-border)]"
+             style="background-image: linear-gradient(165deg, rgba(7,11,20,0.55), rgba(18,26,44,0.45)), url('kantor2.png');">
+
+          <div class="flex items-center justify-center mb-2.5">
+            <span class="featured-badge">
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="#0c1220" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              Agenda Kantor
+            </span>
+          </div>
+
+          <h2 id="calendar-title" class="font-display text-white text-2xl font-bold mb-1 text-center flex justify-center items-center gap-2">
+            <span id="calendar-label-text">Jadwal Hari Ini</span>
+          </h2>
+
+          <p id="refresh-time" class="text-[color:var(--steel-500)] text-[11px] text-center mb-3 flex items-center justify-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 1 1-3.22-6.84" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 3v6h-6" />
+            </svg>
+            <span>Memuat...</span>
+          </p>
+
+          <div id="calendar-events" class="styled-scroll flex flex-col gap-2.5 overflow-y-auto flex-1 min-h-0 pr-1"></div>
         </div>
       </div>
 
       <!-- KOTAK 5: EMPLOYEE OF THE QUARTER (TENGAH) -->
       <div class="panel-featured relative w-full bg-cover bg-center bg-no-repeat flex justify-center items-center text-white fade-in min-h-0 overflow-hidden"
-           style="background-image: linear-gradient(155deg, rgba(3,7,15,0.55), rgba(6,15,32,0.45)), url('kantor.png');">
+           style="background-image: linear-gradient(155deg, rgba(7,11,20,0.55), rgba(18,26,44,0.45)), url('kantor.png');">
 
         <!-- Layered "stage" backdrop: rotating gold rays + spotlight glow + vignette -->
         <div class="sunburst-rays"></div>
-        <div class="pointer-events-none absolute inset-0" style="background: radial-gradient(ellipse 65% 85% at 28% 55%, rgba(59,156,240,0.22), transparent 60%), radial-gradient(circle at 82% 18%, rgba(59,156,240,0.10), transparent 45%);"></div>
+        <div class="pointer-events-none absolute inset-0" style="background: radial-gradient(ellipse 65% 85% at 28% 55%, rgba(212,175,90,0.22), transparent 60%), radial-gradient(circle at 82% 18%, rgba(212,175,90,0.10), transparent 45%);"></div>
         <div class="stage-vignette"></div>
-        <div class="pointer-events-none absolute left-0 right-0 bottom-0 h-1/2" style="background: radial-gradient(ellipse 70% 100% at 30% 100%, rgba(59,156,240,0.16), transparent 70%);"></div>
+        <div class="pointer-events-none absolute left-0 right-0 bottom-0 h-1/2" style="background: radial-gradient(ellipse 70% 100% at 30% 100%, rgba(212,175,90,0.16), transparent 70%);"></div>
 
         <div class="absolute top-3 left-0 right-0 flex justify-center z-10">
           <span class="featured-badge">
@@ -637,11 +684,11 @@ setInterval(updateCuaca, 15 * 60 * 1000);
             <div id="eomSlider" class="flex transition-transform duration-700 ease-in-out" style="transform: translateX(0%);">
               <div class="w-full flex-shrink-0 flex flex-col sm:flex-row items-center justify-center text-white text-left p-4 gap-5">
                 <div class="relative flex-shrink-0">
-                  <div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle, rgba(59,156,240,0.55), transparent 70%); transform: scale(1.6); filter: blur(10px);"></div>
+                  <div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle, rgba(212,175,90,0.55), transparent 70%); transform: scale(1.6); filter: blur(10px);"></div>
               <svg class="absolute pointer-events-none" style="inset:-14px; width:calc(100% + 28px); height:calc(100% + 28px);" viewBox="0 0 168 168">
                     <circle cx="84" cy="84" r="80" fill="none" stroke="var(--gold-400)" stroke-width="1" stroke-dasharray="2 6"/>
                   </svg>
-                  <div class="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden" style="border: 3px solid var(--gold-400);box-shadow: 0 0 0 5px rgba(59,156,240,0.16), 0 14px 36px -6px rgba(59,156,240,0.6);">
+                  <div class="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden" style="border: 3px solid var(--gold-400);box-shadow: 0 0 0 5px rgba(212,175,90,0.16), 0 14px 36px -6px rgba(212,175,90,0.6);">
                   <img 
                     src="https://firebasestorage.googleapis.com/v0/b/lintas-benteng.firebasestorage.app/o/assets%2Frsz_isma_afrita_lubis_display.png?alt=media&token=1d10a62b-44c7-42fd-b9b4-d104dc1dc5bc"
                     alt="Isma Afrita Lubis"
@@ -688,20 +735,20 @@ setInterval(updateCuaca, 15 * 60 * 1000);
 
     <!-- BARIS 4: JADWAL SHOLAT (FULL WIDTH) -->
     <div class="panel relative w-full bg-cover bg-center bg-no-repeat flex justify-center items-center text-white fade-in p-0 flex-[1.5] min-h-0 overflow-hidden"
-         style="background-image: linear-gradient(155deg, rgba(3,7,15,0.55), rgba(6,15,32,0.45)), url('masjid.jpg');">
+         style="background-image: linear-gradient(155deg, rgba(7,11,20,0.55), rgba(18,26,44,0.45)), url('masjid.jpg');">
       <span class="absolute top-3 left-5 eyebrow">Jadwal Sholat</span>
       <div class="w-full max-w-4xl text-center px-4">
         <div class="mb-2">
           <button id="startBtn" onclick="startApp()"
             class="font-display text-white font-semibold py-2 px-6 rounded-full transition duration-300 ease-in-out"
-            style="background: linear-gradient(135deg, var(--gold-400), var(--gold-500)); color: #0c1220; box-shadow: 0 8px 22px -8px rgba(59,156,240,0.6);">
+            style="background: linear-gradient(135deg, var(--gold-400), var(--gold-500)); color: #0c1220; box-shadow: 0 8px 22px -8px rgba(212,175,90,0.6);">
             Mulai Jadwal Sholat
           </button>
         </div>
         <div>
           <table id="jadwalSholat" class="hidden w-full table-auto text-sm md:text-base rounded-xl overflow-hidden">
             <thead>
-              <tr style="background: rgba(59,156,240,0.10);">
+              <tr style="background: rgba(212,175,90,0.10);">
                 <th class="px-4 py-2 text-center font-display font-semibold" style="color: var(--gold-300);">Subuh</th>
                 <th class="px-4 py-2 text-center font-display font-semibold" style="color: var(--gold-300);">Dzuhur</th>
                 <th class="px-4 py-2 text-center font-display font-semibold" style="color: var(--gold-300);">Ashar</th>
@@ -722,7 +769,7 @@ setInterval(updateCuaca, 15 * 60 * 1000);
     .tv-ticker-wrapper {
         display: flex;
         background: linear-gradient(90deg, #0b111c 0%, #121a2c 100%);
-        border: 1px solid rgba(59,156,240,0.16);
+        border: 1px solid rgba(212,175,90,0.16);
         border-radius: 4px 14px 14px 14px;
         font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
         line-height: 1.2;
@@ -772,10 +819,10 @@ setInterval(updateCuaca, 15 * 60 * 1000);
         transition: color 0.2s;
     }
     .ticker-item-tv:hover {
-        color: #7cc0f7;
+        color: #e8ca8a;
     }
     .ticker-separator-tv {
-        color: #3b9cf0;
+        color: #d4af5a;
         margin-right: 75px;
         font-size: 14px;
         opacity: 0.6;
@@ -1670,7 +1717,7 @@ function renderEventsToday(events) {
       const linkAttr = hasLink ? `href="${ev.calendarEventLink}" target="_blank" rel="noopener"` : '';
 
       return `
-        <${openTag} ${linkAttr} class="block bg-white/[0.05] hover:bg-white/[0.09] transition rounded-xl px-3.5 py-2.5" style="border-left: 3px solid var(--gold-500); border-top: 1px solid rgba(59,156,240,0.14); border-right: 1px solid rgba(59,156,240,0.14); border-bottom: 1px solid rgba(59,156,240,0.14); box-shadow: 0 6px 16px -8px rgba(0,0,0,0.5);">
+        <${openTag} ${linkAttr} class="block bg-white/[0.05] hover:bg-white/[0.09] transition rounded-xl px-3.5 py-2.5" style="border-left: 3px solid var(--gold-500); border-top: 1px solid rgba(212,175,90,0.14); border-right: 1px solid rgba(212,175,90,0.14); border-bottom: 1px solid rgba(212,175,90,0.14); box-shadow: 0 6px 16px -8px rgba(0,0,0,0.5);">
           <div class="text-[11.5px] font-bold font-display tracking-wide" style="color: var(--gold-300);">${waktu}</div>
           <div class="text-[15px] font-semibold text-white mt-0.5">${ev.title || '(Tanpa judul)'}</div>
           ${ev.description ? `<div class="text-xs text-[color:var(--steel-300)] mt-1">${ev.description}</div>` : ''}
@@ -1890,12 +1937,12 @@ function renderTvFrameHTML(ch) {
   const container = document.getElementById('tv-frame-container');
   if (!container) return;
   if (tvHls) { tvHls.destroy(); tvHls = null; }
-  container.innerHTML = '<div id="tv-stage" class="relative w-full flex-1 min-h-0 bg-black"><div id="tv-toast"></div></div>';
+  container.innerHTML = '<div id="tv-stage" class="relative w-full h-full bg-black"><div id="tv-toast"></div></div>';
   const stage = document.getElementById('tv-stage');
   if (ch.type === 'iframe') {
-    stage.insertAdjacentHTML('beforeend', `<iframe class="w-full h-full border-0" src="${ch.url}" allowfullscreen allow="autoplay; encrypted-media" scrolling="no"></iframe>`);
+    stage.insertAdjacentHTML('beforeend', `<iframe class="absolute inset-0 w-full h-full border-0" src="${ch.url}" allowfullscreen allow="autoplay; encrypted-media" scrolling="no"></iframe>`);
   } else {
-    stage.insertAdjacentHTML('beforeend', '<video id="tv-video" class="w-full h-full object-contain" autoplay muted playsinline></video><p id="tv-msg" class="hidden absolute inset-0 flex items-center justify-center text-sm text-red-300">Siaran tidak tersedia.</p>');
+    stage.insertAdjacentHTML('beforeend', '<video id="tv-video" class="w-full h-full object-cover" autoplay muted playsinline></video><p id="tv-msg" class="hidden absolute inset-0 flex items-center justify-center text-sm text-red-300">Siaran tidak tersedia.</p>');
     const v = document.getElementById('tv-video');
     const fail = () => document.getElementById('tv-msg')?.classList.remove('hidden');
     if (window.Hls && Hls.isSupported()) {
