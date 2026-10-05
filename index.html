@@ -286,18 +286,35 @@
     #popupPlayer { background: rgba(6,15,32,0.70) !important; backdrop-filter: blur(22px) saturate(170%); -webkit-backdrop-filter: blur(22px) saturate(170%); border: 1px solid rgba(255,255,255,0.14) !important; }
     #tv-frame-container { border: 1px solid rgba(255,255,255,0.18) !important; box-shadow: 0 6px 24px -8px rgba(0,0,0,0.5); }
 
-    /* Employee of the Quarter: ukuran mengikuti lebar kartu */
+    /* Employee of the Quarter: grid 2 kolom, selalu di tengah kartu, ukuran mengikuti lebar & tinggi */
     .panel-featured:has(#eomSlider) { container-type: inline-size; }
-    #eomSlider > div { padding: clamp(8px, 3cqw, 16px) !important; gap: clamp(10px, 4cqw, 20px) !important; flex-direction: row !important; text-align: left; }
-    #eomSlider > div > .relative { width: clamp(76px, 26cqw, 144px); height: clamp(76px, 26cqw, 144px); }
-    #eomSlider > div > .relative > .rounded-full.overflow-hidden { width: 100% !important; height: 100% !important; }
-    #eomSlider h3 { font-size: clamp(17px, 6cqw, 30px) !important; line-height: 1.15; overflow-wrap: anywhere; }
-    #eomSlider p, #eomSlider .eyebrow { font-size: clamp(10px, 2.6cqw, 14px); }
-    #eomSlider > div > div:last-child { min-width: 0; flex: 1 1 0; }
-    @container (max-width: 300px) {
-      #eomSlider > div { flex-direction: column !important; text-align: center; }
-      #eomSlider > div > div:last-child > div { justify-content: center !important; }
+    .panel-featured:has(#eomSlider) .max-w-xl { max-width: 100% !important; }
+    #eomSlider > div {
+      display: grid !important; grid-template-columns: auto minmax(0, max-content); justify-content: center; align-items: center;
+      column-gap: clamp(12px, 5cqw, 28px); row-gap: 6px; padding: 30px 14px 16px !important; text-align: left;
     }
+    #eomSlider > div > .relative { width: clamp(72px, min(26cqw, 19vh), 150px); height: clamp(72px, min(26cqw, 19vh), 150px); }
+    #eomSlider > div > .relative > .rounded-full.overflow-hidden { width: 100% !important; height: 100% !important; }
+    #eomSlider > div > .relative > .absolute.rounded-full { transform: scale(1.18) !important; filter: blur(8px) !important; }
+    #eomSlider h3 { font-size: clamp(16px, 5.2cqw, 28px) !important; line-height: 1.15; }
+    #eomSlider p, #eomSlider .eyebrow { font-size: clamp(10px, 2.6cqw, 13px); }
+    #eomSlider > div > div:last-child { min-width: 0; text-align: left !important; }
+    #eomSlider > div > div:last-child > div:last-child { justify-content: flex-start !important; }
+    @container (max-width: 300px) {
+      #eomSlider > div { grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; }
+      #eomSlider > div > div:last-child { text-align: center !important; }
+      #eomSlider > div > div:last-child > div:last-child { justify-content: center !important; }
+    }
+
+    /* Kotak waktu & cuaca: lebih lega */
+    div:has(> #cuacaBar) { margin-left: 10px !important; margin-right: 10px !important; padding: 8px 12px !important; gap: 10px !important; }
+    div:has(> #tanggalwaktu) { margin-left: 0 !important; margin-right: 0 !important; }
+    /* Panel Jadwal Sholat ringkas (desktop) */
+    @media (min-width: 1024px) { #app-root > .panel.flex-\[1\.5\] { flex: 0 0 auto !important; min-height: 92px; padding: 30px 16px 12px !important; } }
+    /* Chip channel: pudar di tepi kanan agar tidak terpotong kasar */
+    #tv-chips { -webkit-mask-image: linear-gradient(to right, #000 94%, transparent); mask-image: linear-gradient(to right, #000 94%, transparent); padding-right: 16px; }
+
+    @media (max-width: 639px) { #app-root > .panel:first-child .tracking-wide { display: none; } }
 
     /* Bar channel TV di footer */
     .glass-bar { display: flex; align-items: center; gap: 10px; padding: 6px 12px; flex-shrink: 0; border-radius: 16px !important; }
@@ -789,7 +806,7 @@ setInterval(updateCuaca, 15 * 60 * 1000);
         <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
         Layar Penuh
       </button>
-      <span class="hidden lg:inline text-[11px] whitespace-nowrap" style="color: var(--steel-500);">&copy; <span id="footer-year"></span> Tim IT Pengolahan &middot; BPS Kab. Bengkulu Tengah</span>
+      <span class="hidden 2xl:inline text-[11px] whitespace-nowrap" style="color: var(--steel-500);">&copy; <span id="footer-year"></span> Tim IT Pengolahan &middot; BPS Kab. Bengkulu Tengah</span>
       <script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
     </div>
 
