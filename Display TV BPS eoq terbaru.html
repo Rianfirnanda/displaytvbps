@@ -1,0 +1,1929 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DISPLAY INFORMASI BERBASIS WEB 2.0</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <script src="https://apis.google.com/js/api.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ====================== DESIGN TOKENS ====================== */
+    :root {
+      --ink-900: #060910;
+      --ink-800: #0b111c;
+      --ink-700: #111a2b;
+      --ink-600: #182338;
+      --gold-500: #d4af5a;
+      --gold-400: #e8ca8a;
+      --gold-300: #f3ddab;
+      --crimson-500: #b0303f;
+      --crimson-400: #d1495a;
+      --steel-300: #a8b4c8;
+      --steel-500: #7c8aa3;
+      --panel-bg: rgba(255,255,255,0.04);
+      --panel-border: rgba(212,175,90,0.16);
+      --panel-border-soft: rgba(255,255,255,0.08);
+    }
+
+    /* ✅ TAMBAHAN: kunci scroll, full viewport */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    body {
+      background:
+        radial-gradient(ellipse 1300px 750px at 10% -12%, rgba(212,175,90,0.09), transparent 58%),
+        radial-gradient(ellipse 1100px 850px at 102% 8%, rgba(59,110,180,0.10), transparent 55%),
+        radial-gradient(ellipse 900px 600px at 50% 115%, rgba(176,48,63,0.08), transparent 60%),
+        linear-gradient(160deg, var(--ink-900) 0%, var(--ink-800) 45%, #0a0f1c 100%);
+    }
+    /* fine engineering dot-grid texture — subtle "command center" feel */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 26px 26px;
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body > div { position: relative; z-index: 1; }
+
+    .font-inter { font-family: 'Inter', sans-serif; }
+    .font-display { font-family: 'Sora', 'Inter', sans-serif; }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Custom scrollbar for a polished feel on scrollable panels */
+    .styled-scroll::-webkit-scrollbar { width: 5px; }
+    .styled-scroll::-webkit-scrollbar-track { background: transparent; }
+    .styled-scroll::-webkit-scrollbar-thumb { background: rgba(212,175,90,0.35); border-radius: 999px; }
+    .styled-scroll::-webkit-scrollbar-thumb:hover { background: rgba(212,175,90,0.55); }
+
+    /* Unified card chrome — clipped corner + gold overline, broadcast-panel feel */
+    .panel {
+      position: relative;
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border-soft);
+      border-radius: 4px 16px 16px 16px;
+      box-shadow: 0 10px 30px -12px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      overflow: hidden;
+    }
+    .panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 46px; height: 3px;
+      background: linear-gradient(90deg, var(--gold-500), var(--gold-300));
+      opacity: 0.95;
+    }
+
+    /* Featured panel — for the sections that need to stand out (Kalender, EOQ) */
+    .panel-featured {
+      position: relative;
+      background: linear-gradient(165deg, rgba(212,175,90,0.08), rgba(255,255,255,0.03));
+      border: 1.5px solid rgba(212,175,90,0.45);
+      border-radius: 4px 20px 20px 20px;
+      box-shadow: 0 22px 50px -16px rgba(212,175,90,0.26), 0 14px 34px -12px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.06);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      overflow: hidden;
+    }
+    .panel-featured::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold-500), var(--gold-300), var(--gold-500));
+      opacity: 1;
+    }
+    .panel-featured::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 4px 20px 20px 20px;
+      box-shadow: 0 0 0 1px rgba(212,175,90,0.12), 0 0 34px rgba(212,175,90,0.10) inset;
+      pointer-events: none;
+    }
+    .featured-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'Sora', sans-serif;
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #0c1220;
+      background: linear-gradient(135deg, var(--gold-300), var(--gold-500));
+      padding: 4px 10px 4px 8px;
+      border-radius: 999px;
+      box-shadow: 0 4px 14px -4px rgba(212,175,90,0.6);
+    }
+
+    /* Majestic backdrop for the spotlight section (Employee of the Quarter) */
+    @keyframes sunburst-spin {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to   { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    .sunburst-rays {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 260%; height: 260%;
+      background: conic-gradient(
+        from 0deg,
+        rgba(232,202,138,0.16) 0deg, transparent 8deg,
+        transparent 22deg, rgba(232,202,138,0.12) 30deg,
+        transparent 44deg, transparent 58deg, rgba(232,202,138,0.14) 66deg,
+        transparent 80deg, transparent 94deg, rgba(232,202,138,0.10) 102deg,
+        transparent 116deg, transparent 130deg, rgba(232,202,138,0.14) 138deg,
+        transparent 152deg, transparent 166deg, rgba(232,202,138,0.12) 174deg,
+        transparent 188deg, transparent 202deg, rgba(232,202,138,0.14) 210deg,
+        transparent 224deg, transparent 238deg, rgba(232,202,138,0.10) 246deg,
+        transparent 260deg, transparent 274deg, rgba(232,202,138,0.14) 282deg,
+        transparent 296deg, transparent 310deg, rgba(232,202,138,0.12) 318deg,
+        transparent 332deg, transparent 346deg, rgba(232,202,138,0.16) 354deg, transparent 360deg
+      );
+      mix-blend-mode: screen;
+      animation: sunburst-spin 90s linear infinite;
+      pointer-events: none;
+    }
+    .stage-vignette {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 90% 70% at 50% 42%, transparent 40%, rgba(4,6,12,0.55) 100%),
+        linear-gradient(180deg, rgba(4,6,12,0.35) 0%, transparent 22%, transparent 78%, rgba(4,6,12,0.55) 100%);
+      pointer-events: none;
+    }
+    .laurel-flourish {
+      opacity: 0.55;
+      color: var(--gold-400);
+    }
+
+    .eyebrow {
+      font-family: 'Sora', sans-serif;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold-400);
+    }
+
+    .ellipsis-3 {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .box-carousel-wrap {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+    .box-carousel-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(8,9,14,0.05) 0%, rgba(8,9,14,0.22) 45%, rgba(8,9,14,0.88) 100%);
+      pointer-events: none;
+    }
+    .box-carousel { position: relative; z-index: 1; width: 100%; }
+    .carousel-box { width: 100%; }
+    .carousel-item {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 14px 12px 16px;
+      background: rgba(12,13,18,0.52);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      border-top: 3px solid var(--tier-color, rgba(255,255,255,0.4));
+    }
+    .carousel-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 8px;
+    }
+    .ring-track { stroke: rgba(255,255,255,0.14); stroke-width: 8; }
+    .ring-progress { stroke-width: 8; }
+    .carousel-percentage { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+    .carousel-caption {
+      margin-top: 8px;
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.85);
+      text-align: center;
+      line-height: 1.3;
+      max-width: 92%;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
+
+</head>
+<body class="font-['Inter'] text-white h-screen w-screen overflow-hidden flex flex-col">
+
+  <div class="flex flex-col gap-2 p-2 h-screen w-screen overflow-hidden box-border">
+
+    <!-- HEADER BAR -->
+    <div class="panel fade-in flex-shrink-0 flex items-center justify-between px-5 py-2.5" style="border-radius: 16px;">
+      <span class="absolute top-0 left-0 h-full w-1" style="background: linear-gradient(180deg, var(--crimson-500), var(--gold-500));"></span>
+      <div class="flex items-center gap-3 pl-2">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, var(--gold-400), var(--gold-500)); box-shadow: 0 4px 14px -4px rgba(212,175,90,0.55);">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#0c1220" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/>
+          </svg>
+        </div>
+        <div class="leading-tight">
+          <div class="font-display font-bold text-[15px] tracking-wide text-white">LINTAS BENTENG</div>
+          <div class="eyebrow" style="letter-spacing:0.12em;">BPS Kabupaten Bengkulu Tengah</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <div id="header-clock" class="font-display font-bold text-lg tabular-nums hidden sm:block" style="color: var(--gold-300);">--:--</div>
+        <div class="hidden sm:block w-px h-6" style="background: var(--panel-border-soft);"></div>
+        <div class="flex items-center gap-2 text-[11px] text-[color:var(--steel-300)] font-medium">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="font-display tracking-wide">DISPLAY INFORMASI · LIVE</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BARIS 1 & 2: MAP, TV, CALENDAR (rowspan 2) + EOQ + JAM/CUACA -->
+    <div class="grid grid-cols-3 gap-2 flex-[7] min-h-0" style="grid-template-rows: repeat(2, minmax(0,1fr));">
+
+      <!-- KOTAK 1: LIVE TRACKING MAP -->
+      <div class="panel fade-in p-3 min-h-0 overflow-hidden flex flex-col">
+        <div class="relative font-inter flex-1 min-h-0 flex flex-col">
+          <div class="flex items-center justify-between mb-2 px-0.5">
+            <span class="eyebrow">Live Tracking</span>
+            <span class="flex items-center gap-1.5 text-[10px] font-semibold text-emerald-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              MONITORING
+            </span>
+          </div>
+
+          <div class="relative flex-1 min-h-0 flex flex-col rounded-xl overflow-hidden border border-[color:var(--panel-border-soft)]">
+            <div id="tracking-map" class="w-full flex-1 min-h-0"></div>
+
+            <div class="flex items-center justify-between text-xs text-[color:var(--steel-300)] px-3 py-1.5" style="background: rgba(7,11,20,0.85); border-top: 1px solid var(--panel-border-soft);">
+              <span class="flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-[color:var(--gold-400)]" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+                </svg>
+                <span id="user-count" class="font-semibold text-white">0</span> User Aktif
+              </span>
+              <span id="last-update" class="text-[color:var(--steel-500)]"></span>
+            </div>
+          </div>
+
+          <div class="mt-2 rounded-lg px-3 py-2 overflow-hidden" style="background: rgba(212,175,90,0.06); border: 1px solid var(--panel-border);">
+            <div id="activity-slider" class="text-xs text-[color:var(--steel-300)] font-medium h-[16px] transition-opacity duration-500 whitespace-nowrap overflow-hidden text-ellipsis">
+              <span class="opacity-60">Memuat aktivitas...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KOTAK 2: TV FRAME -->
+      <div class="panel fade-in p-3 min-h-0 overflow-hidden flex flex-col">
+        <div class="flex items-center justify-between mb-2 px-0.5">
+          <span class="eyebrow">Siaran TV</span>
+          <span class="flex items-center gap-1.5 text-[10px] font-semibold text-rose-300">
+            <span class="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse"></span>
+            LIVE
+          </span>
+        </div>
+        <div id="tv-frame-container" class="flex-1 min-h-0 flex flex-col justify-center rounded-xl overflow-hidden border border-[color:var(--panel-border-soft)]">
+          <p class="text-center text-[color:var(--steel-500)] text-sm">Memuat TV...</p>
+        </div>
+      </div>
+
+      <!-- KOTAK 3: GOOGLE CALENDAR - ROWSPAN 2 -->
+      <div class="panel-featured fade-in p-3 row-span-2 min-h-0 overflow-hidden flex flex-col">
+        <div class="rounded-xl w-full flex-1 min-h-0 bg-cover bg-center bg-no-repeat text-white flex flex-col p-3.5 border border-[color:var(--panel-border)]"
+             style="background-image: linear-gradient(165deg, rgba(7,11,20,0.86), rgba(18,26,44,0.80)), url('kantor2.png');">
+
+          <div class="flex items-center justify-center mb-2.5">
+            <span class="featured-badge">
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="#0c1220" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              Agenda Kantor
+            </span>
+          </div>
+
+          <h2 id="calendar-title" class="font-display text-white text-2xl font-bold mb-1 text-center flex justify-center items-center gap-2">
+            <span id="calendar-label-text">Jadwal Hari Ini</span>
+          </h2>
+
+          <p id="refresh-time" class="text-[color:var(--steel-500)] text-[11px] text-center mb-3 flex items-center justify-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 1 1-3.22-6.84" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 3v6h-6" />
+            </svg>
+            <span>Memuat...</span>
+          </p>
+
+          <div id="calendar-events" class="styled-scroll flex flex-col gap-2.5 overflow-y-auto flex-1 min-h-0 pr-1"></div>
+        </div>
+      </div>
+
+      <!-- KOTAK 4: JAM, TANGGAL, CUACA -->
+      <div class="panel w-full bg-cover bg-center bg-no-repeat text-white fade-in p-3 min-h-0 overflow-hidden flex flex-col justify-center"
+           style="background-image: linear-gradient(155deg, rgba(7,11,20,0.90), rgba(18,26,44,0.80)), url('kantor.png');">
+        <span class="eyebrow block text-center mb-1">Waktu &amp; Cuaca</span>
+        <div class="text-center leading-tight">
+          <div class="font-display font-bold text-[5.5vw] leading-none text-center px-4" id="clock" style="background: linear-gradient(180deg, #fff, var(--gold-300)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.02em;"></div>
+
+          <script>
+            function updateClock() {
+              const now = new Date();
+              let hours = now.getHours();
+              let minutes = now.getMinutes();
+              hours = hours < 10 ? '0' + hours : hours;
+              minutes = minutes < 10 ? '0' + minutes : minutes;
+              const timeString = hours + ':' + minutes;
+              document.getElementById('clock').textContent = timeString;
+              const headerClockEl = document.getElementById('header-clock');
+              if (headerClockEl) headerClockEl.textContent = timeString;
+            }
+            setInterval(updateClock, 1000);
+            updateClock();
+          </script>
+
+          <div class="flex flex-col lg:flex-row items-center justify-between mt-3 text-white mx-4 lg:mx-8 px-4 py-2.5 rounded-xl gap-3 lg:gap-5 text-sm md:text-base" style="background: rgba(255,255,255,0.035); border: 1px solid var(--panel-border-soft);">
+            <div class="flex flex-col mx-3 lg:mx-5 items-center lg:items-start w-full lg:w-1/2 text-center lg:text-left leading-tight">
+              <div id="tanggalwaktu" class="text-[color:var(--steel-300)]">Memuat tanggal...</div>
+              <div id="hijri-date" class="italic mt-0.5 text-[color:var(--steel-500)]">Memuat tanggal Hijriyah...</div>
+            </div>
+            <div class="lg:hidden w-full h-px mt-2 mb-2" style="background: var(--panel-border-soft);"></div>
+            <div class="hidden lg:block w-px h-12" style="background: var(--panel-border-soft);"></div>
+            <div id="cuacaBar" class="flex items-center justify-center w-full lg:w-1/2 text-center text-[color:var(--steel-300)]">Memuat cuaca...</div>
+          </div>
+          <script>
+function gregorianToHijri(date) {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  let jd = Math.floor((1461 * (year + 4800 + Math.floor((month - 14) / 12))) / 4) +
+           Math.floor((367 * (month - 2 - 12 * Math.floor((month - 14) / 12))) / 12) -
+           Math.floor((3 * Math.floor((year + 4900 + Math.floor((month - 14) / 12)) / 100)) / 4) +
+           day - 32075;
+
+  let l = jd - 1948440 + 10632;
+  const n = Math.floor((l - 1) / 10631);
+  l = l - 10631 * n + 354;
+  const j = Math.floor((10985 - l) / 5316) * Math.floor((50 * l) / 17719) +
+            Math.floor(l / 5670) * Math.floor((43 * l) / 15238);
+  l = l - Math.floor((30 - j) / 15) * Math.floor((17719 * j) / 50) -
+          Math.floor(j / 16) * Math.floor((15238 * j) / 43) + 29;
+  const hMonth = Math.floor((24 * l) / 709);
+  const hDay = l - Math.floor((709 * hMonth) / 24);
+  const hYear = 30 * n + j - 30;
+
+  return { day: hDay, month: hMonth, year: hYear };
+}
+
+const HIJRI_MONTHS = [
+  "Muharram", "Safar", "Rabiul Awal", "Rabiul Akhir", "Jumadil Awal", "Jumadil Akhir",
+  "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Dzulqaidah", "Dzulhijjah"
+];
+
+function updateTanggal() {
+  const now = new Date();
+  const tanggalMasehi = now.toLocaleDateString('id-ID', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+  });
+  const el1 = document.getElementById('tanggalwaktu');
+  if (el1) el1.textContent = tanggalMasehi;
+
+  const h = gregorianToHijri(now);
+  const el2 = document.getElementById('hijri-date');
+  if (el2) el2.textContent = `${h.day} ${HIJRI_MONTHS[h.month - 1]} ${h.year} H`;
+}
+
+updateTanggal();
+setInterval(updateTanggal, 60 * 1000);
+
+const WEATHER_CODE_MAP = {
+  0: { label: "Cerah", icon: "☀️" },
+  1: { label: "Cerah Berawan", icon: "🌤️" },
+  2: { label: "Berawan Sebagian", icon: "⛅" },
+  3: { label: "Berawan", icon: "☁️" },
+  45: { label: "Berkabut", icon: "🌫️" },
+  48: { label: "Berkabut", icon: "🌫️" },
+  51: { label: "Gerimis Ringan", icon: "🌦️" },
+  53: { label: "Gerimis", icon: "🌦️" },
+  55: { label: "Gerimis Lebat", icon: "🌧️" },
+  61: { label: "Hujan Ringan", icon: "🌧️" },
+  63: { label: "Hujan", icon: "🌧️" },
+  65: { label: "Hujan Lebat", icon: "🌧️" },
+  80: { label: "Hujan Lokal", icon: "🌦️" },
+  81: { label: "Hujan Lokal Lebat", icon: "🌧️" },
+  82: { label: "Hujan Sangat Lebat", icon: "⛈️" },
+  95: { label: "Badai Petir", icon: "⛈️" },
+  96: { label: "Badai Petir + Hujan Es", icon: "⛈️" },
+  99: { label: "Badai Petir Kuat", icon: "⛈️" }
+};
+
+async function updateCuaca() {
+  const el = document.getElementById('cuacaBar');
+  if (!el) return;
+  try {
+    const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-3.763&longitude=102.400&current_weather=true&timezone=Asia%2FJakarta');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const cw = data.current_weather;
+    const info = WEATHER_CODE_MAP[cw.weathercode] || { label: "Cuaca tidak diketahui", icon: "🌡️" };
+    el.innerHTML = `<span class="text-2xl mr-2">${info.icon}</span><span>${info.label}, ${Math.round(cw.temperature)}°C</span>`;
+  } catch (err) {
+    console.warn('⚠️ Gagal ambil cuaca:', err.message);
+    el.textContent = 'Cuaca tidak tersedia';
+  }
+}
+
+updateCuaca();
+setInterval(updateCuaca, 15 * 60 * 1000);
+</script>
+        </div>
+      </div>
+
+      <!-- KOTAK 5: EMPLOYEE OF THE QUARTER (TENGAH) -->
+      <div class="panel-featured relative w-full bg-cover bg-center bg-no-repeat flex justify-center items-center text-white fade-in min-h-0 overflow-hidden"
+           style="background-image: linear-gradient(155deg, rgba(7,11,20,0.94), rgba(20,15,8,0.88)), url('kantor.png');">
+
+        <!-- Layered "stage" backdrop: rotating gold rays + spotlight glow + vignette -->
+        <div class="sunburst-rays"></div>
+        <div class="pointer-events-none absolute inset-0" style="background: radial-gradient(ellipse 65% 85% at 28% 55%, rgba(212,175,90,0.22), transparent 60%), radial-gradient(circle at 82% 18%, rgba(212,175,90,0.10), transparent 45%);"></div>
+        <div class="stage-vignette"></div>
+        <div class="pointer-events-none absolute left-0 right-0 bottom-0 h-1/2" style="background: radial-gradient(ellipse 70% 100% at 30% 100%, rgba(212,175,90,0.16), transparent 70%);"></div>
+
+        <div class="absolute top-3 left-0 right-0 flex justify-center z-10">
+          <span class="featured-badge">
+            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="#0c1220"><path d="M12 2l2.9 6.26L21.7 9l-5 4.87L18 21l-6-3.5L6 21l1.3-7.13-5-4.87 6.8-.74L12 2z"/></svg>
+            Employee of the Quarter
+          </span>
+        </div>
+
+        <div class="relative w-full h-full flex justify-center items-center py-4 bg-transparent z-10">
+          <div class="relative w-full max-w-xl overflow-hidden">
+            <div id="eomSlider" class="flex transition-transform duration-700 ease-in-out" style="transform: translateX(0%);">
+              <div class="w-full flex-shrink-0 flex flex-col sm:flex-row items-center justify-center text-white text-left p-4 gap-5">
+                <div class="relative flex-shrink-0">
+                  <div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle, rgba(212,175,90,0.55), transparent 70%); transform: scale(1.6); filter: blur(10px);"></div>
+              
+                    <circle cx="84" cy="84" r="80" fill="none" stroke="var(--gold-400)" stroke-width="1" stroke-dasharray="2 6"/>
+                  </svg>
+                  <div class="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden" style="border: 3px solid var(--gold-400);box-shadow: 0 0 0 5px rgba(212,175,90,0.16), 0 14px 36px -6px rgba(212,175,90,0.6);">
+                  <img 
+                    src="https://firebasestorage.googleapis.com/v0/b/lintas-benteng.firebasestorage.app/o/assets%2Frsz_isma_afrita_lubis_display.png?alt=media&token=1d10a62b-44c7-42fd-b9b4-d104dc1dc5bc"
+                    alt="Isma Afrita Lubis"
+                    class="absolute w-full h-full object-contain"
+                    style="
+                      transform: translateY(12px) scale(1.1);
+                    "
+                  >
+                </div>
+                </div>
+                <div class="text-center sm:text-left">
+                  <div class="eyebrow mb-1.5" style="letter-spacing:0.16em;">Kuartal II &middot; 2026</div>
+                  <h3 class="font-display text-2xl sm:text-3xl font-extrabold tracking-tight">Isma Afrita Lubis</h3>
+                  <p class="text-sm text-[color:var(--steel-300)] mt-1">Statistisi Muda</p>
+                  <div class="flex items-center justify-center sm:justify-start gap-1.5 mt-2.5">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="var(--gold-400)"><path d="M12 2l2.9 6.26L21.7 9l-5 4.87L18 21l-6-3.5L6 21l1.3-7.13-5-4.87 6.8-.74L12 2z"/></svg>
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="var(--gold-400)"><path d="M12 2l2.9 6.26L21.7 9l-5 4.87L18 21l-6-3.5L6 21l1.3-7.13-5-4.87 6.8-.74L12 2z"/></svg>
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="var(--gold-400)"><path d="M12 2l2.9 6.26L21.7 9l-5 4.87L18 21l-6-3.5L6 21l1.3-7.13-5-4.87 6.8-.74L12 2z"/></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+          const eomSlider = document.getElementById('eomSlider');
+          if(eomSlider) {
+            const totalEomSlides = eomSlider.children.length;
+            let currentEomIndex = 0;
+            function updateEomSliderPosition() {
+              const translateX = -currentEomIndex * 100;
+              eomSlider.style.transform = `translateX(${translateX}%)`;
+            }
+            function nextEomSlide() {
+              currentEomIndex = (currentEomIndex + 1) % totalEomSlides;
+              updateEomSliderPosition();
+            }
+            setInterval(nextEomSlide, 8000);
+          }
+        </script>
+      </div>
+
+    </div>
+
+    <!-- BARIS 4: JADWAL SHOLAT (FULL WIDTH) -->
+    <div class="panel relative w-full bg-cover bg-center bg-no-repeat flex justify-center items-center text-white fade-in p-0 flex-[1.5] min-h-0 overflow-hidden"
+         style="background-image: linear-gradient(155deg, rgba(7,11,20,0.90), rgba(18,26,44,0.82)), url('masjid.jpg');">
+      <span class="absolute top-3 left-5 eyebrow">Jadwal Sholat</span>
+      <div class="w-full max-w-4xl text-center px-4">
+        <div class="mb-2">
+          <button id="startBtn" onclick="startApp()"
+            class="font-display text-white font-semibold py-2 px-6 rounded-full transition duration-300 ease-in-out"
+            style="background: linear-gradient(135deg, var(--gold-400), var(--gold-500)); color: #0c1220; box-shadow: 0 8px 22px -8px rgba(212,175,90,0.6);">
+            Mulai Jadwal Sholat
+          </button>
+        </div>
+        <div>
+          <table id="jadwalSholat" class="hidden w-full table-auto text-sm md:text-base rounded-xl overflow-hidden">
+            <thead>
+              <tr style="background: rgba(212,175,90,0.10);">
+                <th class="px-4 py-2 text-center font-display font-semibold" style="color: var(--gold-300);">Subuh</th>
+                <th class="px-4 py-2 text-center font-display font-semibold" style="color: var(--gold-300);">Dzuhur</th>
+                <th class="px-4 py-2 text-center font-display font-semibold" style="color: var(--gold-300);">Ashar</th>
+                <th class="px-4 py-2 text-center font-display font-semibold" style="color: var(--gold-300);">Maghrib</th>
+                <th class="px-4 py-2 text-center font-display font-semibold" style="color: var(--gold-300);">Isya</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="jadwalRow" class="text-center font-semibold text-white"></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- BARIS 5: TICKER BERITA (FULL WIDTH) -->
+    <style>
+    .tv-ticker-wrapper {
+        display: flex;
+        background: linear-gradient(90deg, #0b111c 0%, #121a2c 100%);
+        border: 1px solid rgba(212,175,90,0.16);
+        border-radius: 4px 14px 14px 14px;
+        font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+        line-height: 1.2;
+        overflow: hidden;
+        color: white;
+        box-shadow: 0 10px 30px -14px rgba(0,0,0,0.6);
+    }
+    .tv-ticker-label {
+        position: relative;
+        background: linear-gradient(135deg, var(--crimson-400), var(--crimson-500));
+        color: #fff;
+        padding: 8px 26px 8px 20px;
+        font-size: 14px;
+        font-family: 'Sora', sans-serif;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        clip-path: polygon(0 0, 100% 0, 88% 100%, 0% 100%);
+    }
+    .tv-ticker-container {
+        flex-grow: 1;
+        overflow: hidden;
+        padding: 8px 0 8px 12px;
+    }
+    .ticker-tv {
+        --animation-duration: 240s;
+        display: inline-block;
+        white-space: nowrap;
+        animation: ticker-animation var(--animation-duration) linear infinite;
+        padding-left: 100%;
+        will-change: transform;
+    }
+    .tv-ticker-wrapper:hover .ticker-tv {
+        animation-play-state: paused;
+    }
+    .ticker-item-tv {
+        margin-right: 75px;
+        text-decoration: none;
+        color: #d7deea;
+        font-size: 16px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        transition: color 0.2s;
+    }
+    .ticker-item-tv:hover {
+        color: #e8ca8a;
+    }
+    .ticker-separator-tv {
+        color: #d4af5a;
+        margin-right: 75px;
+        font-size: 14px;
+        opacity: 0.6;
+    }
+    @keyframes ticker-animation {
+        0% { transform: translateX(0%); }
+        100% { transform: translateX(-100%); }
+    }
+    </style>
+
+    <div class="tv-ticker-wrapper flex-shrink-0">
+        <div class="tv-ticker-label">
+            <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+            <span id="ticker-label-text">LINTAS BENTENG</span>
+        </div>
+        <div class="tv-ticker-container">
+            <div id="rss-ticker" class="ticker-tv">
+                <span class="ticker-item-tv">Memuat berita terbaru...</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    async function loadRSS(topic = "teknologi Indonesia") {
+        const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(topic)}&hl=id&gl=ID&ceid=ID:id`;
+        const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+        const ticker = document.getElementById("rss-ticker");
+        try {
+            const res = await fetch(apiUrl);
+            const data = await res.json();
+            if (!data.items || data.items.length === 0) {
+                ticker.innerHTML = '<span class="ticker-item-tv">Tidak ada berita yang ditemukan.</span>';
+                return;
+            }
+            const newsItems = data.items;
+            const tripledItems = [...newsItems, ...newsItems, ...newsItems];
+            ticker.innerHTML = tripledItems
+                .map(item => `<a href="${item.link}" target="_blank" class="ticker-item-tv">${item.title}</a>`)
+                .join('<span class="ticker-separator-tv"> | </span>');
+        } catch (err) {
+            console.error("Gagal memuat berita:", err);
+            ticker.innerHTML = '<span class="ticker-item-tv">Gagal memuat berita. Coba lagi nanti.</span>';
+        }
+    }
+    loadRSS("bengkulu tengah");
+    </script>
+
+   <!-- Popup Azan -->
+<div id="popupPlayer" class="fixed bottom-4 right-4 w-[300px] sm:w-[350px] text-white rounded-2xl p-4 z-50 opacity-0 pointer-events-none scale-95 transition-all duration-300 ease-out" style="background: linear-gradient(160deg, #121a2c, #0c1220); border: 1px solid var(--panel-border); box-shadow: 0 20px 50px -12px rgba(0,0,0,0.7);">
+  <h2 id="popupTitle" class="font-display text-base font-bold mb-2" style="color: var(--gold-300);">Azan Sedang Diputar</h2>
+  <audio id="popupAudio" controls class="w-full rounded-md overflow-hidden" preload="auto"></audio>
+  <button onclick="stopAzan()" class="mt-3 text-white text-sm font-semibold px-3 py-1.5 rounded-lg transition" style="background: rgba(255,255,255,0.08); border: 1px solid var(--panel-border-soft);" onmouseover="this.style.background='rgba(255,255,255,0.14)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">Tutup</button>
+</div>
+
+    <!-- Video Sensus Ekonomi -->
+<div id="videoOverlay" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 opacity-0 pointer-events-none transition duration-300">
+  <div class="relative bg-black w-screen h-screen p-0 overflow-hidden">
+    <div id="loadingOverlay" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-70 z-20 hidden">
+      <div class="text-white text-center">
+        <svg class="animate-spin w-12 h-12 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="white" stroke-width="4"></circle>
+          <path class="opacity-75" fill="white" d="M4 12a8 8 0 018-8v8z"></path>
+        </svg>
+        <p class="text-sm">Memuat video...</p>
+      </div>
+    </div>
+    <button onclick="closeVideoPopup()" class="absolute top-4 right-4 z-30 text-white text-3xl font-bold transition-colors" style="color: var(--gold-300);" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--gold-300)'">&times;</button>
+    <video id="videoSensus" class="w-full h-full object-contain" preload="auto"></video>
+  </div>
+</div>
+
+<!-- Video Indonesia Raya -->
+<div id="videoIndonesiaRaya" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 opacity-0 pointer-events-none transition duration-300">
+  <div class="relative bg-black w-screen h-screen p-0 overflow-hidden">
+    <div id="loadingOverlayIR" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-70 z-20 hidden">
+      <div class="text-white text-center">
+        <svg class="animate-spin w-12 h-12 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="white" stroke-width="4"></circle>
+          <path class="opacity-75" fill="white" d="M4 12a8 8 0 018-8v8z"></path>
+        </svg>
+        <p class="text-sm">Memuat video...</p>
+      </div>
+    </div>
+    <button onclick="closeIndonesiaRayaPopup()" class="absolute top-4 right-4 z-30 text-white text-3xl font-bold transition-colors" style="color: var(--gold-300);" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--gold-300)'">&times;</button>
+    <video id="videoIndonesiaRayaPlayer" class="w-full h-full object-contain" preload="auto"></video>
+  </div>
+</div>
+
+   <script>
+  const videoOverlay = document.getElementById("videoOverlay");
+const video = document.getElementById("videoSensus");
+const loadingOverlay = document.getElementById("loadingOverlay");
+const videoIndonesiaRaya = document.getElementById("videoIndonesiaRaya");
+const videoIR = document.getElementById("videoIndonesiaRayaPlayer");
+const loadingOverlayIR = document.getElementById("loadingOverlayIR");
+
+const jadwalSensus        = ["07:25", "15:55"];
+const jadwalIndonesiaRaya = ["10:00"];
+
+let sudahPopupHariIni = {};
+
+window.addEventListener('load', () => {
+  video.load();
+  videoIR.load();
+  document.getElementById('popupAudio').load();
+});
+
+// ✅ FIX AUDIO: videoEl.muted = false ditambahin sebelum play, jaga-jaga
+function playWhenReady(videoEl, overlayEl, loadingEl) {
+  overlayEl.classList.remove("opacity-0", "pointer-events-none");
+  overlayEl.classList.add("opacity-100");
+  videoEl.currentTime = 0;
+  videoEl.muted = false;
+
+  if (videoEl.readyState >= 3) {
+    loadingEl.classList.add("hidden");
+    videoEl.play().catch(err => console.warn("Autoplay gagal:", err));
+  } else {
+    loadingEl.classList.remove("hidden");
+    const onCanPlay = () => {
+      loadingEl.classList.add("hidden");
+      videoEl.play().catch(err => console.warn("Autoplay gagal:", err));
+      videoEl.removeEventListener('canplaythrough', onCanPlay);
+    };
+    videoEl.addEventListener('canplaythrough', onCanPlay);
+    setTimeout(() => {
+      loadingEl.classList.add("hidden");
+      videoEl.play().catch(err => console.warn("Autoplay gagal:", err));
+      videoEl.removeEventListener('canplaythrough', onCanPlay);
+    }, 5000);
+  }
+}
+
+function showVideoPopup() { playWhenReady(video, videoOverlay, loadingOverlay); }
+function closeVideoPopup() {
+  videoOverlay.classList.add("opacity-0", "pointer-events-none");
+  videoOverlay.classList.remove("opacity-100");
+  video.pause();
+  loadingOverlay.classList.add("hidden");
+}
+
+function showIndonesiaRayaPopup() { playWhenReady(videoIR, videoIndonesiaRaya, loadingOverlayIR); }
+function closeIndonesiaRayaPopup() {
+  videoIndonesiaRaya.classList.add("opacity-0", "pointer-events-none");
+  videoIndonesiaRaya.classList.remove("opacity-100");
+  videoIR.pause();
+  loadingOverlayIR.classList.add("hidden");
+}
+
+const JADWAL_DEFAULT = {
+  Fajr:    "04:35",
+  Dhuhr:   "12:05",
+  Asr:     "15:20",
+  Maghrib: "18:05",
+  Isha:    "19:15"
+};
+
+async function fetchJadwalSholat(lat, lon) {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+    const res = await fetch(
+      `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=20&timezonestring=Asia/Jakarta`,
+      { signal: controller.signal }
+    );
+    clearTimeout(timeoutId);
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const data = await res.json();
+    if (!data || !data.data || !data.data.timings) {
+      throw new Error("Data tidak valid dari API");
+    }
+
+    console.log('✅ Jadwal sholat berhasil diambil dari API (Aladhan).');
+    return data.data.timings;
+  } catch (err) {
+    console.warn('⚠️ Gagal ambil jadwal dari API, pakai jadwal hardcode sebagai fallback:', err.message);
+    return JADWAL_DEFAULT;
+  }
+}
+
+function tampilkanJadwal(timings) {
+  const table = document.getElementById("jadwalSholat");
+  if (!table) return;
+  const tbody = table.getElementsByTagName('tbody')[0];
+  if (!tbody) return;
+
+  tbody.innerHTML = "";
+  const row = document.createElement("tr");
+  row.className = "text-center";
+  row.innerHTML = `
+    <td class="px-2 py-2 text-center text-lg">${timings.Fajr || '-'}</td>
+    <td class="px-2 py-2 text-center text-lg">${timings.Dhuhr || '-'}</td>
+    <td class="px-2 py-2 text-center text-lg">${timings.Asr || '-'}</td>
+    <td class="px-2 py-2 text-center text-lg">${timings.Maghrib || '-'}</td>
+    <td class="px-2 py-2 text-center text-lg">${timings.Isha || '-'}</td>
+  `;
+  tbody.appendChild(row);
+}
+
+let jadwalAzanState = {};
+let sudahAzan = { subuh: false, dzuhur: false, ashar: false, maghrib: false, isya: false };
+let popupAzanActive = false;
+
+function setTimingsAzan(timings) {
+  jadwalAzanState = {
+    subuh: timings.Fajr,
+    dzuhur: timings.Dhuhr,
+    ashar: timings.Asr,
+    maghrib: timings.Maghrib,
+    isya: timings.Isha
+  };
+  sudahAzan = { subuh: false, dzuhur: false, ashar: false, maghrib: false, isya: false };
+}
+
+function capitalizeWord(word) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+function tampilkanPopupAzan(sholat) {
+  popupAzanActive = true;
+
+  const popup = document.getElementById("popupPlayer");
+  const audio = document.getElementById("popupAudio");
+  const judul = document.getElementById("popupTitle");
+
+  if (!popup || !audio || !judul) {
+    console.error("Element popup azan tidak ditemukan!", { popup, audio, judul });
+    popupAzanActive = false;
+    return;
+  }
+
+  audio.muted = false; // ✅ jaga-jaga juga di sini
+
+  judul.innerText = `Azan ${capitalizeWord(sholat)} Sedang Diputar`;
+  popup.classList.remove("opacity-0", "pointer-events-none", "scale-95");
+  popup.classList.add("opacity-100", "pointer-events-auto", "scale-100");
+
+  audio.currentTime = 0;
+  const playPromise = audio.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(err => {
+      console.error("Gagal memutar azan:", err);
+      judul.innerText = `🕌 Waktu ${capitalizeWord(sholat)} — Tekan ▶ untuk putar azan`;
+    });
+  }
+
+  audio.onended = () => hideAzanPopup();
+  setTimeout(() => {
+    if (!audio.paused) return;
+    hideAzanPopup();
+  }, 60000);
+}
+
+function hideAzanPopup() {
+  popupAzanActive = false;
+
+  const popup = document.getElementById("popupPlayer");
+  const audio = document.getElementById("popupAudio");
+  if (!popup || !audio) return;
+
+  popup.classList.add("opacity-0", "pointer-events-none", "scale-95");
+  popup.classList.remove("opacity-100", "pointer-events-auto");
+  audio.pause();
+  audio.currentTime = 0;
+}
+
+window.stopAzan = hideAzanPopup;
+
+function checkAzanTime() {
+  const now = new Date();
+  const jamSekarang = now.toTimeString().slice(0, 5);
+
+  for (const [sholat, waktu] of Object.entries(jadwalAzanState)) {
+    if (!waktu) continue;
+    const waktuSholat = waktu.slice(0, 5);
+    if (jamSekarang === waktuSholat && !sudahAzan[sholat] && !popupAzanActive) {
+      tampilkanPopupAzan(sholat);
+      sudahAzan[sholat] = true;
+      break;
+    }
+    if (jamSekarang !== waktuSholat) {
+      sudahAzan[sholat] = false;
+    }
+  }
+}
+
+window.startApp = async function () {
+  const btn = document.getElementById("startBtn");
+  try {
+    const latitude = -3.763;
+    const longitude = 102.400;
+
+    if (btn) btn.style.display = "none";
+    const tabel = document.getElementById("jadwalSholat");
+    if (tabel) tabel.classList.remove("hidden");
+
+    const timings = await fetchJadwalSholat(latitude, longitude);
+    tampilkanJadwal(timings);
+    setTimingsAzan(timings);
+    window._jadwalAzan = timings;
+
+    // ✅ FIX UTAMA: pakai .finally() biar muted SELALU direset ke false,
+    // apapun hasil play()-nya (berhasil ataupun gagal/reject)
+    await Promise.allSettled(
+      [
+        document.getElementById('popupAudio'),
+        document.getElementById('videoSensus'),
+        document.getElementById('videoIndonesiaRayaPlayer'),
+      ]
+      .filter(Boolean)
+      .map(el => {
+        el.muted = true;
+        return el.play().then(() => {
+          el.pause();
+          el.currentTime = 0;
+        }).catch(() => {}).finally(() => {
+          el.muted = false;
+        });
+      })
+    );
+
+    checkAzanTime();
+    setInterval(checkAzanTime, 60000);
+
+    console.log('✅ Jadwal sholat & azan siap jalan.');
+  } catch (err) {
+    console.error('❌ Gagal memuat jadwal sholat:', err);
+    alert('Gagal memuat jadwal sholat. Cek console (F12) buat detail errornya.');
+    if (btn) btn.style.display = "";
+  }
+};
+
+video.addEventListener("ended", () => closeVideoPopup());
+videoIR.addEventListener("ended", () => closeIndonesiaRayaPopup());
+video.addEventListener('waiting', () => loadingOverlay.classList.remove("hidden"));
+video.addEventListener('playing', () => loadingOverlay.classList.add("hidden"));
+videoIR.addEventListener('waiting', () => loadingOverlayIR.classList.remove("hidden"));
+videoIR.addEventListener('playing', () => loadingOverlayIR.classList.add("hidden"));
+
+function checkJadwal() {
+  const now = new Date();
+  const waktuSekarang = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+
+  jadwalSensus.forEach(j => {
+    if (waktuSekarang === j && !sudahPopupHariIni['sensus_'+j]) {
+      showVideoPopup();
+      sudahPopupHariIni['sensus_'+j] = true;
+      setTimeout(() => { sudahPopupHariIni['sensus_'+j] = false; }, 2*60*1000);
+    }
+  });
+
+  jadwalIndonesiaRaya.forEach(j => {
+    if (waktuSekarang === j && !sudahPopupHariIni['ir_'+j]) {
+      showIndonesiaRayaPopup();
+      sudahPopupHariIni['ir_'+j] = true;
+      setTimeout(() => { sudahPopupHariIni['ir_'+j] = false; }, 2*60*1000);
+    }
+  });
+}
+
+setInterval(checkJadwal, 60000);
+checkJadwal();
+</script>
+
+  </div>
+
+  <!-- Google Maps & Firebase Script -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC018aYDJGRgCARTQs7Ew8UNoVIjZOJl8Y"></script>
+
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAlVfejf312G-tIleA8izbxn98bDGe1MvM",
+  authDomain: "lintas-benteng.firebaseapp.com",
+  projectId: "lintas-benteng",
+  storageBucket: "lintas-benteng.firebasestorage.app",
+  appId: "1:1005929757785:web:65b6d25b390677a98f0548"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let map, markers = {}, targetPositions = {}, polylines = {};
+const INACTIVE_THRESHOLD = 30 * 60 * 1000;
+const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
+const MOVEMENT_THRESHOLD = 0.0001;
+const MAX_JUMP_DISTANCE = 0.1;
+let lastUpdateTime = {};
+let lastValidPosition = {};
+let activitySlides = [];
+let currentSlideIndex = 0;
+
+function calculateDistance(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLng/2) * Math.sin(dLng/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+
+function isValidCoordinate(lat, lng) {
+  return !isNaN(lat) && !isNaN(lng) &&
+         lat >= -11 && lat <= 6 &&
+         lng >= 95 && lng <= 141;
+}
+
+function initMap() {
+  map = new google.maps.Map(document.getElementById("tracking-map"), {
+    zoom: 11,
+    center: { lat: -3.693, lng: 102.258 },
+    gestureHandling: "greedy",
+    disableDefaultUI: true,
+    zoomControl: true,
+    styles: [
+      { elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+      { elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+      { elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+      { featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{color: '#d59563'}]},
+      { featureType: 'poi', elementType: 'labels.text.fill', stylers: [{color: '#d59563'}]},
+      { featureType: 'poi.park', elementType: 'geometry', stylers: [{color: '#263c3f'}]},
+      { featureType: 'poi.park', elementType: 'labels.text.fill', stylers: [{color: '#6b9a76'}]},
+      { featureType: 'road', elementType: 'geometry', stylers: [{color: '#38414e'}]},
+      { featureType: 'road', elementType: 'geometry.stroke', stylers: [{color: '#212a37'}]},
+      { featureType: 'road', elementType: 'labels.text.fill', stylers: [{color: '#9ca5b3'}]},
+      { featureType: 'road.highway', elementType: 'geometry', stylers: [{color: '#746855'}]},
+      { featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{color: '#1f2835'}]},
+      { featureType: 'road.highway', elementType: 'labels.text.fill', stylers: [{color: '#f3d19c'}]},
+      { featureType: 'transit', elementType: 'geometry', stylers: [{color: '#2f3948'}]},
+      { featureType: 'transit.station', elementType: 'labels.text.fill', stylers: [{color: '#d59563'}]},
+      { featureType: 'water', elementType: 'geometry', stylers: [{color: '#17263c'}]},
+      { featureType: 'water', elementType: 'labels.text.fill', stylers: [{color: '#515c6d'}]},
+      { featureType: 'water', elementType: 'labels.text.stroke', stylers: [{color: '#17263c'}]}
+    ]
+  });
+
+  onSnapshot(collection(db, "active_tracking"), snapshot => {
+    const now = Date.now();
+    let activeCount = 0;
+    const currentActiveIds = [];
+    activitySlides = [];
+
+    snapshot.forEach(doc => {
+      const user = doc.data();
+      const userId = user.userId;
+      const timestamp = user.timestamp || now;
+
+      if (!timestamp || timestamp <= 0 || (now - timestamp) > THREE_DAYS_MS) {
+        console.log(`⚠️ Skipping invalid/old timestamp for user: ${user.userName}`);
+        return;
+      }
+
+      const timeDiff = now - timestamp;
+
+      const lat = parseFloat(user.latitude);
+      const lng = parseFloat(user.longitude);
+
+      if (!isValidCoordinate(lat, lng)) {
+        console.log(`⚠️ Skipping invalid coordinates for user: ${user.userName} (${lat}, ${lng})`);
+        return;
+      }
+
+      const pos = { lat, lng };
+
+      if (lastValidPosition[userId]) {
+        const distance = calculateDistance(
+          lastValidPosition[userId].lat,
+          lastValidPosition[userId].lng,
+          pos.lat,
+          pos.lng
+        );
+
+        if (distance > MAX_JUMP_DISTANCE) {
+          console.log(`🚨 Detected jump for ${user.userName}: ${distance.toFixed(2)}km - Resetting polyline`);
+
+          if (polylines[userId]) {
+            polylines[userId].setMap(null);
+            delete polylines[userId];
+          }
+
+          localStorage.removeItem(`polyline_${userId}`);
+
+          lastValidPosition[userId] = pos;
+        }
+      }
+
+      const lastPos = targetPositions[userId];
+      const isMoving = lastPos && (
+        Math.abs(lastPos.lat - pos.lat) > MOVEMENT_THRESHOLD ||
+        Math.abs(lastPos.lng - pos.lng) > MOVEMENT_THRESHOLD
+      );
+
+      if (isMoving || !lastUpdateTime[userId]) {
+        lastUpdateTime[userId] = now;
+      }
+
+      const lastActivity = lastUpdateTime[userId] || timestamp;
+
+      if (timeDiff > INACTIVE_THRESHOLD &&
+          !isMoving &&
+          (now - lastActivity) > INACTIVE_THRESHOLD) {
+        return;
+      }
+
+      currentActiveIds.push(userId);
+      activeCount++;
+      targetPositions[userId] = pos;
+      lastValidPosition[userId] = pos;
+
+      if (user.activityName) {
+  activitySlides.push({
+    name: user.userName,
+    activity: user.activityName
+  });
+}
+
+      if (!polylines[userId]) {
+        polylines[userId] = new google.maps.Polyline({
+          map: map,
+          path: [new google.maps.LatLng(pos.lat, pos.lng)],
+          geodesic: true,
+          strokeColor: "#10b981",
+          strokeOpacity: 0.8,
+          strokeWeight: 4
+        });
+      } else {
+        const path = polylines[userId].getPath();
+        const lastPoint = path.getAt(path.getLength() - 1);
+
+        if (lastPoint) {
+          const lastLat = lastPoint.lat();
+          const lastLng = lastPoint.lng();
+
+          const distance = calculateDistance(lastLat, lastLng, pos.lat, pos.lng);
+          const moved = Math.abs(lastLat - pos.lat) > MOVEMENT_THRESHOLD ||
+                       Math.abs(lastLng - pos.lng) > MOVEMENT_THRESHOLD;
+
+          if (moved && distance < MAX_JUMP_DISTANCE) {
+            path.push(new google.maps.LatLng(pos.lat, pos.lng));
+
+            if (path.getLength() > 50) path.removeAt(0);
+
+            const pathArray = [];
+            for (let i = 0; i < path.getLength(); i++) {
+              const point = path.getAt(i);
+              pathArray.push({ lat: point.lat(), lng: point.lng() });
+            }
+            localStorage.setItem(`polyline_${userId}`, JSON.stringify(pathArray));
+          }
+        }
+      }
+
+      const baseSize = 40;
+      createCircleIcon(user.userPhotoUrl, baseSize, user.userName).then(iconUrl => {
+        if (!markers[userId]) {
+          const marker = new google.maps.Marker({
+            position: pos,
+            map: map,
+            title: user.userName,
+            icon: {
+              url: iconUrl,
+              scaledSize: new google.maps.Size(baseSize, baseSize),
+              anchor: new google.maps.Point(baseSize/2, baseSize/2)
+            }
+          });
+
+          const labelOverlay = new google.maps.OverlayView();
+          labelOverlay.onAdd = function() {
+            const div = document.createElement('div');
+            div.style.position = 'absolute';
+            div.style.background = 'rgba(16, 185, 129, 0.95)';
+            div.style.color = '#ffffff';
+            div.style.padding = '3px 8px';
+            div.style.borderRadius = '4px';
+            div.style.fontSize = '10px';
+            div.style.fontWeight = 'bold';
+            div.style.whiteSpace = 'nowrap';
+            div.style.border = '2px solid rgba(255, 255, 255, 0.3)';
+            div.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
+            div.textContent = user.userName;
+            this.div = div;
+            const panes = this.getPanes();
+            panes.overlayLayer.appendChild(div);
+          };
+
+          labelOverlay.draw = function() {
+  const projection = this.getProjection();
+  if (!projection || !this.div) return;
+  const position = marker.getPosition();
+  const point = projection.fromLatLngToDivPixel(position);
+  if (point && this.div) {
+    this.div.style.left = (point.x - this.div.offsetWidth / 2) + 'px';
+    this.div.style.top = (point.y - baseSize/2 - this.div.offsetHeight - 3) + 'px';
+  }
+};
+
+          labelOverlay.onRemove = function() {
+            if (this.div) {
+              this.div.parentNode.removeChild(this.div);
+              this.div = null;
+            }
+          };
+
+          labelOverlay.setMap(map);
+          markers[userId] = { marker: marker, label: labelOverlay };
+
+          marker.addListener("click", () => {
+            const info = new google.maps.InfoWindow({
+              content: `
+                <div style="padding:4px 8px;font-size:11px;">
+                  <b>${user.userName}</b><br>
+                  <small>${user.activityName || "-"}</small>
+                </div>
+              `
+            });
+            info.open(map, marker);
+          });
+        } else {
+          markers[userId].marker.setPosition(pos);
+          if (markers[userId].label && markers[userId].label.draw) {
+            markers[userId].label.draw();
+          }
+        }
+      });
+    });
+
+    document.getElementById('user-count').textContent = activeCount;
+    document.getElementById('last-update').textContent =
+      new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+    updateActivitySlider();
+    cleanInactiveMarkers(currentActiveIds);
+  });
+
+  animateMarkers();
+  startActivitySlider();
+
+  setInterval(() => {
+    cleanOrphanPolylines();
+  }, 5 * 60000);
+}
+
+function cleanOrphanPolylines() {
+  const activeUserIds = Object.keys(markers);
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith('polyline_')) {
+      const userId = key.replace('polyline_', '');
+      if (!activeUserIds.includes(userId)) {
+        localStorage.removeItem(key);
+        console.log(`🧹 Cleaned orphan polyline: ${userId}`);
+      }
+    }
+  }
+}
+
+function cleanInactiveMarkers(activeIds) {
+  for (const id in markers) {
+    if (!activeIds.includes(id)) {
+      if (markers[id].marker) markers[id].marker.setMap(null);
+      if (markers[id].label) markers[id].label.setMap(null);
+      if (polylines[id]) polylines[id].setMap(null);
+      delete markers[id];
+      delete polylines[id];
+      delete targetPositions[id];
+      delete lastUpdateTime[id];
+      delete lastValidPosition[id];
+      localStorage.removeItem(`polyline_${id}`);
+      console.log(`🗑️ Removed inactive user: ${id}`);
+    }
+  }
+}
+
+function updateActivitySlider() {
+  const sliderEl = document.getElementById('activity-slider');
+  if (!sliderEl) return;
+
+  if (activitySlides.length === 0) {
+    sliderEl.innerHTML = '<span class="opacity-60">Tidak ada aktivitas saat ini</span>';
+    return;
+  }
+
+  const current = activitySlides[currentSlideIndex];
+  const maxActivityLength = 30;
+  const activity = current.activity.length > maxActivityLength
+    ? current.activity.substring(0, maxActivityLength) + '...'
+    : current.activity;
+
+  sliderEl.innerHTML = `
+    <span class="inline-flex items-center gap-2">
+      <svg class="w-3 h-3 flex-shrink-0" style="color: var(--gold-400);" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V5h2v4z"/>
+      </svg>
+      <strong style="color: var(--gold-300);">${current.name}</strong>
+      <span class="text-[color:var(--steel-500)]">melakukan perjalanan</span>
+      <span class="font-semibold text-white">${activity}</span>
+    </span>
+  `;
+}
+
+function startActivitySlider() {
+  setInterval(() => {
+    if (activitySlides.length > 0) {
+      currentSlideIndex = (currentSlideIndex + 1) % activitySlides.length;
+
+      const sliderEl = document.getElementById('activity-slider');
+      if (sliderEl) {
+        sliderEl.style.opacity = '0';
+
+        setTimeout(() => {
+          updateActivitySlider();
+          sliderEl.style.opacity = '1';
+        }, 300);
+      }
+    }
+  }, 4000);
+}
+
+function animateMarkers() {
+  setInterval(() => {
+    for (const id in markers) {
+      if (targetPositions[id] && markers[id].marker) {
+        const marker = markers[id].marker;
+        const target = targetPositions[id];
+        const pos = marker.getPosition();
+        const lat = pos.lat() + (target.lat - pos.lat()) * 0.15;
+        const lng = pos.lng() + (target.lng - pos.lng()) * 0.15;
+        marker.setPosition({ lat, lng });
+
+        if (markers[id].label && markers[id].label.draw) {
+          markers[id].label.draw();
+        }
+      }
+    }
+  }, 50);
+}
+
+function createCircleIcon(imgUrl, size = 35, userName = "User") {
+  return new Promise(resolve => {
+    const canvas = document.createElement("canvas");
+    canvas.width = canvas.height = size;
+    const ctx = canvas.getContext("2d");
+
+    const validUrl = isValidImageUrl(imgUrl) ? imgUrl : null;
+
+    if (!validUrl) {
+      createDefaultAvatar(ctx, size, userName);
+      resolve(canvas.toDataURL());
+      return;
+    }
+
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = validUrl;
+
+    img.onload = () => {
+      ctx.clearRect(0, 0, size, size);
+      ctx.fillStyle = "#4285F4";
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#fff";
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, size / 2 - 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, size / 2 - 4, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.clip();
+      ctx.drawImage(img, 0, 0, size, size);
+
+      resolve(canvas.toDataURL());
+    };
+
+    img.onerror = () => {
+      ctx.clearRect(0, 0, size, size);
+      createDefaultAvatar(ctx, size, userName);
+      resolve(canvas.toDataURL());
+    };
+  });
+}
+
+function createDefaultAvatar(ctx, size, userName) {
+  ctx.fillStyle = "#4285F4";
+  ctx.beginPath();
+  ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  const gradient = ctx.createLinearGradient(0, 0, size, size);
+  gradient.addColorStop(0, "#667eea");
+  gradient.addColorStop(1, "#764ba2");
+  ctx.fillStyle = gradient;
+  ctx.beginPath();
+  ctx.arc(size / 2, size / 2, size / 2 - 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  const initials = userName.split(' ').map(w => w.charAt(0)).join('').toUpperCase().substring(0, 2);
+  ctx.fillStyle = "#ffffff";
+  ctx.font = `bold ${size / 2.5}px Arial`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(initials, size / 2, size / 2);
+}
+
+function isValidImageUrl(url) {
+  if (!url) return false;
+  try {
+    const urlObj = new URL(url);
+    return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initMap);
+} else {
+  initMap();
+}
+</script>
+
+  <script type="module">
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+import { getAuth, signInAnonymously, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAlVfejf312G-tIleA8izbxn98bDGe1MvM",
+  authDomain: "lintas-benteng.firebaseapp.com",
+  projectId: "lintas-benteng",
+  storageBucket: "lintas-benteng.firebasestorage.app",
+  appId: "1:1005929757785:web:65b6d25b390677a98f0548"
+};
+
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+let unsubscribeEventsListener = null;
+let isSubscribed = false;
+
+function getJakartaDateStr(d = new Date()) {
+  return d.toLocaleDateString('en-CA', { timeZone: 'Asia/Jakarta' });
+}
+
+function formatJamRange(startISO, endISO) {
+  try {
+    const opt = { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta' };
+    const sStr = new Date(startISO).toLocaleTimeString('id-ID', opt);
+    if (!endISO) return sStr;
+    const eStr = new Date(endISO).toLocaleTimeString('id-ID', opt);
+    return `${sStr} - ${eStr} WIB`;
+  } catch {
+    return '';
+  }
+}
+
+function renderEventsToday(events) {
+  const container = document.getElementById('calendar-events');
+  const refreshEl = document.getElementById('refresh-time');
+  if (!container) return;
+
+  if (events.length === 0) {
+    container.innerHTML = '<p class="text-center text-gray-200 text-sm mt-4">Tidak ada jadwal hari ini.</p>';
+  } else {
+    container.innerHTML = events.map(ev => {
+      const isAllDay = ev.allDay === true || ev.allDay === 'true';
+      const waktu = isAllDay ? 'Sepanjang hari' : formatJamRange(ev.startDateTime, ev.endDateTime);
+      const hasLink = !!ev.calendarEventLink;
+      const openTag = hasLink ? 'a' : 'div';
+      const linkAttr = hasLink ? `href="${ev.calendarEventLink}" target="_blank" rel="noopener"` : '';
+
+      return `
+        <${openTag} ${linkAttr} class="block bg-white/[0.05] hover:bg-white/[0.09] transition rounded-xl px-3.5 py-2.5" style="border-left: 3px solid var(--gold-500); border-top: 1px solid rgba(212,175,90,0.14); border-right: 1px solid rgba(212,175,90,0.14); border-bottom: 1px solid rgba(212,175,90,0.14); box-shadow: 0 6px 16px -8px rgba(0,0,0,0.5);">
+          <div class="text-[11.5px] font-bold font-display tracking-wide" style="color: var(--gold-300);">${waktu}</div>
+          <div class="text-[15px] font-semibold text-white mt-0.5">${ev.title || '(Tanpa judul)'}</div>
+          ${ev.description ? `<div class="text-xs text-[color:var(--steel-300)] mt-1">${ev.description}</div>` : ''}
+        </${openTag}>
+      `;
+    }).join('');
+  }
+
+  if (refreshEl) {
+    const jam = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta' });
+    refreshEl.innerHTML = `<span>Update terakhir: ${jam}</span>`;
+  }
+}
+
+function subscribeEvents() {
+  if (isSubscribed) {
+    console.log('ℹ️ [EVENTS] Sudah subscribe, skip duplikasi.');
+    return;
+  }
+  isSubscribed = true;
+  console.log('📡 [EVENTS] Mulai subscribe...');
+
+  unsubscribeEventsListener = onSnapshot(collection(db, 'events'), snapshot => {
+    console.log(`✅ [EVENTS] Snapshot diterima, jumlah dokumen: ${snapshot.size}`);
+    const todayStr = getJakartaDateStr();
+    const todays = [];
+
+    snapshot.forEach(docSnap => {
+      const ev = docSnap.data();
+      const startDateOnly = ev.startDateTime ? ev.startDateTime.slice(0, 10) : ev.date;
+      const endDateOnly = ev.endDateTime ? ev.endDateTime.slice(0, 10) : startDateOnly;
+      if (!startDateOnly) return;
+      if (todayStr >= startDateOnly && todayStr <= endDateOnly) {
+        todays.push({ id: docSnap.id, ...ev });
+      }
+    });
+
+    todays.sort((a, b) => {
+      const ta = a.startDateTime ? new Date(a.startDateTime).getTime() : 0;
+      const tb = b.startDateTime ? new Date(b.startDateTime).getTime() : 0;
+      return ta - tb;
+    });
+
+    renderEventsToday(todays);
+  }, err => {
+    console.error('❌ [EVENTS] GAGAL. Code:', err.code, '| Message:', err.message);
+    isSubscribed = false;
+
+    if (err.code === 'permission-denied') {
+      console.log('🔄 [EVENTS] Sesi auth kedrop, coba sign-in ulang dalam 2 detik...');
+      if (unsubscribeEventsListener) {
+        unsubscribeEventsListener();
+        unsubscribeEventsListener = null;
+      }
+      setTimeout(() => {
+        signInAnonymously(auth).catch(e => console.error('❌ [AUTH] Retry sign-in gagal:', e.code));
+      }, 2000);
+    } else {
+      const container = document.getElementById('calendar-events');
+      if (container) container.innerHTML = `<p class="text-center text-red-300 text-sm">Error: ${err.code}</p>`;
+    }
+  });
+}
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    console.log('✅ [AUTH] Signed in. UID:', user.uid, '| isAnonymous:', user.isAnonymous);
+    subscribeEvents();
+  } else {
+    console.log('⚠️ [AUTH] Belum ada user / ke-sign-out.');
+    isSubscribed = false;
+  }
+});
+
+setPersistence(auth, browserLocalPersistence)
+  .then(() => signInAnonymously(auth))
+  .then(cred => console.log('✅ [AUTH] signInAnonymously SUKSES. UID:', cred.user.uid))
+  .catch(err => {
+    console.error('❌ [AUTH] Gagal. Code:', err.code, '| Message:', err.message);
+    const container = document.getElementById('calendar-events');
+    if (container) container.innerHTML = `<p class="text-center text-red-300 text-sm">Auth gagal: ${err.code}</p>`;
+  });
+</script>
+
+  <script>
+
+
+const PRELOAD_MINUTES_BEFORE = 10;
+
+const mediaPreloadMap = {
+  sensus: {
+    times: ["07:00", "15:50"],
+    src: "sensusekonomi.mp4",
+    el: null
+  },
+  indonesiaRaya: {
+    times: ["10:00"],
+    src: "indonesia_raya_edit_benteng_720.mp4",
+    el: null
+  },
+  azan: {
+  get times() {
+    const jadwal = window._jadwalAzan || {};
+    return Object.values(jadwal).map(t => t.trim().substring(0, 5)).filter(Boolean);
+  },
+  src: "azan.mp3",
+  el: null
+}
+};
+
+window._mediaPreloadMap = mediaPreloadMap;
+
+function getMinutesFromTime(timeStr) {
+  const [h, m] = timeStr.split(':').map(Number);
+  return h * 60 + m;
+}
+
+function getCurrentMinutes() {
+  const now = new Date();
+  return now.getHours() * 60 + now.getMinutes();
+}
+
+function preloadMedia(key) {
+  const media = mediaPreloadMap[key];
+  if (media.el) return;
+
+  const isVideo = media.src.endsWith('.mp4');
+  const el = document.createElement(isVideo ? 'video' : 'audio');
+  el.src = media.src;
+  el.preload = 'auto';
+  el.style.display = 'none';
+  document.body.appendChild(el);
+
+  el.addEventListener('canplaythrough', () => {
+    console.log(`✅ Preloaded: ${media.src}`);
+  });
+  el.addEventListener('error', (e) => {
+    console.warn(`❌ Preload failed: ${media.src}`, e);
+  });
+
+  el.load();
+  media.el = el;
+  console.log(`📥 Preloading: ${media.src}`);
+}
+
+function checkPreloadTimer() {
+  const currentMin = getCurrentMinutes();
+
+  Object.keys(mediaPreloadMap).forEach(key => {
+    const media = mediaPreloadMap[key];
+    media.times.forEach(timeStr => {
+      const scheduleMin = getMinutesFromTime(timeStr);
+      const diff = scheduleMin - currentMin;
+
+      if (diff >= 0 && diff <= PRELOAD_MINUTES_BEFORE) {
+        preloadMedia(key);
+      }
+    });
+  });
+}
+
+setInterval(checkPreloadTimer, 60 * 1000);
+checkPreloadTimer();
+
+async function checkCacheStatus() {
+  if (!('caches' in window)) return;
+  const cache = await caches.open('lintasbenteng-v1');
+  const keys = await cache.keys();
+  const cached = keys.map(k => new URL(k.url).pathname);
+  console.log('📦 Cached files:', cached);
+}
+window.addEventListener('load', () => setTimeout(checkCacheStatus, 3000));
+</script>
+
+  <!-- ============================================================ -->
+  <!-- FIREBASE: TV FRAME (HARDCODE TRANS7) + CAROUSEL TIM (Firestore) -->
+  <!-- + MEDIA AZAN/VIDEO DARI FIREBASE STORAGE                     -->
+  <!-- ============================================================ -->
+  <script type="module">
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+import { getFirestore, doc, getDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAlVfejf312G-tIleA8izbxn98bDGe1MvM",
+  authDomain: "lintas-benteng.firebaseapp.com",
+  projectId: "lintas-benteng",
+  storageBucket: "lintas-benteng.firebasestorage.app",
+  appId: "1:1005929757785:web:65b6d25b390677a98f0548"
+};
+
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+const TV_HARDCODE_URL = 'https://20.detik.com/watch/livestreaming-trans7';
+
+function renderTvFrameHTML(src) {
+  const container = document.getElementById('tv-frame-container');
+  if (!container) return;
+  if (src) {
+    container.innerHTML = `
+      <div class="w-full h-full">
+        <iframe
+          class="w-full h-full rounded-lg border-0"
+          src="${src}"
+          frameborder="0"
+          allowfullscreen
+          allow="autoplay; encrypted-media"
+          scrolling="no"
+          loading="lazy">
+        </iframe>
+      </div>`;
+  } else {
+    container.innerHTML = '<p class="text-center text-red-600">TV tidak tersedia.</p>';
+  }
+}
+
+function loadTvFrame() {
+  renderTvFrameHTML(TV_HARDCODE_URL);
+}
+loadTvFrame();
+
+function getColorByPersen(persen) {
+  if (persen <= 25) return '#e60000';
+  if (persen <= 50) return '#ff7f00';
+  if (persen <= 65) return '#ffea00';
+  if (persen <= 80) return '#4caf50';
+  if (persen <= 90) return '#2e7d32';
+  return '#1976d2';
+}
+
+function fmtDateSql(d = new Date()) {
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+
+async function loadCarouselData() {
+  const boxes = document.querySelectorAll('.carousel-box[data-collection]');
+  await Promise.all(Array.from(boxes).map(async (box) => {
+    const tabel = box.getAttribute('data-collection');
+    try {
+      const snap = await getDocs(collection(db, tabel));
+      const rows = [];
+      snap.forEach(d => rows.push({ id: d.id, ...d.data() }));
+      rows.sort((a, b) => a.id.localeCompare(b.id));
+
+      const data = rows.map(row => {
+        const persen = parseInt(row.persentase, 10) || 0;
+        return {
+          ...row,
+          persentase: persen,
+          color: getColorByPersen(persen),
+          tanggal_input: row.tanggal_input || fmtDateSql()
+        };
+      });
+
+      box.setAttribute('data-items', JSON.stringify(data));
+    } catch (e) {
+      console.error(`Gagal load carousel koleksi "${tabel}":`, e);
+    }
+  }));
+
+  if (typeof window.initCarouselProgress === 'function') {
+    window.initCarouselProgress();
+  }
+}
+loadCarouselData();
+
+const STORAGE_PATHS = {
+  azan: 'assets/azan (1).mp3',
+  sensus: 'assets/sensusekonomi (1).mp4',
+  indonesiaRaya: 'assets/indonesia_raya_edit_benteng_720 (1).mp4'
+};
+
+const MEDIA_DB_NAME = 'lintasbenteng-media-db';
+const MEDIA_STORE = 'media-blobs';
+
+function openMediaDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(MEDIA_DB_NAME, 1);
+    req.onupgradeneeded = () => {
+      if (!req.result.objectStoreNames.contains(MEDIA_STORE)) {
+        req.result.createObjectStore(MEDIA_STORE);
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function getCachedBlob(key) {
+  try {
+    const db = await openMediaDB();
+    return await new Promise((resolve, reject) => {
+      const tx = db.transaction(MEDIA_STORE, 'readonly');
+      const req = tx.objectStore(MEDIA_STORE).get(key);
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => reject(req.error);
+    });
+  } catch (e) {
+    console.warn(`Gagal baca cache lokal untuk "${key}":`, e);
+    return null;
+  }
+}
+
+async function setCachedBlob(key, blob) {
+  try {
+    const db = await openMediaDB();
+    await new Promise((resolve, reject) => {
+      const tx = db.transaction(MEDIA_STORE, 'readwrite');
+      tx.objectStore(MEDIA_STORE).put(blob, key);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  } catch (e) {
+    console.warn(`Gagal simpan cache lokal untuk "${key}":`, e);
+  }
+}
+
+async function fetchAndCacheMedia(key, path) {
+  let blob = null;
+
+  try {
+    const downloadUrl = await getDownloadURL(ref(storage, path));
+    const res = await fetch(downloadUrl);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    blob = await res.blob();
+    setCachedBlob(key, blob);
+    console.log(`✅ Media "${key}" berhasil di-fetch dari network (${(blob.size/1024/1024).toFixed(1)} MB)`);
+  } catch (e) {
+    console.
+    
+    
+    warn(`⚠️ Gagal fetch "${key}" dari network (${path}), coba cache lokal:`, e.message);
+  }
+
+  if (!blob) {
+    blob = await getCachedBlob(key);
+    if (blob) console.log(`📦 Media "${key}" dipakai dari cache lokal (offline/gagal fetch).`);
+  }
+
+  if (!blob) {
+    console.error(`❌ Media "${key}" nggak bisa dimuat sama sekali (network gagal & belum pernah ke-cache).`);
+    return null;
+  }
+
+  return URL.createObjectURL(blob);
+}
+
+window._mediaUrls = {};
+
+async function loadMediaFromStorage() {
+  const [azanUrl, sensusUrl, irUrl] = await Promise.all([
+    fetchAndCacheMedia('azan', STORAGE_PATHS.azan),
+    fetchAndCacheMedia('sensus', STORAGE_PATHS.sensus),
+    fetchAndCacheMedia('indonesiaRaya', STORAGE_PATHS.indonesiaRaya),
+  ]);
+
+  window._mediaUrls = { azan: azanUrl, sensus: sensusUrl, indonesiaRaya: irUrl };
+
+  const audioEl = document.getElementById('popupAudio');
+  if (audioEl && azanUrl) {
+    audioEl.src = azanUrl;
+    audioEl.load();
+  }
+
+  const videoSensusEl = document.getElementById('videoSensus');
+  if (videoSensusEl && sensusUrl) {
+    videoSensusEl.src = sensusUrl;
+    videoSensusEl.load();
+  }
+
+  const videoIREl = document.getElementById('videoIndonesiaRayaPlayer');
+  if (videoIREl && irUrl) {
+    videoIREl.src = irUrl;
+    videoIREl.load();
+  }
+
+  if (window._mediaPreloadMap) {
+    if (sensusUrl) window._mediaPreloadMap.sensus.src = sensusUrl;
+    if (irUrl) window._mediaPreloadMap.indonesiaRaya.src = irUrl;
+    if (azanUrl) window._mediaPreloadMap.azan.src = azanUrl;
+  }
+}
+loadMediaFromStorage();
+
+setInterval(() => {
+  if (navigator.onLine) loadMediaFromStorage();
+}, 6 * 60 * 60 * 1000);
+</script>
+
+</body>
+
+<footer class="text-center text-[11px] font-inter mt-1 py-0 flex-shrink-0" style="color: var(--steel-500);">
+  &copy; <span id="footer-year"></span> Tim IT Pengolahan &middot; BPS Kabupaten Bengkulu Tengah
+  <script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
+</footer>
+</html>
