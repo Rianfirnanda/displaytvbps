@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="icon" href="logo-bps.png"/>
+  <link rel="icon" href="https://s6.imgcdn.dev/hD7z1e.png"/>
   <title>DISPLAY INFORMASI BERBASIS WEB 2.0</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -308,7 +308,7 @@
     /* kartu lebar (tablet): foto kiri, teks kanan */
     @container (min-aspect-ratio: 1.5) {
       .eoq-slide { flex-direction: row; gap: clamp(16px, 4cqw, 40px); text-align: left; }
-      .eoq-photo { width: clamp(96px, min(26cqw, 62cqh), 260px); }
+      .eoq-photo { width: clamp(96px, min(32cqw, 66cqh), 300px); }
       .eoq-info { align-items: flex-start; }
       .eoq-name { font-size: clamp(20px, min(5cqw, 10cqh), 44px); }
     }
@@ -378,6 +378,18 @@
     }
     @media (max-width: 639px) { .sh-cells { gap: 5px; } .sh-cell { padding: 6px 2px; } .sh-cell b { font-size: 15px; } }
 
+    /* kartu gabungan EOQ + Agenda (slider otomatis) */
+    .info-dots { display: flex; gap: 6px; align-items: center; }
+    .info-dots i { width: 6px; height: 6px; border-radius: 999px; background: var(--panel-border-soft); cursor: pointer; transition: all .4s ease; }
+    .info-dots i.on { width: 20px; background: var(--gold-400); }
+    #info-title { transition: opacity .3s ease; }
+    .eoq-quarter { font-size: clamp(10px, 2.4cqw, 13px); font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-400); }
+    .info-slide { flex: 0 0 100%; min-width: 0; min-height: 0; }
+    .agenda-slide { display: flex; flex-direction: column; padding: 2px 4px 0; }
+    .agenda-title { font-size: clamp(18px, 3.2cqw, 26px); font-weight: 800; color: var(--text); line-height: 1.2; }
+    .agenda-refresh { margin: 2px 0 10px; text-transform: none; letter-spacing: .02em; }
+    .agenda-list { display: flex; flex-direction: column; gap: 10px; flex: 1; min-height: 0; overflow-y: auto; padding-right: 4px; }
+
     /* ====================== HEADER (brand + slider + jam) ====================== */
     #app-header { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,auto) minmax(0,1fr); align-items: center; gap: 16px; padding: 8px 20px 8px 22px; border-radius: 16px !important; }
     .hdr-brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
@@ -404,13 +416,14 @@
 
     /* ====================== GRID UTAMA ====================== */
     /* Desktop/TV: peta (kiri, 2 baris) | TV 16:9 + EOQ (tengah) | agenda (kanan, 2 baris) */
-    #main-grid { grid-template-columns: minmax(0,1fr) minmax(0,1.15fr) minmax(0,.95fr); grid-template-rows: auto minmax(170px,1fr); gap: 10px; }
+    #main-grid { grid-template-columns: minmax(0,1.9fr) minmax(0,1.1fr); grid-template-rows: minmax(0,1.3fr) minmax(170px,1fr); gap: 10px; }
     #main-grid > :nth-child(1) { grid-column: 1; grid-row: 1 / 3; }
     #main-grid > :nth-child(2) { grid-column: 2; grid-row: 1; }
     #main-grid > :nth-child(3) { grid-column: 2; grid-row: 2; }
-    #main-grid > :nth-child(4) { grid-column: 3; grid-row: 1 / 3; }
     /* TV selalu 16:9 mengisi penuh kotaknya, tanpa pita hitam */
-    #tv-frame-container { flex: none !important; width: 100%; aspect-ratio: 16 / 9; background: #000; }
+    #tv-frame-container { flex: 1 1 auto !important; min-height: 0; width: 100%; background: #000; }
+    #tv-stage { container-type: size; }
+    #tv-stage iframe { top: 50% !important; left: 50% !important; inset: auto !important; width: max(100cqw, 177.78cqh) !important; height: max(100cqh, 56.25cqw) !important; transform: translate(-50%, -50%); }
     #tv-stage video, #tv-stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 0; }
 
     /* ====================== ANIMASI & LAYAR PENDEK ====================== */
@@ -437,10 +450,10 @@
       #app-header { grid-template-columns: minmax(0,1fr) auto; }
       .hdr-slider { grid-column: 1 / -1; grid-row: 2; width: 100%; }
       #main-grid { grid-template-columns: repeat(2, minmax(0,1fr)); grid-template-rows: none; grid-auto-rows: auto; flex: none !important; }
-      #main-grid > :nth-child(1) { grid-column: 1 / -1; grid-row: auto; min-height: 340px; }
-      #main-grid > :nth-child(2) { grid-column: 1; grid-row: auto; justify-content: center; }
-      #main-grid > :nth-child(3) { grid-column: 2; grid-row: auto; min-height: 300px; }
-      #main-grid > :nth-child(4) { grid-column: 1 / -1; grid-row: auto; min-height: 300px; }
+      #main-grid > :nth-child(1) { grid-column: 1 / -1; grid-row: auto; }
+      #tv-frame-container { flex: none !important; aspect-ratio: 16 / 9; }
+      #main-grid > :nth-child(2) { grid-column: 1; grid-row: auto; min-height: 380px; }
+      #main-grid > :nth-child(3) { grid-column: 2; grid-row: auto; min-height: 380px; }
       #tracking-map { min-height: 260px; }
     }
 
@@ -450,6 +463,8 @@
       #app-header { padding: 8px 14px 8px 18px; gap: 8px 10px; }
       .hdr-live { display: none; }
       .hdr-brand .eyebrow { display: none; }
+      .hdr-brand .font-display { font-size: 13px; letter-spacing: .02em; }
+      .hdr-brand { gap: 8px; }
       .hdr-clock { font-size: 26px; }
       #main-grid {
         display: flex !important; overflow-x: auto; overflow-y: hidden; gap: 8px;
@@ -458,7 +473,7 @@
       }
       #main-grid::-webkit-scrollbar { display: none; }
       #main-grid > * { flex: 0 0 100%; scroll-snap-align: center; min-height: 0 !important; height: 100%; }
-      #main-grid > :nth-child(2) { height: auto; align-self: flex-start; }
+      #main-grid > :nth-child(1) { height: auto; align-self: flex-start; }
       #main-dots { display: flex; justify-content: center; gap: 8px; padding: 2px 0; }
       #main-dots button { width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.25); transition: all .3s ease; }
       #main-dots button.active { width: 22px; background: var(--gold-400); }
@@ -565,7 +580,7 @@
     <div id="app-header" class="panel fade-in flex-shrink-0">
       <span class="absolute top-0 left-0 h-full w-1" style="background: linear-gradient(180deg, var(--crimson-500), var(--gold-500));"></span>
       <div class="hdr-brand">
-        <div class="hdr-logo"><img src="logo-bps.png" alt="Logo BPS"></div>
+        <div class="hdr-logo"><img src="https://s6.imgcdn.dev/hD7z1e.png" alt="Logo BPS" onerror="this.onerror=null;this.src='logo-bps.png'"></div>
         <div class="leading-tight min-w-0">
           <div class="font-display font-bold text-[15px] tracking-wide text-white truncate">LINTAS BENTENG</div>
           <div class="eyebrow truncate" style="letter-spacing:0.12em; margin:0;">BPS Kabupaten Bengkulu Tengah</div>
@@ -744,6 +759,73 @@ setInterval(updateCuaca, 15 * 60 * 1000);
     <!-- BARIS 1 & 2: MAP, TV, CALENDAR (rowspan 2) + EOQ + JAM/CUACA -->
     <div id="main-grid" class="grid grid-cols-3 gap-2 flex-[7] min-h-0">
 
+      <!-- KOTAK 2: TV FRAME -->
+      <div class="panel fade-in p-3 min-h-0 overflow-hidden flex flex-col">
+        <div class="ph">
+          <span class="ph-title">Siaran TV</span>
+          <span class="ph-meta text-rose-300"><i class="led led-live"></i>Live</span>
+        </div>
+        <div id="tv-frame-container" class="flex flex-col rounded-xl overflow-hidden border border-[color:var(--panel-border-soft)]">
+          <p class="text-center text-[color:var(--steel-500)] text-sm">Memuat TV...</p>
+        </div>
+      </div>
+
+      <!-- KOTAK 2: EMPLOYEE OF THE QUARTER + AGENDA KANTOR (SLIDER OTOMATIS) -->
+      <div id="eoq-card" class="panel-featured fade-in text-white">
+        <div class="sunburst-rays"></div>
+        <div class="eoq-glow"></div>
+        <div class="ph">
+          <span id="info-title" class="ph-title">Employee of the Quarter</span>
+          <span class="info-dots"><i class="on"></i><i></i></span>
+        </div>
+        <div class="eoq-body">
+          <div id="info-track" class="eoq-track">
+            <div class="info-slide eoq-slide" data-title="Employee of the Quarter">
+              <div class="eoq-photo">
+                <div class="eoq-halo"></div>
+                <svg class="eoq-ring" viewBox="0 0 168 168"><circle cx="84" cy="84" r="80" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 6"/></svg>
+                <div class="eoq-circle">
+                  <img src="https://firebasestorage.googleapis.com/v0/b/lintas-benteng.firebasestorage.app/o/assets%2Frsz_isma_afrita_lubis_display.png?alt=media&token=1d10a62b-44c7-42fd-b9b4-d104dc1dc5bc" alt="Isma Afrita Lubis" style="transform: translateY(12px) scale(1.1);">
+                </div>
+              </div>
+              <div class="eoq-info">
+                <span class="eoq-quarter">Kuartal II &middot; 2026</span>
+                <h3 class="eoq-name">Isma Afrita Lubis</h3>
+                <p class="eoq-role">Statistisi Muda</p>
+                <div class="eoq-stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.26L21.7 9l-5 4.87L18 21l-6-3.5L6 21l1.3-7.13-5-4.87 6.8-.74L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.26L21.7 9l-5 4.87L18 21l-6-3.5L6 21l1.3-7.13-5-4.87 6.8-.74L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.26L21.7 9l-5 4.87L18 21l-6-3.5L6 21l1.3-7.13-5-4.87 6.8-.74L12 2z"/></svg></div>
+              </div>
+            </div>
+            <div class="info-slide agenda-slide" data-title="Agenda Kantor">
+              <h2 id="calendar-title" class="agenda-title"><span id="calendar-label-text">Jadwal Hari Ini</span></h2>
+              <span id="refresh-time" class="ph-meta agenda-refresh"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 1 1-3.22-6.84" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 3v6h-6" /></svg><span>Memuat...</span></span>
+              <div id="calendar-events" class="styled-scroll agenda-list"></div>
+            </div>
+          </div>
+        </div>
+        <script>
+          // Slider otomatis: Employee of the Quarter -> Agenda Kantor
+          (function () {
+            const track = document.getElementById('info-track');
+            if (!track) return;
+            const slides = Array.from(track.children);
+            const title = document.getElementById('info-title');
+            const dots = Array.from(document.querySelectorAll('.info-dots i'));
+            const dwell = [9000, 13000];   // lama tiap slide (ms)
+            let cur = 0, timer;
+            function go(n) {
+              cur = (n + slides.length) % slides.length;
+              track.style.transform = `translateX(${-cur * 100}%)`;
+              if (title) title.textContent = slides[cur].dataset.title;
+              dots.forEach((d, i) => d.classList.toggle('on', i === cur));
+              clearTimeout(timer);
+              timer = setTimeout(() => go(cur + 1), dwell[cur] || 10000);
+            }
+            dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
+            go(0);
+          })();
+        </script>
+      </div>
+
       <!-- KOTAK 1: LIVE TRACKING MAP -->
       <div class="panel fade-in p-3 min-h-0 overflow-hidden flex flex-col">
         <div class="relative font-inter flex-1 min-h-0 flex flex-col">
@@ -772,76 +854,6 @@ setInterval(updateCuaca, 15 * 60 * 1000);
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- KOTAK 2: TV FRAME -->
-      <div class="panel fade-in p-3 min-h-0 overflow-hidden flex flex-col">
-        <div class="ph">
-          <span class="ph-title">Siaran TV</span>
-          <span class="ph-meta text-rose-300"><i class="led led-live"></i>Live</span>
-        </div>
-        <div id="tv-frame-container" class="flex flex-col rounded-xl overflow-hidden border border-[color:var(--panel-border-soft)]">
-          <p class="text-center text-[color:var(--steel-500)] text-sm">Memuat TV...</p>
-        </div>
-      </div>
-
-      <!-- KOTAK 3: GOOGLE CALENDAR - ROWSPAN 2 -->
-      <div class="panel-featured fade-in p-3 row-span-2 min-h-0 overflow-hidden flex flex-col">
-        <div class="w-full flex-1 min-h-0 text-white flex flex-col">
-          <div class="ph">
-            <span class="ph-title">Agenda Kantor</span>
-            <span id="refresh-time" class="ph-meta"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 1 1-3.22-6.84" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 3v6h-6" /></svg><span>Memuat...</span></span>
-          </div>
-          <h2 id="calendar-title" class="font-display text-white font-bold mb-3 flex items-center gap-2" style="font-size: clamp(18px, 1.6vw, 26px);">
-            <span id="calendar-label-text">Jadwal Hari Ini</span>
-          </h2>
-
-          <div id="calendar-events" class="styled-scroll flex flex-col gap-2.5 overflow-y-auto flex-1 min-h-0 pr-1"></div>
-        </div>
-      </div>
-
-      <!-- KOTAK 4: EMPLOYEE OF THE QUARTER (HERO, KOLOM KANAN) -->
-      <div id="eoq-card" class="panel-featured fade-in text-white">
-        <div class="sunburst-rays"></div>
-        <div class="eoq-glow"></div>
-        <div class="ph">
-          <span class="ph-title">Employee of the Quarter</span>
-          <span class="ph-meta">Kuartal II &middot; 2026</span>
-        </div>
-        <div class="eoq-body">
-          <div id="eomSlider" class="eoq-track">
-            <div class="eoq-slide">
-              <div class="eoq-photo">
-                <div class="eoq-halo"></div>
-                <svg class="eoq-ring" viewBox="0 0 168 168"><circle cx="84" cy="84" r="80" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 6"/></svg>
-                <div class="eoq-circle">
-                  <img src="https://firebasestorage.googleapis.com/v0/b/lintas-benteng.firebasestorage.app/o/assets%2Frsz_isma_afrita_lubis_display.png?alt=media&token=1d10a62b-44c7-42fd-b9b4-d104dc1dc5bc" alt="Isma Afrita Lubis" style="transform: translateY(12px) scale(1.1);">
-                </div>
-              </div>
-              <div class="eoq-info">
-                <h3 class="eoq-name">Isma Afrita Lubis</h3>
-                <p class="eoq-role">Statistisi Muda</p>
-                <div class="eoq-stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.26L21.7 9l-5 4.87L18 21l-6-3.5L6 21l1.3-7.13-5-4.87 6.8-.74L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.26L21.7 9l-5 4.87L18 21l-6-3.5L6 21l1.3-7.13-5-4.87 6.8-.74L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.26L21.7 9l-5 4.87L18 21l-6-3.5L6 21l1.3-7.13-5-4.87 6.8-.74L12 2z"/></svg></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <script>
-          const eomSlider = document.getElementById('eomSlider');
-          if(eomSlider) {
-            const totalEomSlides = eomSlider.children.length;
-            let currentEomIndex = 0;
-            function updateEomSliderPosition() {
-              const translateX = -currentEomIndex * 100;
-              eomSlider.style.transform = `translateX(${translateX}%)`;
-            }
-            function nextEomSlide() {
-              currentEomIndex = (currentEomIndex + 1) % totalEomSlides;
-              updateEomSliderPosition();
-            }
-            setInterval(nextEomSlide, 8000);
-          }
-        </script>
       </div>
 
     </div>
