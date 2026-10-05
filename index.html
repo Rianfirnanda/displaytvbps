@@ -258,6 +258,53 @@
     }
 
 
+    /* ====================== GLASSMORPHISM ====================== */
+    html { background: #040d1c; }
+    body {
+      background:
+        radial-gradient(circle 520px at 8% 12%, rgba(0,113,198,0.55), transparent 70%),
+        radial-gradient(circle 480px at 92% 18%, rgba(242,140,30,0.42), transparent 70%),
+        radial-gradient(circle 560px at 70% 95%, rgba(76,162,31,0.38), transparent 70%),
+        radial-gradient(circle 500px at 18% 90%, rgba(0,113,198,0.35), transparent 70%),
+        linear-gradient(160deg, #05122a 0%, #081d3d 50%, #06162f 100%) !important;
+      background-attachment: fixed !important;
+    }
+    body::before { opacity: 0.18; }
+    .panel, .panel-featured, .tv-ticker-wrapper, .glass-bar {
+      background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.05)) !important;
+      border: 1px solid rgba(255,255,255,0.24) !important;
+      border-radius: 20px !important;
+      box-shadow: 0 12px 40px -12px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 0 0 1px rgba(255,255,255,0.04) !important;
+      backdrop-filter: blur(22px) saturate(170%) !important;
+      -webkit-backdrop-filter: blur(22px) saturate(170%) !important;
+    }
+    .panel-featured { background: linear-gradient(145deg, rgba(242,140,30,0.20), rgba(255,255,255,0.05)) !important; border-color: rgba(247,168,80,0.45) !important; }
+    .panel::before { width: 100% !important; height: 100% !important; background: linear-gradient(135deg, rgba(255,255,255,0.16), transparent 38%) !important; pointer-events: none; border-radius: inherit; }
+    .panel-featured::before { height: 100% !important; background: linear-gradient(135deg, rgba(255,255,255,0.14), transparent 38%) !important; pointer-events: none; }
+    .panel-featured::after { box-shadow: none !important; }
+    .panel > *, .panel-featured > * { position: relative; z-index: 1; }
+    .panel > .absolute, .panel-featured > .absolute { position: absolute; }
+    #popupPlayer { background: rgba(10,28,56,0.55) !important; backdrop-filter: blur(22px) saturate(170%); -webkit-backdrop-filter: blur(22px) saturate(170%); border: 1px solid rgba(255,255,255,0.25) !important; }
+    #tv-frame-container { border: 1px solid rgba(255,255,255,0.18) !important; box-shadow: 0 6px 24px -8px rgba(0,0,0,0.5); }
+
+    /* Bar channel TV di footer */
+    .glass-bar { display: flex; align-items: center; gap: 10px; padding: 6px 12px; flex-shrink: 0; border-radius: 16px !important; }
+    #tv-chips { display: flex; gap: 6px; overflow-x: auto; flex: 1; min-width: 0; scrollbar-width: none; }
+    #tv-chips::-webkit-scrollbar { display: none; }
+    .tv-chip, .tv-fs-btn {
+      flex: 0 0 auto; padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; color: #e6edf7; cursor: pointer;
+      background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.20);
+      backdrop-filter: blur(8px); transition: all .25s ease;
+    }
+    .tv-chip:hover, .tv-fs-btn:hover { background: rgba(255,255,255,0.22); transform: translateY(-1px); }
+    .tv-chip.active { color: #fff; background: linear-gradient(135deg, rgba(0,113,198,0.85), rgba(47,148,230,0.65)); border-color: rgba(255,255,255,0.45); box-shadow: 0 4px 16px -4px rgba(0,113,198,0.8); }
+    .tv-fs-btn { display: inline-flex; align-items: center; gap: 6px; }
+    #tv-toast { position: absolute; top: 12px; left: 12px; z-index: 5; padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; color: #fff;
+      background: rgba(10,28,56,0.55); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.25); opacity: 0; transition: opacity .4s ease; pointer-events: none; }
+    #tv-toast.show { opacity: 1; }
+    #tv-stage:fullscreen { background: #000; }
+    #tv-stage:fullscreen #tv-toast { top: 24px; left: 24px; font-size: 18px; }
+
     /* ====================== ANIMASI & LAYAR PENDEK ====================== */
     /* Laptop/TV: tinggi minimal 720px; kalau viewport lebih pendek halaman bisa di-scroll */
     @media (min-width: 1024px) {
@@ -393,7 +440,7 @@
       <!-- KOTAK 3: GOOGLE CALENDAR - ROWSPAN 2 -->
       <div class="panel-featured fade-in p-3 row-span-2 min-h-0 overflow-hidden flex flex-col">
         <div class="rounded-xl w-full flex-1 min-h-0 bg-cover bg-center bg-no-repeat text-white flex flex-col p-3.5 border border-[color:var(--panel-border)]"
-             style="background-image: linear-gradient(165deg, rgba(4,13,28,0.86), rgba(10,28,56,0.80)), url('kantor2.png');">
+             style="background-image: linear-gradient(165deg, rgba(4,13,28,0.40), rgba(10,28,56,0.30)), url('kantor2.png');">
 
           <div class="flex items-center justify-center mb-2.5">
             <span class="featured-badge">
@@ -420,7 +467,7 @@
 
       <!-- KOTAK 4: JAM, TANGGAL, CUACA -->
       <div class="panel w-full bg-cover bg-center bg-no-repeat text-white fade-in p-3 min-h-0 overflow-hidden flex flex-col justify-center"
-           style="background-image: linear-gradient(155deg, rgba(4,13,28,0.90), rgba(10,28,56,0.80)), url('kantor.png');">
+           style="background-image: linear-gradient(155deg, rgba(4,13,28,0.40), rgba(10,28,56,0.30)), url('kantor.png');">
         <span class="eyebrow block text-center mb-1">Waktu &amp; Cuaca</span>
         <div class="text-center leading-tight">
           <div class="font-display font-bold text-[5.5vw] leading-none text-center px-4" id="clock" style="background: linear-gradient(180deg, #fff, var(--gold-300)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.02em;"></div>
@@ -541,7 +588,7 @@ setInterval(updateCuaca, 15 * 60 * 1000);
 
       <!-- KOTAK 5: EMPLOYEE OF THE QUARTER (TENGAH) -->
       <div class="panel-featured relative w-full bg-cover bg-center bg-no-repeat flex justify-center items-center text-white fade-in min-h-0 overflow-hidden"
-           style="background-image: linear-gradient(155deg, rgba(4,13,28,0.94), rgba(20,15,8,0.88)), url('kantor.png');">
+           style="background-image: linear-gradient(155deg, rgba(4,13,28,0.45), rgba(10,28,56,0.30)), url('kantor.png');">
 
         <!-- Layered "stage" backdrop: rotating gold rays + spotlight glow + vignette -->
         <div class="sunburst-rays"></div>
@@ -612,7 +659,7 @@ setInterval(updateCuaca, 15 * 60 * 1000);
 
     <!-- BARIS 4: JADWAL SHOLAT (FULL WIDTH) -->
     <div class="panel relative w-full bg-cover bg-center bg-no-repeat flex justify-center items-center text-white fade-in p-0 flex-[1.5] min-h-0 overflow-hidden"
-         style="background-image: linear-gradient(155deg, rgba(4,13,28,0.90), rgba(10,28,56,0.82)), url('masjid.jpg');">
+         style="background-image: linear-gradient(155deg, rgba(4,13,28,0.40), rgba(10,28,56,0.30)), url('masjid.jpg');">
       <span class="absolute top-3 left-5 eyebrow">Jadwal Sholat</span>
       <div class="w-full max-w-4xl text-center px-4">
         <div class="mb-2">
@@ -720,6 +767,18 @@ setInterval(updateCuaca, 15 * 60 * 1000);
                 <span class="ticker-item-tv">Memuat berita terbaru...</span>
             </div>
         </div>
+    </div>
+
+    <!-- BAR CHANNEL TV (FOOTER) -->
+    <div class="glass-bar fade-in">
+      <span class="eyebrow hidden md:inline" style="margin:0;">Channel</span>
+      <div id="tv-chips"></div>
+      <button id="tv-fs" class="tv-fs-btn" title="Layar penuh (F)">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+        Layar Penuh
+      </button>
+      <span class="hidden lg:inline text-[11px] whitespace-nowrap" style="color: var(--steel-500);">&copy; <span id="footer-year"></span> Tim IT Pengolahan &middot; BPS Kab. Bengkulu Tengah</span>
+      <script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
     </div>
 
     <script>
@@ -1802,19 +1861,12 @@ function renderTvFrameHTML(ch) {
   const container = document.getElementById('tv-frame-container');
   if (!container) return;
   if (tvHls) { tvHls.destroy(); tvHls = null; }
-  const options = TV_CHANNELS.map((c, i) => `<option value="${i}" ${i === tvIndex ? 'selected' : ''}>${c.name}</option>`).join('');
-  container.innerHTML = `
-    <div class="flex items-center gap-1.5 px-2 py-1 flex-shrink-0" style="background: rgba(4,13,28,0.85);">
-      <button id="tv-prev" class="px-2 text-white" aria-label="Channel sebelumnya">&#9664;</button>
-      <select id="tv-select" class="flex-1 min-w-0 text-xs rounded px-1 py-0.5" style="background:#111a2b;color:#fff;border:1px solid var(--panel-border-soft);">${options}</select>
-      <button id="tv-next" class="px-2 text-white" aria-label="Channel berikutnya">&#9654;</button>
-    </div>
-    <div id="tv-stage" class="relative w-full flex-1 min-h-0 bg-black"></div>`;
+  container.innerHTML = '<div id="tv-stage" class="relative w-full flex-1 min-h-0 bg-black"><div id="tv-toast"></div></div>';
   const stage = document.getElementById('tv-stage');
   if (ch.type === 'iframe') {
-    stage.innerHTML = `<iframe class="w-full h-full border-0" src="${ch.url}" allowfullscreen allow="autoplay; encrypted-media" scrolling="no"></iframe>`;
+    stage.insertAdjacentHTML('beforeend', `<iframe class="w-full h-full border-0" src="${ch.url}" allowfullscreen allow="autoplay; encrypted-media" scrolling="no"></iframe>`);
   } else {
-    stage.innerHTML = '<video id="tv-video" class="w-full h-full object-contain" autoplay muted playsinline></video><p id="tv-msg" class="hidden absolute inset-0 flex items-center justify-center text-sm text-red-300">Siaran tidak tersedia.</p>';
+    stage.insertAdjacentHTML('beforeend', '<video id="tv-video" class="w-full h-full object-contain" autoplay muted playsinline></video><p id="tv-msg" class="hidden absolute inset-0 flex items-center justify-center text-sm text-red-300">Siaran tidak tersedia.</p>');
     const v = document.getElementById('tv-video');
     const fail = () => document.getElementById('tv-msg')?.classList.remove('hidden');
     if (window.Hls && Hls.isSupported()) {
@@ -1826,10 +1878,39 @@ function renderTvFrameHTML(ch) {
       v.src = ch.url; v.addEventListener('error', fail);
     } else { fail(); }
   }
-  document.getElementById('tv-select').onchange = e => setTvChannel(+e.target.value);
-  document.getElementById('tv-prev').onclick = () => setTvChannel((tvIndex - 1 + TV_CHANNELS.length) % TV_CHANNELS.length);
-  document.getElementById('tv-next').onclick = () => setTvChannel((tvIndex + 1) % TV_CHANNELS.length);
+  stage.ondblclick = toggleTvFullscreen;
+  renderTvChips();
+  showTvToast(ch.name);
 }
+
+function renderTvChips() {
+  const box = document.getElementById('tv-chips');
+  if (!box) return;
+  box.innerHTML = TV_CHANNELS.map((c, i) => `<button class="tv-chip ${i === tvIndex ? 'active' : ''}" data-i="${i}">${c.name}</button>`).join('');
+  box.querySelectorAll('.tv-chip').forEach(b => b.onclick = () => setTvChannel(+b.dataset.i));
+  box.querySelector('.active')?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+}
+let tvToastTimer;
+function showTvToast(text) {
+  const t = document.getElementById('tv-toast');
+  if (!t) return;
+  t.textContent = text; t.classList.add('show');
+  clearTimeout(tvToastTimer);
+  tvToastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+function toggleTvFullscreen() {
+  const stage = document.getElementById('tv-stage');
+  if (!stage) return;
+  if (document.fullscreenElement) document.exitFullscreen();
+  else (stage.requestFullscreen || stage.webkitRequestFullscreen).call(stage);
+}
+document.getElementById('tv-fs')?.addEventListener('click', toggleTvFullscreen);
+// Pintasan: F = fullscreen, panah kiri/kanan = ganti channel
+document.addEventListener('keydown', e => {
+  if (e.key === 'f' || e.key === 'F') toggleTvFullscreen();
+  else if (e.key === 'ArrowRight') setTvChannel((tvIndex + 1) % TV_CHANNELS.length);
+  else if (e.key === 'ArrowLeft') setTvChannel((tvIndex - 1 + TV_CHANNELS.length) % TV_CHANNELS.length);
+});
 
 function setTvChannel(i) {
   tvIndex = i;
@@ -2042,8 +2123,4 @@ setInterval(() => {
   </script>
 </body>
 
-<footer class="text-center text-[11px] font-inter mt-1 py-0 flex-shrink-0" style="color: var(--steel-500);">
-  &copy; <span id="footer-year"></span> Tim IT Pengolahan &middot; BPS Kabupaten Bengkulu Tengah
-  <script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
-</footer>
 </html>
