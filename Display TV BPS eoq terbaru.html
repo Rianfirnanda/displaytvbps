@@ -254,12 +254,35 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
+
+    /* ====================== RESPONSIVE ====================== */
+    /* Desktop/TV (>=1024px) tetap layout dashboard penuh tanpa scroll.
+       Di bawah itu, halaman bisa di-scroll dan kotak ditumpuk. */
+    @media (max-width: 1023px) {
+      html, body { height: auto !important; overflow-y: auto !important; overflow-x: hidden !important; }
+      body { width: 100% !important; min-height: 100%; }
+      #app-root { height: auto !important; width: 100% !important; overflow: visible !important; }
+      #main-grid {
+        display: grid; grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+        grid-template-rows: none !important; grid-auto-rows: auto; flex: none !important;
+      }
+      #main-grid > * { min-height: 320px; }
+      #main-grid > .row-span-2 { grid-row: span 1 / span 1 !important; grid-column: 1 / -1; min-height: 420px; }
+      #tracking-map { min-height: 280px; }
+      #tv-frame-container { aspect-ratio: 16 / 9; flex: none !important; min-height: 0; }
+      #clock { font-size: clamp(48px, 12vw, 96px) !important; }
+      #app-root > .panel.flex-\[1\.5\] { flex: none !important; min-height: 160px; padding: 2.25rem 0.5rem 0.75rem !important; }
+    }
+    @media (max-width: 639px) {
+      #main-grid { grid-template-columns: minmax(0,1fr) !important; }
+      #jadwalSholat th, #jadwalSholat td { padding: 0.4rem 0.25rem !important; font-size: 12px; }
+    }
   </style>
 
 </head>
 <body class="font-['Inter'] text-white h-screen w-screen overflow-hidden flex flex-col">
 
-  <div class="flex flex-col gap-2 p-2 h-screen w-screen overflow-hidden box-border">
+  <div id="app-root" class="flex flex-col gap-2 p-2 h-screen w-screen overflow-hidden box-border">
 
     <!-- HEADER BAR -->
     <div class="panel fade-in flex-shrink-0 flex items-center justify-between px-5 py-2.5" style="border-radius: 16px;">
@@ -286,7 +309,7 @@
     </div>
 
     <!-- BARIS 1 & 2: MAP, TV, CALENDAR (rowspan 2) + EOQ + JAM/CUACA -->
-    <div class="grid grid-cols-3 gap-2 flex-[7] min-h-0" style="grid-template-rows: repeat(2, minmax(0,1fr));">
+    <div id="main-grid" class="grid grid-cols-3 gap-2 flex-[7] min-h-0" style="grid-template-rows: repeat(2, minmax(0,1fr));">
 
       <!-- KOTAK 1: LIVE TRACKING MAP -->
       <div class="panel fade-in p-3 min-h-0 overflow-hidden flex flex-col">
