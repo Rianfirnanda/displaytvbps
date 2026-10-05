@@ -159,17 +159,17 @@
       width: 260%; height: 260%;
       background: conic-gradient(
         from 0deg,
-        rgba(232,202,138,0.16) 0deg, transparent 8deg,
-        transparent 22deg, rgba(232,202,138,0.12) 30deg,
-        transparent 44deg, transparent 58deg, rgba(232,202,138,0.14) 66deg,
-        transparent 80deg, transparent 94deg, rgba(232,202,138,0.10) 102deg,
-        transparent 116deg, transparent 130deg, rgba(232,202,138,0.14) 138deg,
-        transparent 152deg, transparent 166deg, rgba(232,202,138,0.12) 174deg,
-        transparent 188deg, transparent 202deg, rgba(232,202,138,0.14) 210deg,
-        transparent 224deg, transparent 238deg, rgba(232,202,138,0.10) 246deg,
-        transparent 260deg, transparent 274deg, rgba(232,202,138,0.14) 282deg,
-        transparent 296deg, transparent 310deg, rgba(232,202,138,0.12) 318deg,
-        transparent 332deg, transparent 346deg, rgba(232,202,138,0.16) 354deg, transparent 360deg
+        rgba(124,192,247,0.16) 0deg, transparent 8deg,
+        transparent 22deg, rgba(124,192,247,0.12) 30deg,
+        transparent 44deg, transparent 58deg, rgba(124,192,247,0.14) 66deg,
+        transparent 80deg, transparent 94deg, rgba(124,192,247,0.10) 102deg,
+        transparent 116deg, transparent 130deg, rgba(124,192,247,0.14) 138deg,
+        transparent 152deg, transparent 166deg, rgba(124,192,247,0.12) 174deg,
+        transparent 188deg, transparent 202deg, rgba(124,192,247,0.14) 210deg,
+        transparent 224deg, transparent 238deg, rgba(124,192,247,0.10) 246deg,
+        transparent 260deg, transparent 274deg, rgba(124,192,247,0.14) 282deg,
+        transparent 296deg, transparent 310deg, rgba(124,192,247,0.12) 318deg,
+        transparent 332deg, transparent 346deg, rgba(124,192,247,0.16) 354deg, transparent 360deg
       );
       mix-blend-mode: screen;
       animation: sunburst-spin 90s linear infinite;
@@ -282,11 +282,22 @@
     .panel::before { width: 100% !important; height: 100% !important; background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent 35%) !important; pointer-events: none; border-radius: inherit; }
     .panel-featured::before { height: 100% !important; background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent 35%) !important; pointer-events: none; }
     .panel-featured::after { box-shadow: none !important; }
-    .panel > *, .panel-featured > * { position: relative; z-index: 1; }
-    .panel > .absolute, .panel-featured > .absolute { position: absolute; }
     .sunburst-rays { opacity: 0.25 !important; }
     #popupPlayer { background: rgba(6,15,32,0.70) !important; backdrop-filter: blur(22px) saturate(170%); -webkit-backdrop-filter: blur(22px) saturate(170%); border: 1px solid rgba(255,255,255,0.14) !important; }
     #tv-frame-container { border: 1px solid rgba(255,255,255,0.18) !important; box-shadow: 0 6px 24px -8px rgba(0,0,0,0.5); }
+
+    /* Employee of the Quarter: ukuran mengikuti lebar kartu */
+    .panel-featured:has(#eomSlider) { container-type: inline-size; }
+    #eomSlider > div { padding: clamp(8px, 3cqw, 16px) !important; gap: clamp(10px, 4cqw, 20px) !important; flex-direction: row !important; text-align: left; }
+    #eomSlider > div > .relative { width: clamp(76px, 26cqw, 144px); height: clamp(76px, 26cqw, 144px); }
+    #eomSlider > div > .relative > .rounded-full.overflow-hidden { width: 100% !important; height: 100% !important; }
+    #eomSlider h3 { font-size: clamp(17px, 6cqw, 30px) !important; line-height: 1.15; overflow-wrap: anywhere; }
+    #eomSlider p, #eomSlider .eyebrow { font-size: clamp(10px, 2.6cqw, 14px); }
+    #eomSlider > div > div:last-child { min-width: 0; flex: 1 1 0; }
+    @container (max-width: 300px) {
+      #eomSlider > div { flex-direction: column !important; text-align: center; }
+      #eomSlider > div > div:last-child > div { justify-content: center !important; }
+    }
 
     /* Bar channel TV di footer */
     .glass-bar { display: flex; align-items: center; gap: 10px; padding: 6px 12px; flex-shrink: 0; border-radius: 16px !important; }
@@ -610,7 +621,7 @@ setInterval(updateCuaca, 15 * 60 * 1000);
               <div class="w-full flex-shrink-0 flex flex-col sm:flex-row items-center justify-center text-white text-left p-4 gap-5">
                 <div class="relative flex-shrink-0">
                   <div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle, rgba(59,156,240,0.55), transparent 70%); transform: scale(1.6); filter: blur(10px);"></div>
-              
+              <svg class="absolute pointer-events-none" style="inset:-14px; width:calc(100% + 28px); height:calc(100% + 28px);" viewBox="0 0 168 168">
                     <circle cx="84" cy="84" r="80" fill="none" stroke="var(--gold-400)" stroke-width="1" stroke-dasharray="2 6"/>
                   </svg>
                   <div class="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden" style="border: 3px solid var(--gold-400);box-shadow: 0 0 0 5px rgba(59,156,240,0.16), 0 14px 36px -6px rgba(59,156,240,0.6);">
