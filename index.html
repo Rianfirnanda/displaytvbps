@@ -18,7 +18,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
   <link rel="shortcut icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script>try{document.documentElement.dataset.theme=localStorage.getItem("theme")||"dark"}catch(e){document.documentElement.dataset.theme="dark"}</script>
 
   <style>
@@ -682,8 +683,8 @@
     .upcoming-slide, .values-slide { display: flex; flex-direction: column; justify-content: center; padding: 2px 4px 0; }
     .quote-slide { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; padding: 8px 14px; }
     .info-slide.active .hp-item, .info-slide.active .vl-item { animation: itemRise .6s cubic-bezier(.16,1,.3,1) both; animation-delay: calc(var(--i, 0) * .1s + .15s); }
-    .info-slide.active .qt-mark, .info-slide.active .qt-text, .info-slide.active .qt-tag { animation: itemRise .8s cubic-bezier(.16,1,.3,1) both; }
-    .info-slide.active .qt-text { animation-delay: .15s; } .info-slide.active .qt-tag { animation-delay: .3s; }
+    .info-slide.active .qt-kind, .info-slide.active .qt-ar, .info-slide.active .qt-text, .info-slide.active .qt-tag { animation: itemRise .8s cubic-bezier(.16,1,.3,1) both; }
+    .info-slide.active .qt-ar { animation-delay: .12s; } .info-slide.active .qt-text { animation-delay: .28s; } .info-slide.active .qt-tag { animation-delay: .42s; }
     @keyframes itemRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
     .hp-list, .vl-list { display: flex; flex-direction: column; gap: 10px; flex: 0 1 auto; min-height: 0; }
     .hp-item, .vl-item { min-height: 64px; padding-top: clamp(10px, 1.6cqh, 18px); padding-bottom: clamp(10px, 1.6cqh, 18px); }
@@ -697,8 +698,9 @@
     .vl-item b { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; color: var(--btn-text); background: linear-gradient(145deg, var(--btn-from), var(--btn-to)); box-shadow: 0 8px 18px -8px rgba(212,175,90,.8); }
     .vl-item strong { display: block; font-size: clamp(14px, 3cqw, 18px); font-weight: 700; color: var(--text); }
     .vl-item span { display: block; font-size: clamp(11px, 2.3cqw, 13px); color: var(--steel-300); line-height: 1.35; margin-top: 2px; }
-    .qt-mark { font-size: 72px; line-height: .6; font-weight: 800; color: var(--gold-400); height: 36px; }
-    .qt-text { font-size: clamp(18px, 5.2cqw, 28px); font-weight: 700; line-height: 1.3; color: var(--text); text-wrap: balance; }
+    .qt-kind { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--btn-text); padding: 4px 12px; border-radius: 999px; background: linear-gradient(135deg, var(--btn-from), var(--btn-to)); }
+    .qt-ar { font-family: 'Amiri', 'Noto Naskh Arabic', 'Traditional Arabic', 'Scheherazade New', serif; font-size: clamp(22px, 6.4cqw, 38px); line-height: 1.75; color: var(--gold-300); text-wrap: balance; padding: 0 6px; }
+    .qt-text { font-size: clamp(14px, 3.6cqw, 20px); font-weight: 600; line-height: 1.3; color: var(--text); text-wrap: balance; }
     .qt-tag { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-400); }
 
     /* per jam & udara/matahari */
@@ -714,6 +716,16 @@
     .wxd-tile i { position: absolute; left: 0; bottom: 0; height: 3px; background: var(--c); border-radius: 0 3px 3px 0; transition: width .8s ease; }
     @media (max-width: 1023px) { .wxh .wx-day { width: auto; } }
     @media (max-width: 639px) { .wxh .wx-day:nth-child(n+5) { display: none; } .wxd { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; } .wxd-tile:nth-child(n+4) { display: none; } .wxd-tile { padding: 6px 7px 9px; } }
+
+    /* tombol suara TV */
+    .tv-snd { position: absolute; right: 12px; bottom: 12px; z-index: 6; display: inline-flex; align-items: center; gap: 7px; padding: 7px 13px 7px 10px; border-radius: 999px; cursor: pointer;
+      font-size: 12px; font-weight: 700; color: #f6f2e9; background: rgba(8,12,22,0.55); border: 1px solid rgba(255,255,255,0.22);
+      backdrop-filter: blur(12px) saturate(150%); -webkit-backdrop-filter: blur(12px) saturate(150%); transition: all .3s ease; }
+    .tv-snd svg { width: 17px; height: 17px; }
+    .tv-snd:hover { background: rgba(8,12,22,0.8); border-color: var(--gold-400); transform: translateY(-1px); }
+    .tv-snd:active { transform: scale(.95); }
+    .tv-snd.on { color: #1a1305; background: linear-gradient(135deg, var(--gold-400), var(--gold-500)); border-color: transparent; }
+    #tv-stage:fullscreen .tv-snd { right: 24px; bottom: 24px; font-size: 15px; padding: 10px 18px 10px 14px; }
   </style>
 
 </head>
@@ -1095,10 +1107,11 @@ setInterval(updateCuaca, 5 * 60 * 1000);
                 <div class="vl-item" style="--i:2"><b>A</b><div><strong>Amanah</strong><span>Dapat dipercaya menjaga tugas dan kerahasiaan data.</span></div></div>
               </div>
             </div>
-            <div class="info-slide quote-slide" data-title="Kata Mutiara">
-              <div class="qt-mark">&ldquo;</div>
-              <p id="qt-text" class="qt-text">Sedikit demi sedikit, lama-lama menjadi bukit.</p>
-              <span id="qt-tag" class="qt-tag">Peribahasa</span>
+            <div class="info-slide quote-slide" data-title="Ayat &amp; Hadits">
+              <span id="qt-kind" class="qt-kind">Ayat Al-Qur&rsquo;an</span>
+              <p id="qt-ar" class="qt-ar" lang="ar" dir="rtl">إِنَّ مَعَ الْعُسْرِ يُسْرًا</p>
+              <p id="qt-text" class="qt-text">Sesungguhnya sesudah kesulitan itu ada kemudahan.</p>
+              <span id="qt-tag" class="qt-tag">QS. Al-Insyirah: 6</span>
             </div>
           </div>
         </div>
@@ -1115,7 +1128,7 @@ setInterval(updateCuaca, 5 * 60 * 1000);
             slides.forEach((sl, i) => { const d = document.createElement('i'); d.title = sl.dataset.title; dotsBox.appendChild(d); });
             const dots = Array.from(dotsBox.children);
             const bar = card.querySelector('.info-progress i');
-            const dwell = [9000, 13000, 9000, 8000, 8000];   // lama tiap slide (ms)
+            const dwell = [9000, 13000, 9000, 8000, 12000];   // lama tiap slide (ms)
             let cur = 0, timer, hovering = false;
             function arm() {
               clearTimeout(timer);
@@ -1131,6 +1144,7 @@ setInterval(updateCuaca, 5 * 60 * 1000);
               if (title) { title.style.opacity = 0; setTimeout(() => { title.textContent = slides[cur].dataset.title; title.style.opacity = 1; }, 180); }
               dots.forEach((d, i) => d.classList.toggle('on', i === cur));
               slides.forEach((sl, i) => sl.classList.toggle('active', i === cur));
+              if (slides[cur].classList.contains('quote-slide') && window.renderAyat) window.renderAyat();   // ganti ayat/hadits tiap kali tampil
               arm();
             }
             dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
@@ -1152,12 +1166,30 @@ setInterval(updateCuaca, 5 * 60 * 1000);
             [8, 17, 'HUT Kemerdekaan RI'], [9, 26, 'Hari Statistik Nasional'], [10, 1, 'Hari Kesaktian Pancasila'], [10, 28, 'Hari Sumpah Pemuda'],
             [11, 10, 'Hari Pahlawan'], [12, 22, 'Hari Ibu'], [12, 25, 'Hari Natal']
           ];
-          const QUOTES = [
-            ['Sedikit demi sedikit, lama-lama menjadi bukit.', 'Peribahasa'], ['Ilmu padi: makin berisi, makin merunduk.', 'Peribahasa'],
-            ['Bersatu kita teguh, bercerai kita runtuh.', 'Peribahasa'], ['Di mana ada kemauan, di situ ada jalan.', 'Peribahasa'],
-            ['Berakit-rakit ke hulu, berenang-renang ke tepian.', 'Peribahasa'], ['Air tenang menghanyutkan.', 'Peribahasa'],
-            ['Data yang akurat adalah awal dari keputusan yang tepat.', 'Semangat Kerja']
+          // Ayat Al-Qur'an & hadits motivasi (berganti setiap kali slide ini tampil)
+          const AYAT = [
+            ['Ayat Al-Qur\u2019an', 'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ إِنَّ مَعَ الْعُسْرِ يُسْرًا', 'Karena sesungguhnya sesudah kesulitan itu ada kemudahan. Sesungguhnya sesudah kesulitan itu ada kemudahan.', 'QS. Al-Insyirah: 5\u20136'],
+            ['Ayat Al-Qur\u2019an', 'إِنَّ اللَّهَ لَا يُغَيِّرُ مَا بِقَوْمٍ حَتَّىٰ يُغَيِّرُوا مَا بِأَنفُسِهِمْ', 'Sesungguhnya Allah tidak mengubah keadaan suatu kaum sebelum mereka mengubah keadaan diri mereka sendiri.', 'QS. Ar-Ra\u2019d: 11'],
+            ['Ayat Al-Qur\u2019an', 'وَقُلِ اعْمَلُوا فَسَيَرَى اللَّهُ عَمَلَكُمْ وَرَسُولُهُ وَالْمُؤْمِنُونَ', 'Dan katakanlah: \u201cBekerjalah kamu, maka Allah dan Rasul-Nya serta orang-orang mukmin akan melihat pekerjaanmu.\u201d', 'QS. At-Taubah: 105'],
+            ['Ayat Al-Qur\u2019an', 'لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا', 'Allah tidak membebani seseorang melainkan sesuai dengan kesanggupannya.', 'QS. Al-Baqarah: 286'],
+            ['Ayat Al-Qur\u2019an', 'وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا', 'Barangsiapa bertakwa kepada Allah, niscaya Dia akan membukakan jalan keluar baginya.', 'QS. At-Talaq: 2'],
+            ['Ayat Al-Qur\u2019an', 'يَرْفَعِ اللَّهُ الَّذِينَ آمَنُوا مِنكُمْ وَالَّذِينَ أُوتُوا الْعِلْمَ دَرَجَاتٍ', 'Allah akan meninggikan orang-orang yang beriman di antaramu dan orang-orang yang diberi ilmu pengetahuan beberapa derajat.', 'QS. Al-Mujadilah: 11'],
+            ['Ayat Al-Qur\u2019an', 'وَتَعَاوَنُوا عَلَى الْبِرِّ وَالتَّقْوَىٰ', 'Dan tolong-menolonglah kamu dalam (mengerjakan) kebajikan dan takwa.', 'QS. Al-Ma\u2019idah: 2'],
+            ['Hadits', 'إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ', 'Sesungguhnya setiap amalan tergantung pada niatnya.', 'HR. Bukhari & Muslim'],
+            ['Hadits', 'خَيْرُ النَّاسِ أَنْفَعُهُمْ لِلنَّاسِ', 'Sebaik-baik manusia adalah yang paling bermanfaat bagi manusia lainnya.', 'HR. Ahmad & Thabrani'],
+            ['Hadits', 'مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ', 'Barangsiapa menempuh jalan untuk mencari ilmu, Allah memudahkan baginya jalan menuju surga.', 'HR. Muslim'],
+            ['Hadits', 'إِنَّ اللَّهَ يُحِبُّ إِذَا عَمِلَ أَحَدُكُمْ عَمَلًا أَنْ يُتْقِنَهُ', 'Sesungguhnya Allah mencintai seseorang yang apabila bekerja, ia menyelesaikannya dengan tuntas dan baik (itqan).', 'HR. Baihaqi'],
+            ['Hadits', 'أَحَبُّ الْأَعْمَالِ إِلَى اللَّهِ أَدْوَمُهَا وَإِنْ قَلَّ', 'Amalan yang paling dicintai Allah adalah yang dilakukan terus-menerus, walaupun sedikit.', 'HR. Bukhari & Muslim'],
+            ['Hadits', 'مَنْ لَا يَشْكُرُ النَّاسَ لَا يَشْكُرُ اللَّهَ', 'Barangsiapa tidak berterima kasih kepada manusia, ia tidak bersyukur kepada Allah.', 'HR. Abu Dawud & Tirmidzi'],
+            ['Hadits', 'تَبَسُّمُكَ فِي وَجْهِ أَخِيكَ صَدَقَةٌ', 'Senyummu di hadapan saudaramu adalah sedekah.', 'HR. Tirmidzi']
           ];
+          let ayatIdx = Math.floor(Math.random() * AYAT.length);
+          window.renderAyat = function () {
+            ayatIdx = (ayatIdx + 1) % AYAT.length;
+            const [kind, ar, id, src] = AYAT[ayatIdx];
+            const set = (i, v) => { const e = document.getElementById(i); if (e) e.textContent = v; };
+            set('qt-kind', kind); set('qt-ar', ar); set('qt-text', id); set('qt-tag', src);
+          };
           function renderInfoExtras() {
             const now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
             const mon = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU', 'SEP', 'OKT', 'NOV', 'DES'];
@@ -1171,10 +1203,6 @@ setInterval(updateCuaca, 5 * 60 * 1000);
               const diff = Math.round((h.dt - today) / 86400000);
               return `<div class="hp-item" style="--i:${i}"><div class="hp-date"><b>${h.d}</b><span>${mon[h.m - 1]}</span></div><strong>${h.name}</strong><em class="${diff === 0 ? 'now' : ''}">${diff === 0 ? 'Hari ini' : diff + ' hari lagi'}</em></div>`;
             }).join('');
-            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
-            const q = QUOTES[dayOfYear % QUOTES.length];
-            const qt = document.getElementById('qt-text'), tg = document.getElementById('qt-tag');
-            if (qt) qt.textContent = q[0]; if (tg) tg.textContent = q[1];
           }
           renderInfoExtras();
           setInterval(renderInfoExtras, 60 * 60 * 1000);
@@ -2445,7 +2473,7 @@ function renderTvFrameHTML(ch) {
   const container = document.getElementById('tv-frame-container');
   if (!container) return;
   if (tvHls) { tvHls.destroy(); tvHls = null; }
-  container.innerHTML = '<div id="tv-stage" class="relative w-full h-full bg-black"><div id="tv-toast"></div></div>';
+  container.innerHTML = '<div id="tv-stage" class="relative w-full h-full bg-black"><div id="tv-toast"></div><button id="tv-snd" class="tv-snd" aria-label="Suara TV" title="Aktifkan / matikan suara (M)"></button></div>';
   const stage = document.getElementById('tv-stage');
   if (ch.type === 'iframe') {
     stage.insertAdjacentHTML('beforeend', `<iframe class="absolute inset-0 w-full h-full border-0" src="${ch.url}" allowfullscreen allow="autoplay; encrypted-media" scrolling="no"></iframe>`);
@@ -2461,10 +2489,35 @@ function renderTvFrameHTML(ch) {
     } else if (v.canPlayType('application/vnd.apple.mpegurl')) {
       v.src = ch.url; v.addEventListener('error', fail);
     } else { fail(); }
+    v.muted = !tvSound;
   }
+  document.getElementById('tv-snd').onclick = toggleTvSound;
+  updateSndBtn();
   stage.ondblclick = toggleTvFullscreen;
   renderTvChips();
   showTvToast(ch.name);
+}
+
+// Suara TV: default mati (browser juga hanya mengizinkan autoplay tanpa suara)
+let tvSound = false;
+function updateSndBtn() {
+  const b = document.getElementById('tv-snd');
+  if (!b) return;
+  const iframe = TV_CHANNELS[tvIndex].type === 'iframe';
+  const on = tvSound && !iframe;
+  b.classList.toggle('on', on);
+  b.innerHTML = (on
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/></svg>')
+    + '<span>' + (on ? 'Suara hidup' : 'Suara mati') + '</span>';
+}
+function toggleTvSound() {
+  if (TV_CHANNELS[tvIndex].type === 'iframe') { showTvToast('Suara Trans7 diatur dari pemutarnya'); return; }
+  tvSound = !tvSound;
+  const v = document.getElementById('tv-video');
+  if (v) { v.muted = !tvSound; if (tvSound) { v.volume = 1; v.play().catch(() => {}); } }
+  updateSndBtn();
+  showTvToast(tvSound ? 'Suara hidup' : 'Suara mati');
 }
 
 function renderTvChips() {
@@ -2492,6 +2545,7 @@ document.getElementById('tv-fs')?.addEventListener('click', toggleTvFullscreen);
 // Pintasan: F = fullscreen, panah kiri/kanan = ganti channel
 document.addEventListener('keydown', e => {
   if (e.key === 'f' || e.key === 'F') toggleTvFullscreen();
+  else if (e.key === 'm' || e.key === 'M') toggleTvSound();
   else if (e.key === 'ArrowRight') setTvChannel((tvIndex + 1) % TV_CHANNELS.length);
   else if (e.key === 'ArrowLeft') setTvChannel((tvIndex - 1 + TV_CHANNELS.length) % TV_CHANNELS.length);
 });
