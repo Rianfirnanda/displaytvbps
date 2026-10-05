@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="logo-bps.png"/>
   <title>DISPLAY INFORMASI BERBASIS WEB 2.0</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -23,19 +24,19 @@
   <style>
     /* ====================== DESIGN TOKENS ====================== */
     :root {
-      --ink-900: #060910;
-      --ink-800: #0b111c;
-      --ink-700: #111a2b;
-      --ink-600: #182338;
-      --gold-500: #d4af5a;
-      --gold-400: #e8ca8a;
-      --gold-300: #f3ddab;
-      --crimson-500: #b0303f;
-      --crimson-400: #d1495a;
+      --ink-900: #040d1c;
+      --ink-800: #07142a;
+      --ink-700: #0c1f3d;
+      --ink-600: #112a52;
+      --gold-500: #f28c1e;
+      --gold-400: #f7a850;
+      --gold-300: #fbd0a0;
+      --crimson-500: #0071c6;
+      --crimson-400: #2f94e6;
       --steel-300: #a8b4c8;
       --steel-500: #7c8aa3;
       --panel-bg: rgba(255,255,255,0.04);
-      --panel-border: rgba(212,175,90,0.16);
+      --panel-border: rgba(242,140,30,0.16);
       --panel-border-soft: rgba(255,255,255,0.08);
     }
 
@@ -48,9 +49,9 @@
 
     body {
       background:
-        radial-gradient(ellipse 1300px 750px at 10% -12%, rgba(212,175,90,0.09), transparent 58%),
+        radial-gradient(ellipse 1300px 750px at 10% -12%, rgba(242,140,30,0.09), transparent 58%),
         radial-gradient(ellipse 1100px 850px at 102% 8%, rgba(59,110,180,0.10), transparent 55%),
-        radial-gradient(ellipse 900px 600px at 50% 115%, rgba(176,48,63,0.08), transparent 60%),
+        radial-gradient(ellipse 900px 600px at 50% 115%, rgba(0,113,198,0.08), transparent 60%),
         linear-gradient(160deg, var(--ink-900) 0%, var(--ink-800) 45%, #0a0f1c 100%);
     }
     /* fine engineering dot-grid texture — subtle "command center" feel */
@@ -81,8 +82,8 @@
     /* Custom scrollbar for a polished feel on scrollable panels */
     .styled-scroll::-webkit-scrollbar { width: 5px; }
     .styled-scroll::-webkit-scrollbar-track { background: transparent; }
-    .styled-scroll::-webkit-scrollbar-thumb { background: rgba(212,175,90,0.35); border-radius: 999px; }
-    .styled-scroll::-webkit-scrollbar-thumb:hover { background: rgba(212,175,90,0.55); }
+    .styled-scroll::-webkit-scrollbar-thumb { background: rgba(242,140,30,0.35); border-radius: 999px; }
+    .styled-scroll::-webkit-scrollbar-thumb:hover { background: rgba(242,140,30,0.55); }
 
     /* Unified card chrome — clipped corner + gold overline, broadcast-panel feel */
     .panel {
@@ -107,10 +108,10 @@
     /* Featured panel — for the sections that need to stand out (Kalender, EOQ) */
     .panel-featured {
       position: relative;
-      background: linear-gradient(165deg, rgba(212,175,90,0.08), rgba(255,255,255,0.03));
-      border: 1.5px solid rgba(212,175,90,0.45);
+      background: linear-gradient(165deg, rgba(242,140,30,0.08), rgba(255,255,255,0.03));
+      border: 1.5px solid rgba(242,140,30,0.45);
       border-radius: 4px 20px 20px 20px;
-      box-shadow: 0 22px 50px -16px rgba(212,175,90,0.26), 0 14px 34px -12px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.06);
+      box-shadow: 0 22px 50px -16px rgba(242,140,30,0.26), 0 14px 34px -12px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.06);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
       overflow: hidden;
@@ -128,7 +129,7 @@
       position: absolute;
       inset: 0;
       border-radius: 4px 20px 20px 20px;
-      box-shadow: 0 0 0 1px rgba(212,175,90,0.12), 0 0 34px rgba(212,175,90,0.10) inset;
+      box-shadow: 0 0 0 1px rgba(242,140,30,0.12), 0 0 34px rgba(242,140,30,0.10) inset;
       pointer-events: none;
     }
     .featured-badge {
@@ -144,7 +145,7 @@
       background: linear-gradient(135deg, var(--gold-300), var(--gold-500));
       padding: 4px 10px 4px 8px;
       border-radius: 999px;
-      box-shadow: 0 4px 14px -4px rgba(212,175,90,0.6);
+      box-shadow: 0 4px 14px -4px rgba(242,140,30,0.6);
     }
 
     /* Majestic backdrop for the spotlight section (Employee of the Quarter) */
@@ -272,7 +273,7 @@
     #main-grid > :nth-child(4) { animation-delay: .35s; }
     #main-grid > :nth-child(5) { animation-delay: .45s; }
     #main-grid > * { transition: transform .35s ease, box-shadow .35s ease; }
-    @media (hover: hover) { #main-grid > *:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -18px rgba(212,175,90,.35); } }
+    @media (hover: hover) { #main-grid > *:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -18px rgba(242,140,30,.35); } }
     @media (prefers-reduced-motion: reduce) { .fade-in { animation-duration: .01s !important; } #main-grid > * { transition: none; } }
 
     /* Slider (ponsel <640px): kotak digeser kiri-kanan, ada titik penanda */
@@ -321,13 +322,9 @@
 
     <!-- HEADER BAR -->
     <div class="panel fade-in flex-shrink-0 flex items-center justify-between px-5 py-2.5" style="border-radius: 16px;">
-      <span class="absolute top-0 left-0 h-full w-1" style="background: linear-gradient(180deg, var(--crimson-500), var(--gold-500));"></span>
+      <span class="absolute top-0 left-0 h-full w-1" style="background: linear-gradient(180deg, #0071c6, #4ca21f, #f28c1e);"></span>
       <div class="flex items-center gap-3 pl-2">
-        <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, var(--gold-400), var(--gold-500)); box-shadow: 0 4px 14px -4px rgba(212,175,90,0.55);">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#0c1220" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/>
-          </svg>
-        </div>
+        <div class="w-11 h-11 rounded-xl bg-white flex items-center justify-center flex-shrink-0 p-1" style="box-shadow: 0 4px 14px -4px rgba(0,113,198,.6);"><img src="logo-bps.png" alt="Logo BPS" class="w-full h-full object-contain"></div>
         <div class="leading-tight">
           <div class="font-display font-bold text-[15px] tracking-wide text-white">LINTAS BENTENG</div>
           <div class="eyebrow" style="letter-spacing:0.12em;">BPS Kabupaten Bengkulu Tengah</div>
@@ -360,7 +357,7 @@
           <div class="relative flex-1 min-h-0 flex flex-col rounded-xl overflow-hidden border border-[color:var(--panel-border-soft)]">
             <div id="tracking-map" class="w-full flex-1 min-h-0"></div>
 
-            <div class="flex items-center justify-between text-xs text-[color:var(--steel-300)] px-3 py-1.5" style="background: rgba(7,11,20,0.85); border-top: 1px solid var(--panel-border-soft);">
+            <div class="flex items-center justify-between text-xs text-[color:var(--steel-300)] px-3 py-1.5" style="background: rgba(4,13,28,0.85); border-top: 1px solid var(--panel-border-soft);">
               <span class="flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5 text-[color:var(--gold-400)]" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
@@ -371,7 +368,7 @@
             </div>
           </div>
 
-          <div class="mt-2 rounded-lg px-3 py-2 overflow-hidden" style="background: rgba(212,175,90,0.06); border: 1px solid var(--panel-border);">
+          <div class="mt-2 rounded-lg px-3 py-2 overflow-hidden" style="background: rgba(242,140,30,0.06); border: 1px solid var(--panel-border);">
             <div id="activity-slider" class="text-xs text-[color:var(--steel-300)] font-medium h-[16px] transition-opacity duration-500 whitespace-nowrap overflow-hidden text-ellipsis">
               <span class="opacity-60">Memuat aktivitas...</span>
             </div>
@@ -396,7 +393,7 @@
       <!-- KOTAK 3: GOOGLE CALENDAR - ROWSPAN 2 -->
       <div class="panel-featured fade-in p-3 row-span-2 min-h-0 overflow-hidden flex flex-col">
         <div class="rounded-xl w-full flex-1 min-h-0 bg-cover bg-center bg-no-repeat text-white flex flex-col p-3.5 border border-[color:var(--panel-border)]"
-             style="background-image: linear-gradient(165deg, rgba(7,11,20,0.86), rgba(18,26,44,0.80)), url('kantor2.png');">
+             style="background-image: linear-gradient(165deg, rgba(4,13,28,0.86), rgba(10,28,56,0.80)), url('kantor2.png');">
 
           <div class="flex items-center justify-center mb-2.5">
             <span class="featured-badge">
@@ -423,7 +420,7 @@
 
       <!-- KOTAK 4: JAM, TANGGAL, CUACA -->
       <div class="panel w-full bg-cover bg-center bg-no-repeat text-white fade-in p-3 min-h-0 overflow-hidden flex flex-col justify-center"
-           style="background-image: linear-gradient(155deg, rgba(7,11,20,0.90), rgba(18,26,44,0.80)), url('kantor.png');">
+           style="background-image: linear-gradient(155deg, rgba(4,13,28,0.90), rgba(10,28,56,0.80)), url('kantor.png');">
         <span class="eyebrow block text-center mb-1">Waktu &amp; Cuaca</span>
         <div class="text-center leading-tight">
           <div class="font-display font-bold text-[5.5vw] leading-none text-center px-4" id="clock" style="background: linear-gradient(180deg, #fff, var(--gold-300)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.02em;"></div>
@@ -544,13 +541,13 @@ setInterval(updateCuaca, 15 * 60 * 1000);
 
       <!-- KOTAK 5: EMPLOYEE OF THE QUARTER (TENGAH) -->
       <div class="panel-featured relative w-full bg-cover bg-center bg-no-repeat flex justify-center items-center text-white fade-in min-h-0 overflow-hidden"
-           style="background-image: linear-gradient(155deg, rgba(7,11,20,0.94), rgba(20,15,8,0.88)), url('kantor.png');">
+           style="background-image: linear-gradient(155deg, rgba(4,13,28,0.94), rgba(20,15,8,0.88)), url('kantor.png');">
 
         <!-- Layered "stage" backdrop: rotating gold rays + spotlight glow + vignette -->
         <div class="sunburst-rays"></div>
-        <div class="pointer-events-none absolute inset-0" style="background: radial-gradient(ellipse 65% 85% at 28% 55%, rgba(212,175,90,0.22), transparent 60%), radial-gradient(circle at 82% 18%, rgba(212,175,90,0.10), transparent 45%);"></div>
+        <div class="pointer-events-none absolute inset-0" style="background: radial-gradient(ellipse 65% 85% at 28% 55%, rgba(242,140,30,0.22), transparent 60%), radial-gradient(circle at 82% 18%, rgba(242,140,30,0.10), transparent 45%);"></div>
         <div class="stage-vignette"></div>
-        <div class="pointer-events-none absolute left-0 right-0 bottom-0 h-1/2" style="background: radial-gradient(ellipse 70% 100% at 30% 100%, rgba(212,175,90,0.16), transparent 70%);"></div>
+        <div class="pointer-events-none absolute left-0 right-0 bottom-0 h-1/2" style="background: radial-gradient(ellipse 70% 100% at 30% 100%, rgba(242,140,30,0.16), transparent 70%);"></div>
 
         <div class="absolute top-3 left-0 right-0 flex justify-center z-10">
           <span class="featured-badge">
@@ -564,11 +561,11 @@ setInterval(updateCuaca, 15 * 60 * 1000);
             <div id="eomSlider" class="flex transition-transform duration-700 ease-in-out" style="transform: translateX(0%);">
               <div class="w-full flex-shrink-0 flex flex-col sm:flex-row items-center justify-center text-white text-left p-4 gap-5">
                 <div class="relative flex-shrink-0">
-                  <div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle, rgba(212,175,90,0.55), transparent 70%); transform: scale(1.6); filter: blur(10px);"></div>
+                  <div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle, rgba(242,140,30,0.55), transparent 70%); transform: scale(1.6); filter: blur(10px);"></div>
               
                     <circle cx="84" cy="84" r="80" fill="none" stroke="var(--gold-400)" stroke-width="1" stroke-dasharray="2 6"/>
                   </svg>
-                  <div class="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden" style="border: 3px solid var(--gold-400);box-shadow: 0 0 0 5px rgba(212,175,90,0.16), 0 14px 36px -6px rgba(212,175,90,0.6);">
+                  <div class="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden" style="border: 3px solid var(--gold-400);box-shadow: 0 0 0 5px rgba(242,140,30,0.16), 0 14px 36px -6px rgba(242,140,30,0.6);">
                   <img 
                     src="https://firebasestorage.googleapis.com/v0/b/lintas-benteng.firebasestorage.app/o/assets%2Frsz_isma_afrita_lubis_display.png?alt=media&token=1d10a62b-44c7-42fd-b9b4-d104dc1dc5bc"
                     alt="Isma Afrita Lubis"
@@ -615,20 +612,20 @@ setInterval(updateCuaca, 15 * 60 * 1000);
 
     <!-- BARIS 4: JADWAL SHOLAT (FULL WIDTH) -->
     <div class="panel relative w-full bg-cover bg-center bg-no-repeat flex justify-center items-center text-white fade-in p-0 flex-[1.5] min-h-0 overflow-hidden"
-         style="background-image: linear-gradient(155deg, rgba(7,11,20,0.90), rgba(18,26,44,0.82)), url('masjid.jpg');">
+         style="background-image: linear-gradient(155deg, rgba(4,13,28,0.90), rgba(10,28,56,0.82)), url('masjid.jpg');">
       <span class="absolute top-3 left-5 eyebrow">Jadwal Sholat</span>
       <div class="w-full max-w-4xl text-center px-4">
         <div class="mb-2">
           <button id="startBtn" onclick="startApp()"
             class="font-display text-white font-semibold py-2 px-6 rounded-full transition duration-300 ease-in-out"
-            style="background: linear-gradient(135deg, var(--gold-400), var(--gold-500)); color: #0c1220; box-shadow: 0 8px 22px -8px rgba(212,175,90,0.6);">
+            style="background: linear-gradient(135deg, var(--gold-400), var(--gold-500)); color: #0c1220; box-shadow: 0 8px 22px -8px rgba(242,140,30,0.6);">
             Mulai Jadwal Sholat
           </button>
         </div>
         <div>
           <table id="jadwalSholat" class="hidden w-full table-auto text-sm md:text-base rounded-xl overflow-hidden">
             <thead>
-              <tr style="background: rgba(212,175,90,0.10);">
+              <tr style="background: rgba(242,140,30,0.10);">
                 <th class="px-4 py-2 text-center font-display font-semibold" style="color: var(--gold-300);">Subuh</th>
                 <th class="px-4 py-2 text-center font-display font-semibold" style="color: var(--gold-300);">Dzuhur</th>
                 <th class="px-4 py-2 text-center font-display font-semibold" style="color: var(--gold-300);">Ashar</th>
@@ -649,7 +646,7 @@ setInterval(updateCuaca, 15 * 60 * 1000);
     .tv-ticker-wrapper {
         display: flex;
         background: linear-gradient(90deg, #0b111c 0%, #121a2c 100%);
-        border: 1px solid rgba(212,175,90,0.16);
+        border: 1px solid rgba(242,140,30,0.16);
         border-radius: 4px 14px 14px 14px;
         font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
         line-height: 1.2;
@@ -699,10 +696,10 @@ setInterval(updateCuaca, 15 * 60 * 1000);
         transition: color 0.2s;
     }
     .ticker-item-tv:hover {
-        color: #e8ca8a;
+        color: #f7a850;
     }
     .ticker-separator-tv {
-        color: #d4af5a;
+        color: #f28c1e;
         margin-right: 75px;
         font-size: 14px;
         opacity: 0.6;
@@ -1585,7 +1582,7 @@ function renderEventsToday(events) {
       const linkAttr = hasLink ? `href="${ev.calendarEventLink}" target="_blank" rel="noopener"` : '';
 
       return `
-        <${openTag} ${linkAttr} class="block bg-white/[0.05] hover:bg-white/[0.09] transition rounded-xl px-3.5 py-2.5" style="border-left: 3px solid var(--gold-500); border-top: 1px solid rgba(212,175,90,0.14); border-right: 1px solid rgba(212,175,90,0.14); border-bottom: 1px solid rgba(212,175,90,0.14); box-shadow: 0 6px 16px -8px rgba(0,0,0,0.5);">
+        <${openTag} ${linkAttr} class="block bg-white/[0.05] hover:bg-white/[0.09] transition rounded-xl px-3.5 py-2.5" style="border-left: 3px solid var(--gold-500); border-top: 1px solid rgba(242,140,30,0.14); border-right: 1px solid rgba(242,140,30,0.14); border-bottom: 1px solid rgba(242,140,30,0.14); box-shadow: 0 6px 16px -8px rgba(0,0,0,0.5);">
           <div class="text-[11.5px] font-bold font-display tracking-wide" style="color: var(--gold-300);">${waktu}</div>
           <div class="text-[15px] font-semibold text-white mt-0.5">${ev.title || '(Tanpa judul)'}</div>
           ${ev.description ? `<div class="text-xs text-[color:var(--steel-300)] mt-1">${ev.description}</div>` : ''}
@@ -1787,6 +1784,11 @@ const TV_CHANNELS = [
   { name: 'Trans7',   type: 'iframe', url: 'https://20.detik.com/watch/livestreaming-trans7' },
   { name: 'TVRI',     type: 'hls', url: 'https://ott-balancer.tvri.go.id/live/eds/Nasional/hls/Nasional.m3u8' },
   { name: 'TVRI Bengkulu', type: 'hls', url: 'https://ott-balancer.tvri.go.id/live/eds/Bengkulu/hls/Bengkulu.m3u8' },
+  { name: 'TVRI World', type: 'hls', url: 'https://ott-balancer.tvri.go.id/live/eds/TVRIWorld/hls/TVRIWorld.m3u8' },
+  { name: 'Berita Satu', type: 'hls', url: 'https://xtdslboppkkv-pull.bpmedialive.com/live/beritasatu/abr.m3u8' },
+  { name: 'Nusantara TV', type: 'hls', url: 'https://nusantaratv.siar.us/nusantaratv/live/playlist.m3u8' },
+  { name: 'DAAI TV', type: 'hls', url: 'https://pull.daaiplus.com/live-DAAIPLUS/live-DAAIPLUS_HD.m3u8' },
+  { name: 'Magna Channel', type: 'hls', url: 'https://edge.medcom.id/live-edge/smil:magna.smil/playlist.m3u8' },
   { name: 'Metro TV', type: 'hls', url: 'https://edge.medcom.id/live-edge/smil:metro.smil/playlist.m3u8' },
   { name: 'RCTI',     type: 'hls', unofficial: true, url: 'https://mncmedia.malingtv.workers.dev/rcti.m3u8' },
   { name: 'MNCTV',    type: 'hls', unofficial: true, url: 'https://mncmedia.malingtv.workers.dev/mnctv.m3u8' },
@@ -1802,7 +1804,7 @@ function renderTvFrameHTML(ch) {
   if (tvHls) { tvHls.destroy(); tvHls = null; }
   const options = TV_CHANNELS.map((c, i) => `<option value="${i}" ${i === tvIndex ? 'selected' : ''}>${c.name}</option>`).join('');
   container.innerHTML = `
-    <div class="flex items-center gap-1.5 px-2 py-1 flex-shrink-0" style="background: rgba(7,11,20,0.85);">
+    <div class="flex items-center gap-1.5 px-2 py-1 flex-shrink-0" style="background: rgba(4,13,28,0.85);">
       <button id="tv-prev" class="px-2 text-white" aria-label="Channel sebelumnya">&#9664;</button>
       <select id="tv-select" class="flex-1 min-w-0 text-xs rounded px-1 py-0.5" style="background:#111a2b;color:#fff;border:1px solid var(--panel-border-soft);">${options}</select>
       <button id="tv-next" class="px-2 text-white" aria-label="Channel berikutnya">&#9654;</button>
