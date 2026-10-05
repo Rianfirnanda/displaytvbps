@@ -672,11 +672,34 @@
     .net-text { display: flex; flex-direction: column; line-height: 1.15; min-width: 58px; }
     .net-text b { font-size: 10px; font-weight: 800; letter-spacing: .12em; color: var(--nc); }
     .net-text span { font-size: 11px; font-weight: 600; color: var(--text-dim); font-variant-numeric: tabular-nums; }
-    .net-hist { display: flex; align-items: flex-end; gap: 2px; height: 16px; width: 44px; }
-    .net-hist i { flex: 0 0 3px; min-height: 3px; border-radius: 1px; background: var(--net-ok); opacity: .85; }
+    .net-hist { display: flex; align-items: flex-end; gap: 1px; height: 18px; width: 72px; }
+    .net-hist i { flex: 1 1 0; max-width: 3px; min-height: 3px; border-radius: 1px; background: var(--net-ok); opacity: .85; }
     .net-hist i.w { background: var(--net-slow); } .net-hist i.x { background: var(--net-bad); }
     @media (max-width: 1023px) { .net-hist { display: none; } }
     @media (max-width: 639px) { .net-text span { display: none; } .net-text { min-width: 0; } .hdr-net { padding: 5px 8px; gap: 6px; } }
+
+    /* slide tambahan pada kartu gabungan */
+    .upcoming-slide, .values-slide { display: flex; flex-direction: column; justify-content: center; padding: 2px 4px 0; }
+    .quote-slide { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; padding: 8px 14px; }
+    .info-slide.active .hp-item, .info-slide.active .vl-item { animation: itemRise .6s cubic-bezier(.16,1,.3,1) both; animation-delay: calc(var(--i, 0) * .1s + .15s); }
+    .info-slide.active .qt-mark, .info-slide.active .qt-text, .info-slide.active .qt-tag { animation: itemRise .8s cubic-bezier(.16,1,.3,1) both; }
+    .info-slide.active .qt-text { animation-delay: .15s; } .info-slide.active .qt-tag { animation-delay: .3s; }
+    @keyframes itemRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    .hp-list, .vl-list { display: flex; flex-direction: column; gap: 10px; flex: 0 1 auto; min-height: 0; }
+    .hp-item, .vl-item { min-height: 64px; padding-top: clamp(10px, 1.6cqh, 18px); padding-bottom: clamp(10px, 1.6cqh, 18px); }
+    .hp-item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: var(--fill); border: 1px solid var(--panel-border-soft); }
+    .hp-date { width: 46px; height: 50px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(145deg, var(--btn-from), var(--btn-to)); color: var(--btn-text); }
+    .hp-date b { font-size: 20px; font-weight: 800; line-height: 1; } .hp-date span { font-size: 9px; font-weight: 700; letter-spacing: .14em; }
+    .hp-item strong { font-size: clamp(13px, 2.9cqw, 17px); font-weight: 700; color: var(--text); line-height: 1.2; }
+    .hp-item em { font-style: normal; font-size: 11px; font-weight: 700; color: var(--gold-300); white-space: nowrap; padding: 4px 10px; border-radius: 999px; background: var(--fill); border: 1px solid var(--panel-border-soft); }
+    .hp-item em.now { background: linear-gradient(135deg, var(--btn-from), var(--btn-to)); color: var(--btn-text); border-color: transparent; }
+    .vl-item { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 14px; padding: 10px 12px; border-radius: 14px; background: var(--fill); border: 1px solid var(--panel-border-soft); }
+    .vl-item b { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; color: var(--btn-text); background: linear-gradient(145deg, var(--btn-from), var(--btn-to)); box-shadow: 0 8px 18px -8px rgba(212,175,90,.8); }
+    .vl-item strong { display: block; font-size: clamp(14px, 3cqw, 18px); font-weight: 700; color: var(--text); }
+    .vl-item span { display: block; font-size: clamp(11px, 2.3cqw, 13px); color: var(--steel-300); line-height: 1.35; margin-top: 2px; }
+    .qt-mark { font-size: 72px; line-height: .6; font-weight: 800; color: var(--gold-400); height: 36px; }
+    .qt-text { font-size: clamp(18px, 5.2cqw, 28px); font-weight: 700; line-height: 1.3; color: var(--text); text-wrap: balance; }
+    .qt-tag { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-400); }
   </style>
 
 </head>
@@ -710,7 +733,7 @@
       </div>
     </div>
     <script>
-    // Indikator jaringan realtime: cek tiap 5 detik (ping ke internet), tampil sebagai bar sinyal + ping
+    // Indikator jaringan realtime: cek tiap 2 detik (ping ke internet), tampil sebagai bar sinyal + ping
     (function () {
       const el = document.getElementById('net');
       if (!el) return;
@@ -720,7 +743,7 @@
       const hist = [];   // { ms | null }
       async function probe() {
         for (const url of PROBES) {
-          const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 4000), t0 = performance.now();
+          const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 1800), t0 = performance.now();
           try {
             await fetch(url + '?_=' + Date.now(), { mode: 'no-cors', cache: 'no-store', signal: ctl.signal });
             clearTimeout(to);
@@ -730,16 +753,17 @@
         return null;
       }
       function classify() {
-        const last = hist[hist.length - 1];
-        if (!last || last.ms === null) {
-          let n = 0; for (let i = hist.length - 1; i >= 0 && hist[i].ms === null; i--) n++;
-          return n >= 2 ? { s: 'down', label: 'TERPUTUS', bars: 0 } : { s: 'bad', label: 'GANGGUAN', bars: 1 };
-        }
+        // gagal berturut-turut: 1x = lambat, 2x = gangguan, 3x+ = terputus
+        let n = 0; for (let i = hist.length - 1; i >= 0 && hist[i].ms === null; i--) n++;
+        if (n >= 3) return { s: 'down', label: 'TERPUTUS', bars: 0 };
+        if (n === 2) return { s: 'bad', label: 'GANGGUAN', bars: 1 };
+        if (n === 1) return { s: 'slow', label: 'LAMBAT', bars: 2 };
+        // ping rata-rata 3 sampel terakhir (meredam lonjakan sesaat)
         const ok = hist.slice(-3).map(h => h.ms).filter(m => m !== null);
         const avg = ok.reduce((a, b) => a + b, 0) / ok.length;
-        if (avg < 60) return { s: 'ok', label: 'AMAN', bars: 4 };
-        if (avg < 150) return { s: 'ok', label: 'AMAN', bars: 3 };
-        if (avg < 350) return { s: 'slow', label: 'LAMBAT', bars: 2 };
+        if (avg < 50) return { s: 'ok', label: 'AMAN', bars: 4 };
+        if (avg < 120) return { s: 'ok', label: 'AMAN', bars: 3 };
+        if (avg < 250) return { s: 'slow', label: 'LAMBAT', bars: 2 };
         return { s: 'bad', label: 'GANGGUAN', bars: 1 };
       }
       function render() {
@@ -751,16 +775,21 @@
         const lost = hist.filter(h => h.ms === null).length;
         const oks = hist.filter(h => h.ms !== null).map(h => h.ms);
         const avg = oks.length ? Math.round(oks.reduce((a, b) => a + b, 0) / oks.length) : '-';
-        el.title = `Jaringan ${c.label} · ping ${last && last.ms !== null ? last.ms + ' ms' : 'timeout'} · rata-rata ${avg} ms · gagal ${lost}/${hist.length} dari pengecekan terakhir (tiap 5 detik)`;
-        histEl.innerHTML = hist.map(h => `<i class="${h.ms === null ? 'x' : h.ms < 150 ? '' : h.ms < 350 ? 'w' : 'x'}" style="height:${h.ms === null ? 100 : Math.max(18, Math.min(100, h.ms / 4))}%"></i>`).join('');
+        el.title = `Jaringan ${c.label} · ping ${last && last.ms !== null ? last.ms + ' ms' : 'timeout'} · rata-rata ${avg} ms · gagal ${lost}/${hist.length} dari pengecekan terakhir (tiap 2 detik)`;
+        // tinggi batang proporsional terhadap ping (0-200 ms), batang merah penuh = gagal
+        histEl.innerHTML = hist.map(h => `<i class="${h.ms === null ? 'x' : h.ms < 120 ? '' : h.ms < 250 ? 'w' : 'x'}" style="height:${h.ms === null ? 100 : Math.round(15 + 85 * Math.min(h.ms, 200) / 200)}%"></i>`).join('');
       }
+      let busy = false;
       async function tick() {
+        if (busy) return;           // jangan menumpuk pengecekan
+        busy = true;
         const ms = navigator.onLine === false ? null : await probe();
-        hist.push({ ms }); if (hist.length > 12) hist.shift();
+        busy = false;
+        hist.push({ ms }); if (hist.length > 24) hist.shift();
         render();
       }
       tick();
-      setInterval(tick, 5000);
+      setInterval(tick, 2000);
       window.addEventListener('online', tick);
       window.addEventListener('offline', tick);
     })();
@@ -980,7 +1009,7 @@ setInterval(updateCuaca, 5 * 60 * 1000);
         <div class="eoq-glow"></div>
         <div class="ph">
           <span id="info-title" class="ph-title">Employee of the Quarter</span>
-          <span class="info-dots"><i class="on" title="Employee of the Quarter"></i><i title="Agenda Kantor"></i></span>
+          <span class="info-dots"></span>
         </div>
         <button class="info-nav prev" aria-label="Sebelumnya" title="Sebelumnya">&#8249;</button>
         <button class="info-nav next" aria-label="Berikutnya" title="Berikutnya">&#8250;</button>
@@ -1007,10 +1036,29 @@ setInterval(updateCuaca, 5 * 60 * 1000);
               <span id="refresh-time" class="ph-meta agenda-refresh"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 1 1-3.22-6.84" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 3v6h-6" /></svg><span>Memuat...</span></span>
               <div id="calendar-events" class="styled-scroll agenda-list"></div>
             </div>
+            <div class="info-slide upcoming-slide" data-title="Hari Penting Mendatang">
+              <h2 class="agenda-title">Hari Penting Mendatang</h2>
+              <span class="ph-meta agenda-refresh"><i class="led led-ok"></i><span>Hitung mundur otomatis</span></span>
+              <div id="hp-list" class="hp-list"></div>
+            </div>
+            <div class="info-slide values-slide" data-title="Nilai Inti BPS">
+              <h2 class="agenda-title">Nilai Inti BPS</h2>
+              <span class="ph-meta agenda-refresh"><span>PIA</span></span>
+              <div class="vl-list">
+                <div class="vl-item" style="--i:0"><b>P</b><div><strong>Profesional</strong><span>Bekerja dengan kompetensi, cermat, dan bertanggung jawab.</span></div></div>
+                <div class="vl-item" style="--i:1"><b>I</b><div><strong>Integritas</strong><span>Jujur, objektif, dan konsisten dalam setiap data.</span></div></div>
+                <div class="vl-item" style="--i:2"><b>A</b><div><strong>Amanah</strong><span>Dapat dipercaya menjaga tugas dan kerahasiaan data.</span></div></div>
+              </div>
+            </div>
+            <div class="info-slide quote-slide" data-title="Kata Mutiara">
+              <div class="qt-mark">&ldquo;</div>
+              <p id="qt-text" class="qt-text">Sedikit demi sedikit, lama-lama menjadi bukit.</p>
+              <span id="qt-tag" class="qt-tag">Peribahasa</span>
+            </div>
           </div>
         </div>
         <script>
-          // Slider otomatis: Employee of the Quarter -> Agenda Kantor
+          // Slider otomatis: Employee of the Quarter -> Agenda -> Hari Penting -> Nilai BPS -> Kata Mutiara
           // Interaktif: titik & panah, geser (swipe), jeda saat disorot, bilah progres
           (function () {
             const card = document.getElementById('eoq-card');
@@ -1018,9 +1066,11 @@ setInterval(updateCuaca, 5 * 60 * 1000);
             if (!card || !track) return;
             const slides = Array.from(track.children);
             const title = document.getElementById('info-title');
-            const dots = Array.from(card.querySelectorAll('.info-dots i'));
+            const dotsBox = card.querySelector('.info-dots');
+            slides.forEach((sl, i) => { const d = document.createElement('i'); d.title = sl.dataset.title; dotsBox.appendChild(d); });
+            const dots = Array.from(dotsBox.children);
             const bar = card.querySelector('.info-progress i');
-            const dwell = [9000, 13000];   // lama tiap slide (ms)
+            const dwell = [9000, 13000, 9000, 8000, 8000];   // lama tiap slide (ms)
             let cur = 0, timer, hovering = false;
             function arm() {
               clearTimeout(timer);
@@ -1035,6 +1085,7 @@ setInterval(updateCuaca, 5 * 60 * 1000);
               track.style.transform = `translateX(${-cur * 100}%)`;
               if (title) { title.style.opacity = 0; setTimeout(() => { title.textContent = slides[cur].dataset.title; title.style.opacity = 1; }, 180); }
               dots.forEach((d, i) => d.classList.toggle('on', i === cur));
+              slides.forEach((sl, i) => sl.classList.toggle('active', i === cur));
               arm();
             }
             dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
@@ -1047,6 +1098,41 @@ setInterval(updateCuaca, 5 * 60 * 1000);
             track.addEventListener('pointerup', e => { if (x0 !== null && Math.abs(e.clientX - x0) > 40) go(cur + (e.clientX < x0 ? 1 : -1)); x0 = null; });
             go(0);
           })();
+        </script>
+
+        <script>
+          // Hari penting nasional (tanggal tetap tiap tahun) + hitung mundur
+          const HARI_PENTING = [
+            [1, 1, 'Tahun Baru Masehi'], [5, 2, 'Hari Pendidikan Nasional'], [5, 20, 'Hari Kebangkitan Nasional'], [6, 1, 'Hari Lahir Pancasila'],
+            [8, 17, 'HUT Kemerdekaan RI'], [9, 26, 'Hari Statistik Nasional'], [10, 1, 'Hari Kesaktian Pancasila'], [10, 28, 'Hari Sumpah Pemuda'],
+            [11, 10, 'Hari Pahlawan'], [12, 22, 'Hari Ibu'], [12, 25, 'Hari Natal']
+          ];
+          const QUOTES = [
+            ['Sedikit demi sedikit, lama-lama menjadi bukit.', 'Peribahasa'], ['Ilmu padi: makin berisi, makin merunduk.', 'Peribahasa'],
+            ['Bersatu kita teguh, bercerai kita runtuh.', 'Peribahasa'], ['Di mana ada kemauan, di situ ada jalan.', 'Peribahasa'],
+            ['Berakit-rakit ke hulu, berenang-renang ke tepian.', 'Peribahasa'], ['Air tenang menghanyutkan.', 'Peribahasa'],
+            ['Data yang akurat adalah awal dari keputusan yang tepat.', 'Semangat Kerja']
+          ];
+          function renderInfoExtras() {
+            const now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const mon = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU', 'SEP', 'OKT', 'NOV', 'DES'];
+            const list = [];
+            HARI_PENTING.forEach(([m, d, name]) => {
+              [today.getFullYear(), today.getFullYear() + 1].forEach(y => { const dt = new Date(y, m - 1, d); if (dt >= today) list.push({ dt, m, d, name }); });
+            });
+            list.sort((a, b) => a.dt - b.dt);
+            const box = document.getElementById('hp-list');
+            if (box) box.innerHTML = list.slice(0, 3).map((h, i) => {
+              const diff = Math.round((h.dt - today) / 86400000);
+              return `<div class="hp-item" style="--i:${i}"><div class="hp-date"><b>${h.d}</b><span>${mon[h.m - 1]}</span></div><strong>${h.name}</strong><em class="${diff === 0 ? 'now' : ''}">${diff === 0 ? 'Hari ini' : diff + ' hari lagi'}</em></div>`;
+            }).join('');
+            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+            const q = QUOTES[dayOfYear % QUOTES.length];
+            const qt = document.getElementById('qt-text'), tg = document.getElementById('qt-tag');
+            if (qt) qt.textContent = q[0]; if (tg) tg.textContent = q[1];
+          }
+          renderInfoExtras();
+          setInterval(renderInfoExtras, 60 * 60 * 1000);
         </script>
       </div>
 
