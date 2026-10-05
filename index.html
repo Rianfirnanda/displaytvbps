@@ -416,10 +416,10 @@
 
     /* ====================== GRID UTAMA ====================== */
     /* Desktop/TV: peta (kiri, 2 baris) | TV 16:9 + EOQ (tengah) | agenda (kanan, 2 baris) */
-    #main-grid { grid-template-columns: minmax(0,1.9fr) minmax(0,1.1fr); grid-template-rows: minmax(0,1.3fr) minmax(170px,1fr); gap: 10px; }
-    #main-grid > :nth-child(1) { grid-column: 1; grid-row: 1 / 3; }
-    #main-grid > :nth-child(2) { grid-column: 2; grid-row: 1; }
-    #main-grid > :nth-child(3) { grid-column: 2; grid-row: 2; }
+    #main-grid { grid-template-columns: minmax(0,.9fr) minmax(0,2.1fr) minmax(0,1.2fr); grid-template-rows: minmax(0,1fr); gap: 10px; }
+    #main-grid > :nth-child(1) { grid-column: 2; grid-row: 1; }   /* TV */
+    #main-grid > :nth-child(2) { grid-column: 3; grid-row: 1; }   /* EOQ + Agenda (slider) */
+    #main-grid > :nth-child(3) { grid-column: 1; grid-row: 1; }   /* peta */
     /* TV selalu 16:9 mengisi penuh kotaknya, tanpa pita hitam */
     #tv-frame-container { flex: 1 1 auto !important; min-height: 0; width: 100%; background: #000; }
     #tv-stage { container-type: size; }
@@ -569,6 +569,35 @@
     .hdr-btn:hover { color: var(--text); border-color: var(--gold-500); transform: rotate(18deg); }
     .hdr-btn svg { width: 16px; height: 16px; }
     .hdr-btn .i-sun { display: none; } html[data-theme="dark"] .hdr-btn .i-sun { display: block; } html[data-theme="dark"] .hdr-btn .i-moon { display: none; }
+
+    /* ====================== INTERAKTIF ====================== */
+    .info-nav { position: absolute; top: 50%; z-index: 6; width: 34px; height: 34px; margin-top: -17px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 24px; line-height: 1; color: var(--text); cursor: pointer; opacity: 0; transition: opacity .3s ease, transform .3s ease, background .3s ease;
+      background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    .info-nav.prev { left: 8px; } .info-nav.next { right: 8px; }
+    #eoq-card:hover .info-nav { opacity: 1; }
+    .info-nav:hover { background: linear-gradient(135deg, var(--btn-from), var(--btn-to)); color: var(--btn-text); transform: scale(1.1); }
+    .info-progress { position: absolute; left: 12px; right: 12px; bottom: 6px; height: 2px; border-radius: 2px; background: var(--panel-border-soft); overflow: hidden; z-index: 6; }
+    .info-progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--gold-500), var(--gold-300)); }
+    .info-dots i:hover { background: var(--gold-400); transform: scale(1.3); }
+    .hdr-slider { cursor: pointer; }
+    .hdr-clock .colon { animation: colonBlink 1s steps(1, end) infinite; }
+    @keyframes colonBlink { 50% { opacity: .25; } }
+    /* panel: menyala emas saat disorot */
+    #main-grid > *, #sholat-panel, #app-header { transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease; }
+    @media (hover: hover) {
+      html[data-theme] #main-grid > *:hover { transform: translateY(-2px); border-color: rgba(212,175,90,0.55) !important;
+        box-shadow: var(--glass-shadow), 0 0 0 1px rgba(212,175,90,0.25), 0 18px 44px -18px rgba(212,175,90,0.45) !important; }
+      .sh-cell:hover { transform: translateY(-3px); border-color: var(--gold-500); }
+    }
+    .sh-cell { cursor: default; }
+    .sh-cell.next { animation: nextGlow 3s ease-in-out infinite; }
+    @keyframes nextGlow { 50% { box-shadow: 0 0 30px -2px rgba(212,175,90,0.75); } }
+    .tv-chip, .tv-fs-btn, .hdr-btn, .sh-btn, .info-nav { -webkit-tap-highlight-color: transparent; }
+    .tv-chip:active, .tv-fs-btn:active, .hdr-btn:active, .sh-btn:active { transform: scale(.94); }
+    .ev-card { cursor: default; } a.ev-card { cursor: pointer; }
+    .ev-card:hover { transform: translateX(3px); }
+    @media (prefers-reduced-motion: reduce) { .hdr-clock .colon, .sh-cell.next { animation: none; } }
   </style>
 
 </head>
@@ -620,7 +649,7 @@
               hours = hours < 10 ? '0' + hours : hours;
               minutes = minutes < 10 ? '0' + minutes : minutes;
               const timeString = hours + ':' + minutes;
-              document.getElementById('clock').textContent = timeString;
+              document.getElementById('clock').innerHTML = hours + '<span class="colon">:</span>' + minutes;
               const headerClockEl = document.getElementById('header-clock');
               if (headerClockEl) headerClockEl.textContent = timeString;
             }
@@ -752,7 +781,12 @@ setInterval(updateCuaca, 15 * 60 * 1000);
         Array.from(dots.children).forEach((d, i) => d.classList.toggle('on', i === cur));
       }
       dots.children[0].classList.add('on');
-      setInterval(() => show((cur + 1) % slides.length), 5000);
+      const next = () => show((cur + 1) % slides.length);
+      let t = setInterval(next, 5000);
+      box.addEventListener('click', () => { clearInterval(t); next(); t = setInterval(next, 5000); });
+      box.addEventListener('mouseenter', () => clearInterval(t));
+      box.addEventListener('mouseleave', () => { clearInterval(t); t = setInterval(next, 5000); });
+      box.title = 'Klik untuk ganti tampilan';
     })();
     </script>
 
@@ -776,8 +810,11 @@ setInterval(updateCuaca, 15 * 60 * 1000);
         <div class="eoq-glow"></div>
         <div class="ph">
           <span id="info-title" class="ph-title">Employee of the Quarter</span>
-          <span class="info-dots"><i class="on"></i><i></i></span>
+          <span class="info-dots"><i class="on" title="Employee of the Quarter"></i><i title="Agenda Kantor"></i></span>
         </div>
+        <button class="info-nav prev" aria-label="Sebelumnya" title="Sebelumnya">&#8249;</button>
+        <button class="info-nav next" aria-label="Berikutnya" title="Berikutnya">&#8250;</button>
+        <div class="info-progress"><i></i></div>
         <div class="eoq-body">
           <div id="info-track" class="eoq-track">
             <div class="info-slide eoq-slide" data-title="Employee of the Quarter">
@@ -804,23 +841,40 @@ setInterval(updateCuaca, 15 * 60 * 1000);
         </div>
         <script>
           // Slider otomatis: Employee of the Quarter -> Agenda Kantor
+          // Interaktif: titik & panah, geser (swipe), jeda saat disorot, bilah progres
           (function () {
+            const card = document.getElementById('eoq-card');
             const track = document.getElementById('info-track');
-            if (!track) return;
+            if (!card || !track) return;
             const slides = Array.from(track.children);
             const title = document.getElementById('info-title');
-            const dots = Array.from(document.querySelectorAll('.info-dots i'));
+            const dots = Array.from(card.querySelectorAll('.info-dots i'));
+            const bar = card.querySelector('.info-progress i');
             const dwell = [9000, 13000];   // lama tiap slide (ms)
-            let cur = 0, timer;
+            let cur = 0, timer, hovering = false;
+            function arm() {
+              clearTimeout(timer);
+              if (bar) { bar.style.transition = 'none'; bar.style.width = '0%'; void bar.offsetWidth; }
+              if (hovering) return;
+              const ms = dwell[cur] || 10000;
+              if (bar) { bar.style.transition = `width ${ms}ms linear`; bar.style.width = '100%'; }
+              timer = setTimeout(() => go(cur + 1), ms);
+            }
             function go(n) {
               cur = (n + slides.length) % slides.length;
               track.style.transform = `translateX(${-cur * 100}%)`;
-              if (title) title.textContent = slides[cur].dataset.title;
+              if (title) { title.style.opacity = 0; setTimeout(() => { title.textContent = slides[cur].dataset.title; title.style.opacity = 1; }, 180); }
               dots.forEach((d, i) => d.classList.toggle('on', i === cur));
-              clearTimeout(timer);
-              timer = setTimeout(() => go(cur + 1), dwell[cur] || 10000);
+              arm();
             }
             dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
+            card.querySelector('.info-nav.prev')?.addEventListener('click', () => go(cur - 1));
+            card.querySelector('.info-nav.next')?.addEventListener('click', () => go(cur + 1));
+            card.addEventListener('mouseenter', () => { hovering = true; clearTimeout(timer); if (bar) { const w = getComputedStyle(bar).width; bar.style.transition = 'none'; bar.style.width = w; } });
+            card.addEventListener('mouseleave', () => { hovering = false; arm(); });
+            let x0 = null;
+            track.addEventListener('pointerdown', e => { x0 = e.clientX; });
+            track.addEventListener('pointerup', e => { if (x0 !== null && Math.abs(e.clientX - x0) > 40) go(cur + (e.clientX < x0 ? 1 : -1)); x0 = null; });
             go(0);
           })();
         </script>
