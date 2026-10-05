@@ -18,12 +18,13 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
   <link rel="shortcut icon" href="/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("theme")||"dark"}catch(e){document.documentElement.dataset.theme="dark"}</script>
 
   <style>
     /* ====================== DESIGN TOKENS ====================== */
     :root {
+      --font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
       --ink-900: #060910;
       --ink-800: #0b111c;
       --ink-700: #111a2b;
@@ -67,8 +68,9 @@
     }
     body > div { position: relative; z-index: 1; }
 
-    .font-inter { font-family: 'Inter', sans-serif; }
-    .font-display { font-family: 'Sora', 'Inter', sans-serif; }
+    body { font-family: var(--font); }
+    .font-inter { font-family: var(--font); }
+    .font-display { font-family: var(--font); }
 
     .fade-in {
       opacity: 0;
@@ -136,7 +138,7 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      font-family: 'Sora', sans-serif;
+      font-family: var(--font);
       font-size: 9.5px;
       font-weight: 700;
       letter-spacing: 0.14em;
@@ -189,7 +191,7 @@
     }
 
     .eyebrow {
-      font-family: 'Sora', sans-serif;
+      font-family: var(--font);
       font-size: 10.5px;
       font-weight: 700;
       letter-spacing: 0.16em;
@@ -286,25 +288,29 @@
     #popupPlayer { background: rgba(18,26,44,0.70) !important; backdrop-filter: blur(22px) saturate(170%); -webkit-backdrop-filter: blur(22px) saturate(170%); border: 1px solid rgba(255,255,255,0.14) !important; }
     #tv-frame-container { border: 1px solid rgba(255,255,255,0.18) !important; box-shadow: 0 6px 24px -8px rgba(0,0,0,0.5); }
 
-    /* Employee of the Quarter: grid 2 kolom, selalu di tengah kartu, ukuran mengikuti lebar & tinggi */
-    .panel-featured:has(#eomSlider) { container-type: size; }
-    .panel-featured:has(#eomSlider) .max-w-xl { max-width: 100% !important; }
-    #eomSlider > div {
-      display: grid !important; grid-template-columns: auto minmax(0, max-content); justify-content: center; align-items: center;
-      column-gap: clamp(12px, 5cqw, 28px); row-gap: 6px; padding: 52px 14px 12px !important; text-align: left;
-    }
-    #eomSlider > div > .relative { width: clamp(56px, min(26cqw, 48cqh), 150px); height: clamp(56px, min(26cqw, 48cqh), 150px); }
-    #eomSlider > div > .relative > .rounded-full.overflow-hidden { width: 100% !important; height: 100% !important; }
-    #eomSlider > div > .relative > .absolute.rounded-full { transform: scale(1.18) !important; filter: blur(8px) !important; }
-    #eomSlider .eyebrow { display: none; }
-    #eomSlider h3 { font-size: clamp(15px, min(5.2cqw, 13cqh), 28px) !important; line-height: 1.15; }
-    #eomSlider p, #eomSlider .eyebrow { font-size: clamp(10px, 2.6cqw, 13px); }
-    #eomSlider > div > div:last-child { min-width: 0; text-align: left !important; }
-    #eomSlider > div > div:last-child > div:last-child { justify-content: flex-start !important; }
-    @container (max-width: 300px) {
-      #eomSlider > div { grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; }
-      #eomSlider > div > div:last-child { text-align: center !important; }
-      #eomSlider > div > div:last-child > div:last-child { justify-content: center !important; }
+    /* ====================== EMPLOYEE OF THE QUARTER (HERO) ====================== */
+    #eoq-card { display: flex; flex-direction: column; padding: 12px; container-type: size; min-height: 0; overflow: hidden; }
+    #eoq-card > .ph { position: relative; z-index: 2; }
+    .eoq-glow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 80% 55% at 50% 38%, rgba(212,175,90,0.26), transparent 70%); }
+    .eoq-body { position: relative; z-index: 2; flex: 1; min-height: 0; display: flex; align-items: center; overflow: hidden; }
+    .eoq-track { display: flex; width: 100%; height: 100%; transition: transform .7s ease-in-out; }
+    .eoq-slide { flex: 0 0 100%; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(10px, 3cqh, 24px); text-align: center; padding: 6px 8px; }
+    .eoq-photo { position: relative; flex: none; width: clamp(96px, min(58cqw, 40cqh), 300px); aspect-ratio: 1; color: var(--gold-400); }
+    .eoq-halo { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle, rgba(212,175,90,0.55), transparent 70%); transform: scale(1.35); filter: blur(14px); }
+    .eoq-ring { position: absolute; inset: -9%; width: 118%; height: 118%; pointer-events: none; animation: eoqSpin 60s linear infinite; }
+    @keyframes eoqSpin { to { transform: rotate(360deg); } }
+    .eoq-circle { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; border: 3px solid var(--gold-400); box-shadow: 0 0 0 6px rgba(212,175,90,0.16), 0 18px 44px -10px rgba(212,175,90,0.6); background: linear-gradient(160deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02)); }
+    .eoq-circle img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+    .eoq-info { min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .eoq-name { font-size: clamp(20px, min(8.2cqw, 6cqh), 46px); font-weight: 800; line-height: 1.12; letter-spacing: -0.01em; color: var(--text); text-wrap: balance; }
+    .eoq-role { font-size: clamp(12px, min(3.6cqw, 2.6cqh), 19px); font-weight: 500; color: var(--steel-300); }
+    .eoq-stars { display: flex; gap: 6px; color: var(--gold-400); } .eoq-stars svg { width: clamp(14px, 2.4cqh, 22px); height: clamp(14px, 2.4cqh, 22px); }
+    /* kartu lebar (tablet): foto kiri, teks kanan */
+    @container (min-aspect-ratio: 1.5) {
+      .eoq-slide { flex-direction: row; gap: clamp(16px, 4cqw, 40px); text-align: left; }
+      .eoq-photo { width: clamp(96px, min(26cqw, 62cqh), 260px); }
+      .eoq-info { align-items: flex-start; }
+      .eoq-name { font-size: clamp(20px, min(5cqw, 10cqh), 44px); }
     }
 
     /* Chip channel: pudar di tepi kanan agar tidak terpotong kasar */
@@ -337,23 +343,9 @@
       background-size: 44px 44px !important;
       -webkit-mask-image: radial-gradient(ellipse 75% 75% at 50% 45%, #000 35%, transparent 100%); mask-image: radial-gradient(ellipse 75% 75% at 50% 45%, #000 35%, transparent 100%);
     }
-    /* braket sudut emas di setiap panel */
-    .panel::after, .panel-featured::after {
-      content: ''; position: absolute; inset: 5px; pointer-events: none; z-index: 3; border-radius: 10px; opacity: .75;
-      background:
-        linear-gradient(var(--gold-500), var(--gold-500)) left top / 12px 1.5px no-repeat,
-        linear-gradient(var(--gold-500), var(--gold-500)) left top / 1.5px 12px no-repeat,
-        linear-gradient(var(--gold-500), var(--gold-500)) right top / 12px 1.5px no-repeat,
-        linear-gradient(var(--gold-500), var(--gold-500)) right top / 1.5px 12px no-repeat,
-        linear-gradient(var(--gold-500), var(--gold-500)) left bottom / 12px 1.5px no-repeat,
-        linear-gradient(var(--gold-500), var(--gold-500)) left bottom / 1.5px 12px no-repeat,
-        linear-gradient(var(--gold-500), var(--gold-500)) right bottom / 12px 1.5px no-repeat,
-        linear-gradient(var(--gold-500), var(--gold-500)) right bottom / 1.5px 12px no-repeat !important;
-      box-shadow: none !important;
-    }
     /* judul panel seragam */
     .ph { display: flex; align-items: center; justify-content: space-between; gap: 10px; height: 30px; padding: 0 2px 8px; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); flex: none; box-sizing: content-box; }
-    .ph-title { display: flex; align-items: center; gap: 8px; font-family: 'Sora', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-300); white-space: nowrap; }
+    .ph-title { display: flex; align-items: center; gap: 8px; font-family: var(--font); font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-300); white-space: nowrap; }
     .ph-title::before { content: ''; width: 3px; height: 13px; border-radius: 2px; background: linear-gradient(var(--gold-300), var(--gold-500)); }
     .ph-meta { display: flex; align-items: center; gap: 6px; font-size: 10.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--steel-300); white-space: nowrap; }
     .led { width: 6px; height: 6px; border-radius: 999px; display: inline-block; animation: ledPulse 2s ease-in-out infinite; }
@@ -366,18 +358,19 @@
     .sh-head { display: flex; flex-direction: column; gap: 6px; }
     .sh-next { display: flex; align-items: baseline; gap: 10px; }
     .sh-next-label { font-size: 11px; color: var(--steel-300); } .sh-next-label b { color: #fff; }
-    .sh-next-time { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 18px; color: var(--gold-300); font-variant-numeric: tabular-nums; }
+    .sh-next-time { font-family: var(--font); font-weight: 700; font-size: 18px; color: var(--gold-300); font-variant-numeric: tabular-nums; }
     .sh-cells { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 8px; }
     .sh-cell { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 6px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); transition: all .4s ease; }
-    .sh-cell span { font-family: 'Sora', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--steel-300); }
-    .sh-cell b { font-family: 'Sora', sans-serif; font-size: clamp(18px, 1.7vw, 28px); font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; line-height: 1.1; }
-    .sh-cell.past { opacity: .5; }
+    .sh-cell span { font-family: var(--font); font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--steel-300); }
+    .sh-cell b { font-family: var(--font); font-size: clamp(18px, 1.7vw, 28px); font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; line-height: 1.1; }
+    .sh-cell.past { opacity: .62; }
     .sh-cell.next { background: linear-gradient(145deg, rgba(212,175,90,0.22), rgba(212,175,90,0.06)); border-color: rgba(212,175,90,0.7); box-shadow: 0 0 22px -6px rgba(212,175,90,0.55); }
     .sh-cell.next span, .sh-cell.next b { color: var(--gold-300); }
-    .sh-btn { padding: 8px 16px; border-radius: 999px; font-family: 'Sora', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .08em; color: #1a1305; cursor: pointer; white-space: nowrap;
-      background: linear-gradient(135deg, var(--gold-400), var(--gold-500)); box-shadow: 0 6px 18px -8px rgba(212,175,90,0.7); transition: all .3s ease; }
-    .sh-btn:hover { transform: translateY(-1px); }
-    .sh-btn.on { background: rgba(52,211,153,0.14); color: #6ee7b7; box-shadow: none; border: 1px solid rgba(52,211,153,0.4); cursor: default; }
+    .sh-btn { padding: 6px 12px; border-radius: 999px; font-size: 10.5px; font-weight: 600; letter-spacing: .06em; color: var(--steel-300); cursor: pointer; white-space: nowrap;
+      background: transparent; border: 1px solid var(--panel-border-soft); transition: all .3s ease; }
+    .sh-btn:hover { color: var(--text); border-color: var(--gold-500); }
+    .sh-btn.on { color: var(--steel-500); border-color: transparent; background: transparent; cursor: default; }
+    .sh-btn.on::before { content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #34d399; margin-right: 6px; vertical-align: middle; }
     .tv-ticker-wrapper, .glass-bar { min-height: 38px; }
     @media (max-width: 1023px) {
       #sholat-panel { grid-template-columns: minmax(0,1fr) auto; }
@@ -395,9 +388,9 @@
       opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .7s cubic-bezier(.16,1,.3,1); pointer-events: none; }
     .hdr-slide.active { opacity: 1; transform: none; }
     .hdr-slide.leaving { opacity: 0; transform: translateY(-16px); }
-    .hdr-label { font-family: 'Sora', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-400); }
+    .hdr-label { font-family: var(--font); font-size: 9.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-400); }
     .hdr-line { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: nowrap; white-space: nowrap; font-size: clamp(12px, 1.15vw, 16px); font-weight: 600; color: #fff; }
-    .hdr-line b { font-family: 'Sora', sans-serif; font-weight: 700; color: var(--gold-300); }
+    .hdr-line b { font-family: var(--font); font-weight: 700; color: var(--gold-300); }
     .hdr-ico { font-size: 1.35em; line-height: 1; }
     .hdr-dim { color: var(--steel-300); font-weight: 500; font-style: italic; }
     .hdr-dot { color: var(--gold-500); }
@@ -405,17 +398,17 @@
     .hdr-dots i { width: 4px; height: 4px; border-radius: 999px; background: rgba(255,255,255,.25); transition: all .4s ease; }
     .hdr-dots i.on { height: 12px; background: var(--gold-400); }
     .hdr-clockbox { display: flex; align-items: center; justify-content: flex-end; gap: 14px; min-width: 0; }
-    .hdr-clock { font-family: 'Sora', sans-serif; font-weight: 700; font-size: clamp(26px, 2.5vw, 40px); line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+    .hdr-clock { font-family: var(--font); font-weight: 700; font-size: clamp(26px, 2.5vw, 40px); line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
       background: linear-gradient(180deg, #fff, var(--gold-300)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-    .hdr-live { display: flex; align-items: center; gap: 6px; font-family: 'Sora', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .14em; color: var(--steel-300); padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05); }
+    .hdr-live { display: flex; align-items: center; gap: 6px; font-family: var(--font); font-size: 10px; font-weight: 700; letter-spacing: .14em; color: var(--steel-300); padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05); }
 
     /* ====================== GRID UTAMA ====================== */
     /* Desktop/TV: peta (kiri, 2 baris) | TV 16:9 + EOQ (tengah) | agenda (kanan, 2 baris) */
-    #main-grid { grid-template-columns: minmax(0,1.05fr) minmax(0,1.1fr) minmax(0,.85fr); grid-template-rows: auto minmax(0,1fr); gap: 10px; }
+    #main-grid { grid-template-columns: minmax(0,1fr) minmax(0,1.15fr) minmax(0,.95fr); grid-template-rows: auto minmax(170px,1fr); gap: 10px; }
     #main-grid > :nth-child(1) { grid-column: 1; grid-row: 1 / 3; }
     #main-grid > :nth-child(2) { grid-column: 2; grid-row: 1; }
-    #main-grid > :nth-child(3) { grid-column: 3; grid-row: 1 / 3; }
-    #main-grid > :nth-child(4) { grid-column: 2; grid-row: 2; }
+    #main-grid > :nth-child(3) { grid-column: 2; grid-row: 2; }
+    #main-grid > :nth-child(4) { grid-column: 3; grid-row: 1 / 3; }
     /* TV selalu 16:9 mengisi penuh kotaknya, tanpa pita hitam */
     #tv-frame-container { flex: none !important; width: 100%; aspect-ratio: 16 / 9; background: #000; }
     #tv-stage video, #tv-stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 0; }
@@ -424,7 +417,7 @@
     /* Laptop/TV: tinggi minimal 720px; kalau viewport lebih pendek halaman bisa di-scroll */
     @media (min-width: 1024px) {
       html, body { height: auto !important; overflow-x: hidden !important; overflow-y: auto !important; }
-      #app-root { height: 100vh !important; min-height: 700px; overflow: visible !important; gap: 10px !important; padding: 10px !important; }
+      #app-root { height: 100vh !important; min-height: 740px; overflow: visible !important; gap: 10px !important; padding: 10px !important; }
     }
     /* animasi masuk bertahap + efek hover */
     #main-grid > :nth-child(1) { animation-delay: .05s; }
@@ -447,7 +440,7 @@
       #main-grid > :nth-child(1) { grid-column: 1 / -1; grid-row: auto; min-height: 340px; }
       #main-grid > :nth-child(2) { grid-column: 1; grid-row: auto; justify-content: center; }
       #main-grid > :nth-child(3) { grid-column: 2; grid-row: auto; min-height: 300px; }
-      #main-grid > :nth-child(4) { grid-column: 1 / -1; grid-row: auto; min-height: 220px; }
+      #main-grid > :nth-child(4) { grid-column: 1 / -1; grid-row: auto; min-height: 300px; }
       #tracking-map { min-height: 260px; }
     }
 
@@ -456,6 +449,8 @@
     @media (max-width: 639px) {
       #app-header { padding: 8px 14px 8px 18px; gap: 8px 10px; }
       .hdr-live { display: none; }
+      .hdr-brand .eyebrow { display: none; }
+      .hdr-clock { font-size: 26px; }
       #main-grid {
         display: flex !important; overflow-x: auto; overflow-y: hidden; gap: 8px;
         scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
@@ -468,10 +463,101 @@
       #main-dots button { width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.25); transition: all .3s ease; }
       #main-dots button.active { width: 22px; background: var(--gold-400); }
     }
+
+    /* ====================== TEMA: GELAP & TERANG (SEMUA GLASSMORPHISM) ====================== */
+    :root {
+      --text: #f6f2e9; --text-dim: #b4bdcc;
+      --glass-bg: linear-gradient(145deg, rgba(255,255,255,0.095), rgba(255,255,255,0.03));
+      --glass-bg-hero: linear-gradient(145deg, rgba(212,175,90,0.15), rgba(255,255,255,0.03));
+      --glass-border: rgba(255,255,255,0.15);
+      --glass-shadow: 0 20px 50px -20px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.2);
+      --glare: rgba(255,255,255,0.07);
+      --fill: rgba(255,255,255,0.05);
+      --grid-line: rgba(255,255,255,0.028);
+      --btn-from: var(--gold-400); --btn-to: var(--gold-500); --btn-text: #1a1305;
+    }
+    html[data-theme="light"] {
+      --text: #1d2231; --text-dim: #4b566b;
+      --steel-300: #4b566b; --steel-500: #6a768c;
+      --gold-300: #7a5a0e; --gold-400: #9c7519; --gold-500: #b88f2c;
+      --panel-border: rgba(150,110,25,0.30); --panel-border-soft: rgba(30,40,65,0.11);
+      --glass-bg: linear-gradient(145deg, rgba(255,255,255,0.78), rgba(255,255,255,0.46));
+      --glass-bg-hero: linear-gradient(145deg, rgba(255,236,190,0.78), rgba(255,255,255,0.46));
+      --glass-border: rgba(255,255,255,0.9);
+      --glass-shadow: 0 20px 46px -22px rgba(70,55,20,0.35), inset 0 1px 0 rgba(255,255,255,0.95);
+      --glare: rgba(255,255,255,0.6);
+      --fill: rgba(255,255,255,0.6);
+      --grid-line: rgba(30,40,65,0.045);
+      --btn-from: #ecca78; --btn-to: #d9b256; --btn-text: #2a1f06;
+    }
+    html, body { transition: background-color .4s ease; }
+    html[data-theme="light"] { background: #f1ece1; }
+    html[data-theme="light"] body {
+      background:
+        radial-gradient(circle 620px at 6% 4%, rgba(236,202,120,0.55), transparent 70%),
+        radial-gradient(circle 560px at 96% 14%, rgba(150,175,225,0.45), transparent 70%),
+        radial-gradient(circle 640px at 72% 100%, rgba(236,190,120,0.38), transparent 70%),
+        radial-gradient(circle 520px at 4% 98%, rgba(214,150,150,0.28), transparent 70%),
+        linear-gradient(160deg, #f8f4ea 0%, #efeadf 55%, #e9e6e0 100%) !important;
+      background-attachment: fixed !important;
+    }
+    html[data-theme="light"] body::before { background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) !important; }
+
+    /* kaca: satu definisi untuk dua tema */
+    html[data-theme] .panel, html[data-theme] .panel-featured, html[data-theme] .tv-ticker-wrapper, html[data-theme] .glass-bar {
+      background: var(--glass-bg) !important; border: 1px solid var(--glass-border) !important;
+      box-shadow: var(--glass-shadow) !important;
+      backdrop-filter: blur(24px) saturate(160%) !important; -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
+    }
+    html[data-theme] .panel-featured { background: var(--glass-bg-hero) !important; border-color: rgba(212,175,90,0.45) !important; }
+    html[data-theme="light"] .panel-featured { border-color: rgba(190,145,50,0.55) !important; }
+    html[data-theme] .panel, html[data-theme] .panel-featured { isolation: isolate; }
+    html[data-theme] .panel::before, html[data-theme] .panel-featured::before { z-index: -1 !important; }
+    html[data-theme] .panel::before { background: linear-gradient(135deg, var(--glare), transparent 38%) !important; }
+    html[data-theme] .panel-featured::before { background: linear-gradient(135deg, var(--glare), transparent 38%) !important; }
+    html[data-theme] .panel::after, html[data-theme] .panel-featured::after { display: none !important; }
+
+    /* teks */
+    html[data-theme] .text-white, html[data-theme] body { color: var(--text); }
+    html[data-theme] .eyebrow { color: var(--text-dim); }
+    html[data-theme] .ph { border-bottom-color: var(--panel-border-soft); }
+    html[data-theme="light"] .ph-title, html[data-theme="light"] .hdr-label { color: var(--gold-300); }
+    html[data-theme] .hdr-line, html[data-theme] .sh-cell b, html[data-theme] .sh-next-label b { color: var(--text); }
+    html[data-theme] .hdr-line b, html[data-theme] .sh-next-time { color: var(--gold-300); }
+    html[data-theme] .hdr-clock { background: linear-gradient(180deg, var(--text), var(--gold-400)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    html[data-theme="light"] .hdr-clock { background: linear-gradient(180deg, #2a2110, var(--gold-400)); -webkit-background-clip: text; background-clip: text; }
+    html[data-theme] .hdr-live, html[data-theme] .hdr-btn { background: var(--fill); border: 1px solid var(--panel-border-soft); color: var(--text-dim); }
+    html[data-theme] .sh-cell { background: var(--fill); border-color: var(--panel-border-soft); }
+    html[data-theme="light"] .sh-cell.next { background: linear-gradient(145deg, rgba(236,202,120,0.55), rgba(255,255,255,0.5)); border-color: rgba(184,143,44,0.8); box-shadow: 0 8px 22px -10px rgba(184,143,44,0.6); }
+    html[data-theme="light"] .sh-cell.next span, html[data-theme="light"] .sh-cell.next b { color: var(--gold-300); }
+    html[data-theme] .tv-chip { background: var(--fill); border-color: var(--panel-border-soft); color: var(--text-dim); }
+    html[data-theme] .tv-chip.active { color: var(--btn-text); background: linear-gradient(135deg, var(--btn-from), var(--btn-to)); border-color: transparent; }
+    html[data-theme] .tv-fs-btn { background: var(--fill); border-color: var(--panel-border-soft); color: var(--text-dim); }
+    html[data-theme] .ticker-item-tv { color: var(--text); }
+    html[data-theme="light"] .ticker-item-tv:hover { color: var(--gold-300); }
+    html[data-theme] .ev-card { background: var(--fill); }
+    html[data-theme] .ev-card:hover { background: var(--glass-bg); }
+    html[data-theme="light"] [style*="rgba(7,11,20,0.85)"] { background: rgba(255,255,255,0.55) !important; }
+    html[data-theme="light"] [style*="rgba(212,175,90,0.06)"] { background: rgba(236,202,120,0.22) !important; }
+    /* popup & overlay tetap gelap di dua tema */
+    html[data-theme] #popupPlayer, html[data-theme] #popupPlayer .text-white { color: #f6f2e9; }
+    html[data-theme] #popupTitle { color: #f3ddab !important; }
+
+    /* EOQ pada tema terang */
+    html[data-theme="light"] .eoq-glow { background: radial-gradient(ellipse 80% 55% at 50% 38%, rgba(236,190,90,0.5), transparent 70%); }
+    html[data-theme="light"] .sunburst-rays { opacity: .5 !important; mix-blend-mode: multiply; }
+    html[data-theme="light"] .stage-vignette { display: none; }
+    html[data-theme="light"] .eoq-circle { background: linear-gradient(160deg, rgba(255,255,255,0.9), rgba(255,255,255,0.4)); }
+
+    /* tombol ganti tema */
+    .hdr-btn { width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: all .3s ease; flex: none; }
+    .hdr-btn:hover { color: var(--text); border-color: var(--gold-500); transform: rotate(18deg); }
+    .hdr-btn svg { width: 16px; height: 16px; }
+    .hdr-btn .i-sun { display: none; } html[data-theme="dark"] .hdr-btn .i-sun { display: block; } html[data-theme="dark"] .hdr-btn .i-moon { display: none; }
   </style>
 
 </head>
-<body class="font-['Inter'] text-white h-screen w-screen overflow-hidden flex flex-col">
+<body class="text-white h-screen w-screen overflow-hidden flex flex-col">
 
   <div id="app-root" class="flex flex-col gap-2 p-2 h-screen w-screen overflow-hidden box-border">
 
@@ -503,6 +589,10 @@
       </div>
 
       <div class="hdr-clockbox">
+        <button id="theme-toggle" class="hdr-btn" aria-label="Ganti tema terang/gelap" title="Ganti tema (T)">
+          <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
         <div id="clock" class="hdr-clock">--:--</div>
         <div class="hdr-live"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>LIVE</div>
       </div>
@@ -615,6 +705,20 @@ updateCuaca();
 setInterval(updateCuaca, 15 * 60 * 1000);
 </script>
     <script>
+    // Ganti tema terang/gelap (tersimpan di browser). Pintasan: tombol T
+    (function () {
+      const root = document.documentElement;
+      function toggle() {
+        const t = root.dataset.theme === 'light' ? 'dark' : 'light';
+        root.dataset.theme = t;
+        try { localStorage.setItem('theme', t); } catch (e) {}
+      }
+      document.getElementById('theme-toggle')?.addEventListener('click', toggle);
+      document.addEventListener('keydown', e => { if ((e.key === 't' || e.key === 'T') && !e.ctrlKey && !e.metaKey) toggle(); });
+    })();
+    </script>
+
+    <script>
     // Slider header: kalender -> cuaca Bengkulu Tengah -> cuaca Kota Bengkulu
     (function () {
       const box = document.getElementById('hdr-slider');
@@ -696,51 +800,28 @@ setInterval(updateCuaca, 15 * 60 * 1000);
         </div>
       </div>
 
-      <!-- KOTAK 5: EMPLOYEE OF THE QUARTER (TENGAH) -->
-      <div class="panel-featured relative w-full bg-cover bg-center bg-no-repeat flex justify-center items-center text-white fade-in min-h-0 overflow-hidden"
-           style="background-image: linear-gradient(155deg, rgba(7,11,20,0.55), rgba(18,26,44,0.45)), url('kantor.png');">
-
-        <!-- Layered "stage" backdrop: rotating gold rays + spotlight glow + vignette -->
+      <!-- KOTAK 4: EMPLOYEE OF THE QUARTER (HERO, KOLOM KANAN) -->
+      <div id="eoq-card" class="panel-featured fade-in text-white">
         <div class="sunburst-rays"></div>
-        <div class="pointer-events-none absolute inset-0" style="background: radial-gradient(ellipse 65% 85% at 28% 55%, rgba(212,175,90,0.22), transparent 60%), radial-gradient(circle at 82% 18%, rgba(212,175,90,0.10), transparent 45%);"></div>
-        <div class="stage-vignette"></div>
-        <div class="pointer-events-none absolute left-0 right-0 bottom-0 h-1/2" style="background: radial-gradient(ellipse 70% 100% at 30% 100%, rgba(212,175,90,0.16), transparent 70%);"></div>
-
-        <div class="ph" style="position:absolute; top:12px; left:12px; right:12px; z-index:10;">
+        <div class="eoq-glow"></div>
+        <div class="ph">
           <span class="ph-title">Employee of the Quarter</span>
           <span class="ph-meta">Kuartal II &middot; 2026</span>
         </div>
-
-        <div class="relative w-full h-full flex justify-center items-center py-4 bg-transparent z-10">
-          <div class="relative w-full max-w-xl overflow-hidden">
-            <div id="eomSlider" class="flex transition-transform duration-700 ease-in-out" style="transform: translateX(0%);">
-              <div class="w-full flex-shrink-0 flex flex-col sm:flex-row items-center justify-center text-white text-left p-4 gap-5">
-                <div class="relative flex-shrink-0">
-                  <div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle, rgba(212,175,90,0.55), transparent 70%); transform: scale(1.6); filter: blur(10px);"></div>
-              <svg class="absolute pointer-events-none" style="inset:-14px; width:calc(100% + 28px); height:calc(100% + 28px);" viewBox="0 0 168 168">
-                    <circle cx="84" cy="84" r="80" fill="none" stroke="var(--gold-400)" stroke-width="1" stroke-dasharray="2 6"/>
-                  </svg>
-                  <div class="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden" style="border: 3px solid var(--gold-400);box-shadow: 0 0 0 5px rgba(212,175,90,0.16), 0 14px 36px -6px rgba(212,175,90,0.6);">
-                  <img 
-                    src="https://firebasestorage.googleapis.com/v0/b/lintas-benteng.firebasestorage.app/o/assets%2Frsz_isma_afrita_lubis_display.png?alt=media&token=1d10a62b-44c7-42fd-b9b4-d104dc1dc5bc"
-                    alt="Isma Afrita Lubis"
-                    class="absolute w-full h-full object-contain"
-                    style="
-                      transform: translateY(12px) scale(1.1);
-                    "
-                  >
+        <div class="eoq-body">
+          <div id="eomSlider" class="eoq-track">
+            <div class="eoq-slide">
+              <div class="eoq-photo">
+                <div class="eoq-halo"></div>
+                <svg class="eoq-ring" viewBox="0 0 168 168"><circle cx="84" cy="84" r="80" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 6"/></svg>
+                <div class="eoq-circle">
+                  <img src="https://firebasestorage.googleapis.com/v0/b/lintas-benteng.firebasestorage.app/o/assets%2Frsz_isma_afrita_lubis_display.png?alt=media&token=1d10a62b-44c7-42fd-b9b4-d104dc1dc5bc" alt="Isma Afrita Lubis" style="transform: translateY(12px) scale(1.1);">
                 </div>
-                </div>
-                <div class="text-center sm:text-left">
-                  <div class="eyebrow mb-1.5" style="letter-spacing:0.16em;">Kuartal II &middot; 2026</div>
-                  <h3 class="font-display text-2xl sm:text-3xl font-extrabold tracking-tight">Isma Afrita Lubis</h3>
-                  <p class="text-sm text-[color:var(--steel-300)] mt-1">Statistisi Muda</p>
-                  <div class="flex items-center justify-center sm:justify-start gap-1.5 mt-2.5">
-                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="var(--gold-400)"><path d="M12 2l2.9 6.26L21.7 9l-5 4.87L18 21l-6-3.5L6 21l1.3-7.13-5-4.87 6.8-.74L12 2z"/></svg>
-                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="var(--gold-400)"><path d="M12 2l2.9 6.26L21.7 9l-5 4.87L18 21l-6-3.5L6 21l1.3-7.13-5-4.87 6.8-.74L12 2z"/></svg>
-                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="var(--gold-400)"><path d="M12 2l2.9 6.26L21.7 9l-5 4.87L18 21l-6-3.5L6 21l1.3-7.13-5-4.87 6.8-.74L12 2z"/></svg>
-                  </div>
-                </div>
+              </div>
+              <div class="eoq-info">
+                <h3 class="eoq-name">Isma Afrita Lubis</h3>
+                <p class="eoq-role">Statistisi Muda</p>
+                <div class="eoq-stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.26L21.7 9l-5 4.87L18 21l-6-3.5L6 21l1.3-7.13-5-4.87 6.8-.74L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.26L21.7 9l-5 4.87L18 21l-6-3.5L6 21l1.3-7.13-5-4.87 6.8-.74L12 2z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.26L21.7 9l-5 4.87L18 21l-6-3.5L6 21l1.3-7.13-5-4.87 6.8-.74L12 2z"/></svg></div>
               </div>
             </div>
           </div>
@@ -788,7 +869,7 @@ setInterval(updateCuaca, 15 * 60 * 1000);
         background: linear-gradient(90deg, #0b111c 0%, #121a2c 100%);
         border: 1px solid rgba(212,175,90,0.16);
         border-radius: 4px 14px 14px 14px;
-        font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+        font-family: var(--font);
         line-height: 1.2;
         overflow: hidden;
         color: white;
@@ -800,7 +881,7 @@ setInterval(updateCuaca, 15 * 60 * 1000);
         color: #fff;
         padding: 8px 26px 8px 20px;
         font-size: 14px;
-        font-family: 'Sora', sans-serif;
+        font-family: var(--font);
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 1px;
@@ -1162,7 +1243,7 @@ window.startApp = async function () {
     const latitude = -3.763;
     const longitude = 102.400;
 
-    if (btn) { btn.textContent = "● Azan Aktif"; btn.disabled = true; btn.classList.add("on"); }
+    if (btn) { btn.textContent = "Azan aktif"; btn.disabled = true; btn.classList.add("on"); }
 
     const timings = await fetchJadwalSholat(latitude, longitude);
     tampilkanJadwal(timings);
@@ -1747,7 +1828,7 @@ function renderEventsToday(events) {
       const linkAttr = hasLink ? `href="${ev.calendarEventLink}" target="_blank" rel="noopener"` : '';
 
       return `
-        <${openTag} ${linkAttr} class="block bg-white/[0.05] hover:bg-white/[0.09] transition rounded-xl px-3.5 py-2.5" style="border-left: 3px solid var(--gold-500); border-top: 1px solid rgba(212,175,90,0.14); border-right: 1px solid rgba(212,175,90,0.14); border-bottom: 1px solid rgba(212,175,90,0.14); box-shadow: 0 6px 16px -8px rgba(0,0,0,0.5);">
+        <${openTag} ${linkAttr} class="ev-card block transition rounded-xl px-3.5 py-2.5" style="border-left: 3px solid var(--gold-500); border-top: 1px solid rgba(212,175,90,0.14); border-right: 1px solid rgba(212,175,90,0.14); border-bottom: 1px solid rgba(212,175,90,0.14); box-shadow: 0 6px 16px -8px rgba(0,0,0,0.5);">
           <div class="text-[11.5px] font-bold font-display tracking-wide" style="color: var(--gold-300);">${waktu}</div>
           <div class="text-[15px] font-semibold text-white mt-0.5">${ev.title || '(Tanpa judul)'}</div>
           ${ev.description ? `<div class="text-xs text-[color:var(--steel-300)] mt-1">${ev.description}</div>` : ''}
