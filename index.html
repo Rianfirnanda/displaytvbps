@@ -28,15 +28,15 @@
       --ink-800: #07142a;
       --ink-700: #0c1f3d;
       --ink-600: #112a52;
-      --gold-500: #f28c1e;
-      --gold-400: #f7a850;
-      --gold-300: #fbd0a0;
+      --gold-500: #3b9cf0;
+      --gold-400: #7cc0f7;
+      --gold-300: #c6e3fc;
       --crimson-500: #0071c6;
       --crimson-400: #2f94e6;
       --steel-300: #a8b4c8;
       --steel-500: #7c8aa3;
       --panel-bg: rgba(255,255,255,0.04);
-      --panel-border: rgba(242,140,30,0.16);
+      --panel-border: rgba(59,156,240,0.16);
       --panel-border-soft: rgba(255,255,255,0.08);
     }
 
@@ -49,7 +49,7 @@
 
     body {
       background:
-        radial-gradient(ellipse 1300px 750px at 10% -12%, rgba(242,140,30,0.09), transparent 58%),
+        radial-gradient(ellipse 1300px 750px at 10% -12%, rgba(59,156,240,0.09), transparent 58%),
         radial-gradient(ellipse 1100px 850px at 102% 8%, rgba(59,110,180,0.10), transparent 55%),
         radial-gradient(ellipse 900px 600px at 50% 115%, rgba(0,113,198,0.08), transparent 60%),
         linear-gradient(160deg, var(--ink-900) 0%, var(--ink-800) 45%, #0a0f1c 100%);
@@ -82,8 +82,8 @@
     /* Custom scrollbar for a polished feel on scrollable panels */
     .styled-scroll::-webkit-scrollbar { width: 5px; }
     .styled-scroll::-webkit-scrollbar-track { background: transparent; }
-    .styled-scroll::-webkit-scrollbar-thumb { background: rgba(242,140,30,0.35); border-radius: 999px; }
-    .styled-scroll::-webkit-scrollbar-thumb:hover { background: rgba(242,140,30,0.55); }
+    .styled-scroll::-webkit-scrollbar-thumb { background: rgba(59,156,240,0.35); border-radius: 999px; }
+    .styled-scroll::-webkit-scrollbar-thumb:hover { background: rgba(59,156,240,0.55); }
 
     /* Unified card chrome — clipped corner + gold overline, broadcast-panel feel */
     .panel {
@@ -108,10 +108,10 @@
     /* Featured panel — for the sections that need to stand out (Kalender, EOQ) */
     .panel-featured {
       position: relative;
-      background: linear-gradient(165deg, rgba(242,140,30,0.08), rgba(255,255,255,0.03));
-      border: 1.5px solid rgba(242,140,30,0.45);
+      background: linear-gradient(165deg, rgba(59,156,240,0.08), rgba(255,255,255,0.03));
+      border: 1.5px solid rgba(59,156,240,0.45);
       border-radius: 4px 20px 20px 20px;
-      box-shadow: 0 22px 50px -16px rgba(242,140,30,0.26), 0 14px 34px -12px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.06);
+      box-shadow: 0 22px 50px -16px rgba(59,156,240,0.26), 0 14px 34px -12px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.06);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
       overflow: hidden;
@@ -129,7 +129,7 @@
       position: absolute;
       inset: 0;
       border-radius: 4px 20px 20px 20px;
-      box-shadow: 0 0 0 1px rgba(242,140,30,0.12), 0 0 34px rgba(242,140,30,0.10) inset;
+      box-shadow: 0 0 0 1px rgba(59,156,240,0.12), 0 0 34px rgba(59,156,240,0.10) inset;
       pointer-events: none;
     }
     .featured-badge {
@@ -145,7 +145,7 @@
       background: linear-gradient(135deg, var(--gold-300), var(--gold-500));
       padding: 4px 10px 4px 8px;
       border-radius: 999px;
-      box-shadow: 0 4px 14px -4px rgba(242,140,30,0.6);
+      box-shadow: 0 4px 14px -4px rgba(59,156,240,0.6);
     }
 
     /* Majestic backdrop for the spotlight section (Employee of the Quarter) */
@@ -259,32 +259,33 @@
 
 
     /* ====================== GLASSMORPHISM ====================== */
-    html { background: #040d1c; }
+    html { background: #03070f; }
     body {
       background:
-        radial-gradient(circle 520px at 8% 12%, rgba(0,113,198,0.55), transparent 70%),
-        radial-gradient(circle 480px at 92% 18%, rgba(242,140,30,0.42), transparent 70%),
-        radial-gradient(circle 560px at 70% 95%, rgba(76,162,31,0.38), transparent 70%),
-        radial-gradient(circle 500px at 18% 90%, rgba(0,113,198,0.35), transparent 70%),
-        linear-gradient(160deg, #05122a 0%, #081d3d 50%, #06162f 100%) !important;
+        radial-gradient(circle 560px at 10% 8%, rgba(0,113,198,0.30), transparent 70%),
+        radial-gradient(circle 520px at 90% 20%, rgba(30,70,150,0.28), transparent 70%),
+        radial-gradient(circle 600px at 75% 98%, rgba(0,90,170,0.24), transparent 70%),
+        radial-gradient(circle 480px at 12% 92%, rgba(20,50,120,0.26), transparent 70%),
+        linear-gradient(160deg, #03070f 0%, #060f20 50%, #040a17 100%) !important;
       background-attachment: fixed !important;
     }
-    body::before { opacity: 0.18; }
+    body::before { opacity: 0.10; }
     .panel, .panel-featured, .tv-ticker-wrapper, .glass-bar {
-      background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.05)) !important;
-      border: 1px solid rgba(255,255,255,0.24) !important;
+      background: linear-gradient(145deg, rgba(255,255,255,0.09), rgba(255,255,255,0.025)) !important;
+      border: 1px solid rgba(255,255,255,0.13) !important;
       border-radius: 20px !important;
-      box-shadow: 0 12px 40px -12px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 0 0 1px rgba(255,255,255,0.04) !important;
-      backdrop-filter: blur(22px) saturate(170%) !important;
-      -webkit-backdrop-filter: blur(22px) saturate(170%) !important;
+      box-shadow: 0 14px 40px -14px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.20) !important;
+      backdrop-filter: blur(24px) saturate(150%) !important;
+      -webkit-backdrop-filter: blur(24px) saturate(150%) !important;
     }
-    .panel-featured { background: linear-gradient(145deg, rgba(242,140,30,0.20), rgba(255,255,255,0.05)) !important; border-color: rgba(247,168,80,0.45) !important; }
-    .panel::before { width: 100% !important; height: 100% !important; background: linear-gradient(135deg, rgba(255,255,255,0.16), transparent 38%) !important; pointer-events: none; border-radius: inherit; }
-    .panel-featured::before { height: 100% !important; background: linear-gradient(135deg, rgba(255,255,255,0.14), transparent 38%) !important; pointer-events: none; }
+    .panel-featured { background: linear-gradient(145deg, rgba(59,156,240,0.14), rgba(255,255,255,0.03)) !important; border-color: rgba(124,192,247,0.30) !important; }
+    .panel::before { width: 100% !important; height: 100% !important; background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent 35%) !important; pointer-events: none; border-radius: inherit; }
+    .panel-featured::before { height: 100% !important; background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent 35%) !important; pointer-events: none; }
     .panel-featured::after { box-shadow: none !important; }
     .panel > *, .panel-featured > * { position: relative; z-index: 1; }
     .panel > .absolute, .panel-featured > .absolute { position: absolute; }
-    #popupPlayer { background: rgba(10,28,56,0.55) !important; backdrop-filter: blur(22px) saturate(170%); -webkit-backdrop-filter: blur(22px) saturate(170%); border: 1px solid rgba(255,255,255,0.25) !important; }
+    .sunburst-rays { opacity: 0.25 !important; }
+    #popupPlayer { background: rgba(6,15,32,0.70) !important; backdrop-filter: blur(22px) saturate(170%); -webkit-backdrop-filter: blur(22px) saturate(170%); border: 1px solid rgba(255,255,255,0.14) !important; }
     #tv-frame-container { border: 1px solid rgba(255,255,255,0.18) !important; box-shadow: 0 6px 24px -8px rgba(0,0,0,0.5); }
 
     /* Bar channel TV di footer */
@@ -293,14 +294,14 @@
     #tv-chips::-webkit-scrollbar { display: none; }
     .tv-chip, .tv-fs-btn {
       flex: 0 0 auto; padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; color: #e6edf7; cursor: pointer;
-      background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.20);
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
       backdrop-filter: blur(8px); transition: all .25s ease;
     }
     .tv-chip:hover, .tv-fs-btn:hover { background: rgba(255,255,255,0.22); transform: translateY(-1px); }
     .tv-chip.active { color: #fff; background: linear-gradient(135deg, rgba(0,113,198,0.85), rgba(47,148,230,0.65)); border-color: rgba(255,255,255,0.45); box-shadow: 0 4px 16px -4px rgba(0,113,198,0.8); }
     .tv-fs-btn { display: inline-flex; align-items: center; gap: 6px; }
     #tv-toast { position: absolute; top: 12px; left: 12px; z-index: 5; padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; color: #fff;
-      background: rgba(10,28,56,0.55); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.25); opacity: 0; transition: opacity .4s ease; pointer-events: none; }
+      background: rgba(6,15,32,0.65); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.14); opacity: 0; transition: opacity .4s ease; pointer-events: none; }
     #tv-toast.show { opacity: 1; }
     #tv-stage:fullscreen { background: #000; }
     #tv-stage:fullscreen #tv-toast { top: 24px; left: 24px; font-size: 18px; }
@@ -320,7 +321,7 @@
     #main-grid > :nth-child(4) { animation-delay: .35s; }
     #main-grid > :nth-child(5) { animation-delay: .45s; }
     #main-grid > * { transition: transform .35s ease, box-shadow .35s ease; }
-    @media (hover: hover) { #main-grid > *:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -18px rgba(242,140,30,.35); } }
+    @media (hover: hover) { #main-grid > *:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -18px rgba(59,156,240,.35); } }
     @media (prefers-reduced-motion: reduce) { .fade-in { animation-duration: .01s !important; } #main-grid > * { transition: none; } }
 
     /* Slider (ponsel <640px): kotak digeser kiri-kanan, ada titik penanda */
@@ -369,7 +370,7 @@
 
     <!-- HEADER BAR -->
     <div class="panel fade-in flex-shrink-0 flex items-center justify-between px-5 py-2.5" style="border-radius: 16px;">
-      <span class="absolute top-0 left-0 h-full w-1" style="background: linear-gradient(180deg, #0071c6, #4ca21f, #f28c1e);"></span>
+      <span class="absolute top-0 left-0 h-full w-1" style="background: linear-gradient(180deg, #7cc0f7, #0071c6);"></span>
       <div class="flex items-center gap-3 pl-2">
         <div class="w-11 h-11 rounded-xl bg-white flex items-center justify-center flex-shrink-0 p-1" style="box-shadow: 0 4px 14px -4px rgba(0,113,198,.6);"><img src="logo-bps.png" alt="Logo BPS" class="w-full h-full object-contain"></div>
         <div class="leading-tight">
@@ -415,7 +416,7 @@
             </div>
           </div>
 
-          <div class="mt-2 rounded-lg px-3 py-2 overflow-hidden" style="background: rgba(242,140,30,0.06); border: 1px solid var(--panel-border);">
+          <div class="mt-2 rounded-lg px-3 py-2 overflow-hidden" style="background: rgba(59,156,240,0.06); border: 1px solid var(--panel-border);">
             <div id="activity-slider" class="text-xs text-[color:var(--steel-300)] font-medium h-[16px] transition-opacity duration-500 whitespace-nowrap overflow-hidden text-ellipsis">
               <span class="opacity-60">Memuat aktivitas...</span>
             </div>
@@ -440,7 +441,7 @@
       <!-- KOTAK 3: GOOGLE CALENDAR - ROWSPAN 2 -->
       <div class="panel-featured fade-in p-3 row-span-2 min-h-0 overflow-hidden flex flex-col">
         <div class="rounded-xl w-full flex-1 min-h-0 bg-cover bg-center bg-no-repeat text-white flex flex-col p-3.5 border border-[color:var(--panel-border)]"
-             style="background-image: linear-gradient(165deg, rgba(4,13,28,0.40), rgba(10,28,56,0.30)), url('kantor2.png');">
+             style="background-image: linear-gradient(165deg, rgba(3,7,15,0.55), rgba(6,15,32,0.45)), url('kantor2.png');">
 
           <div class="flex items-center justify-center mb-2.5">
             <span class="featured-badge">
@@ -467,7 +468,7 @@
 
       <!-- KOTAK 4: JAM, TANGGAL, CUACA -->
       <div class="panel w-full bg-cover bg-center bg-no-repeat text-white fade-in p-3 min-h-0 overflow-hidden flex flex-col justify-center"
-           style="background-image: linear-gradient(155deg, rgba(4,13,28,0.40), rgba(10,28,56,0.30)), url('kantor.png');">
+           style="background-image: linear-gradient(155deg, rgba(3,7,15,0.55), rgba(6,15,32,0.45)), url('kantor.png');">
         <span class="eyebrow block text-center mb-1">Waktu &amp; Cuaca</span>
         <div class="text-center leading-tight">
           <div class="font-display font-bold text-[5.5vw] leading-none text-center px-4" id="clock" style="background: linear-gradient(180deg, #fff, var(--gold-300)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.02em;"></div>
@@ -588,13 +589,13 @@ setInterval(updateCuaca, 15 * 60 * 1000);
 
       <!-- KOTAK 5: EMPLOYEE OF THE QUARTER (TENGAH) -->
       <div class="panel-featured relative w-full bg-cover bg-center bg-no-repeat flex justify-center items-center text-white fade-in min-h-0 overflow-hidden"
-           style="background-image: linear-gradient(155deg, rgba(4,13,28,0.45), rgba(10,28,56,0.30)), url('kantor.png');">
+           style="background-image: linear-gradient(155deg, rgba(3,7,15,0.55), rgba(6,15,32,0.45)), url('kantor.png');">
 
         <!-- Layered "stage" backdrop: rotating gold rays + spotlight glow + vignette -->
         <div class="sunburst-rays"></div>
-        <div class="pointer-events-none absolute inset-0" style="background: radial-gradient(ellipse 65% 85% at 28% 55%, rgba(242,140,30,0.22), transparent 60%), radial-gradient(circle at 82% 18%, rgba(242,140,30,0.10), transparent 45%);"></div>
+        <div class="pointer-events-none absolute inset-0" style="background: radial-gradient(ellipse 65% 85% at 28% 55%, rgba(59,156,240,0.22), transparent 60%), radial-gradient(circle at 82% 18%, rgba(59,156,240,0.10), transparent 45%);"></div>
         <div class="stage-vignette"></div>
-        <div class="pointer-events-none absolute left-0 right-0 bottom-0 h-1/2" style="background: radial-gradient(ellipse 70% 100% at 30% 100%, rgba(242,140,30,0.16), transparent 70%);"></div>
+        <div class="pointer-events-none absolute left-0 right-0 bottom-0 h-1/2" style="background: radial-gradient(ellipse 70% 100% at 30% 100%, rgba(59,156,240,0.16), transparent 70%);"></div>
 
         <div class="absolute top-3 left-0 right-0 flex justify-center z-10">
           <span class="featured-badge">
@@ -608,11 +609,11 @@ setInterval(updateCuaca, 15 * 60 * 1000);
             <div id="eomSlider" class="flex transition-transform duration-700 ease-in-out" style="transform: translateX(0%);">
               <div class="w-full flex-shrink-0 flex flex-col sm:flex-row items-center justify-center text-white text-left p-4 gap-5">
                 <div class="relative flex-shrink-0">
-                  <div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle, rgba(242,140,30,0.55), transparent 70%); transform: scale(1.6); filter: blur(10px);"></div>
+                  <div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle, rgba(59,156,240,0.55), transparent 70%); transform: scale(1.6); filter: blur(10px);"></div>
               
                     <circle cx="84" cy="84" r="80" fill="none" stroke="var(--gold-400)" stroke-width="1" stroke-dasharray="2 6"/>
                   </svg>
-                  <div class="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden" style="border: 3px solid var(--gold-400);box-shadow: 0 0 0 5px rgba(242,140,30,0.16), 0 14px 36px -6px rgba(242,140,30,0.6);">
+                  <div class="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden" style="border: 3px solid var(--gold-400);box-shadow: 0 0 0 5px rgba(59,156,240,0.16), 0 14px 36px -6px rgba(59,156,240,0.6);">
                   <img 
                     src="https://firebasestorage.googleapis.com/v0/b/lintas-benteng.firebasestorage.app/o/assets%2Frsz_isma_afrita_lubis_display.png?alt=media&token=1d10a62b-44c7-42fd-b9b4-d104dc1dc5bc"
                     alt="Isma Afrita Lubis"
@@ -659,20 +660,20 @@ setInterval(updateCuaca, 15 * 60 * 1000);
 
     <!-- BARIS 4: JADWAL SHOLAT (FULL WIDTH) -->
     <div class="panel relative w-full bg-cover bg-center bg-no-repeat flex justify-center items-center text-white fade-in p-0 flex-[1.5] min-h-0 overflow-hidden"
-         style="background-image: linear-gradient(155deg, rgba(4,13,28,0.40), rgba(10,28,56,0.30)), url('masjid.jpg');">
+         style="background-image: linear-gradient(155deg, rgba(3,7,15,0.55), rgba(6,15,32,0.45)), url('masjid.jpg');">
       <span class="absolute top-3 left-5 eyebrow">Jadwal Sholat</span>
       <div class="w-full max-w-4xl text-center px-4">
         <div class="mb-2">
           <button id="startBtn" onclick="startApp()"
             class="font-display text-white font-semibold py-2 px-6 rounded-full transition duration-300 ease-in-out"
-            style="background: linear-gradient(135deg, var(--gold-400), var(--gold-500)); color: #0c1220; box-shadow: 0 8px 22px -8px rgba(242,140,30,0.6);">
+            style="background: linear-gradient(135deg, var(--gold-400), var(--gold-500)); color: #0c1220; box-shadow: 0 8px 22px -8px rgba(59,156,240,0.6);">
             Mulai Jadwal Sholat
           </button>
         </div>
         <div>
           <table id="jadwalSholat" class="hidden w-full table-auto text-sm md:text-base rounded-xl overflow-hidden">
             <thead>
-              <tr style="background: rgba(242,140,30,0.10);">
+              <tr style="background: rgba(59,156,240,0.10);">
                 <th class="px-4 py-2 text-center font-display font-semibold" style="color: var(--gold-300);">Subuh</th>
                 <th class="px-4 py-2 text-center font-display font-semibold" style="color: var(--gold-300);">Dzuhur</th>
                 <th class="px-4 py-2 text-center font-display font-semibold" style="color: var(--gold-300);">Ashar</th>
@@ -693,7 +694,7 @@ setInterval(updateCuaca, 15 * 60 * 1000);
     .tv-ticker-wrapper {
         display: flex;
         background: linear-gradient(90deg, #0b111c 0%, #121a2c 100%);
-        border: 1px solid rgba(242,140,30,0.16);
+        border: 1px solid rgba(59,156,240,0.16);
         border-radius: 4px 14px 14px 14px;
         font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
         line-height: 1.2;
@@ -743,10 +744,10 @@ setInterval(updateCuaca, 15 * 60 * 1000);
         transition: color 0.2s;
     }
     .ticker-item-tv:hover {
-        color: #f7a850;
+        color: #7cc0f7;
     }
     .ticker-separator-tv {
-        color: #f28c1e;
+        color: #3b9cf0;
         margin-right: 75px;
         font-size: 14px;
         opacity: 0.6;
@@ -1641,7 +1642,7 @@ function renderEventsToday(events) {
       const linkAttr = hasLink ? `href="${ev.calendarEventLink}" target="_blank" rel="noopener"` : '';
 
       return `
-        <${openTag} ${linkAttr} class="block bg-white/[0.05] hover:bg-white/[0.09] transition rounded-xl px-3.5 py-2.5" style="border-left: 3px solid var(--gold-500); border-top: 1px solid rgba(242,140,30,0.14); border-right: 1px solid rgba(242,140,30,0.14); border-bottom: 1px solid rgba(242,140,30,0.14); box-shadow: 0 6px 16px -8px rgba(0,0,0,0.5);">
+        <${openTag} ${linkAttr} class="block bg-white/[0.05] hover:bg-white/[0.09] transition rounded-xl px-3.5 py-2.5" style="border-left: 3px solid var(--gold-500); border-top: 1px solid rgba(59,156,240,0.14); border-right: 1px solid rgba(59,156,240,0.14); border-bottom: 1px solid rgba(59,156,240,0.14); box-shadow: 0 6px 16px -8px rgba(0,0,0,0.5);">
           <div class="text-[11.5px] font-bold font-display tracking-wide" style="color: var(--gold-300);">${waktu}</div>
           <div class="text-[15px] font-semibold text-white mt-0.5">${ev.title || '(Tanpa judul)'}</div>
           ${ev.description ? `<div class="text-xs text-[color:var(--steel-300)] mt-1">${ev.description}</div>` : ''}
