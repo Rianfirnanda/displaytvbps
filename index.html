@@ -11,6 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   <script src="https://apis.google.com/js/api.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
 
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -254,12 +255,35 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
+
+    /* ====================== RESPONSIVE ====================== */
+    /* Desktop/TV (>=1024px) tetap layout dashboard penuh tanpa scroll.
+       Di bawah itu, halaman bisa di-scroll dan kotak ditumpuk. */
+    @media (max-width: 1023px) {
+      html, body { height: auto !important; overflow-y: auto !important; overflow-x: hidden !important; }
+      body { width: 100% !important; min-height: 100%; }
+      #app-root { height: auto !important; width: 100% !important; overflow: visible !important; }
+      #main-grid {
+        display: grid; grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+        grid-template-rows: none !important; grid-auto-rows: auto; flex: none !important;
+      }
+      #main-grid > * { min-height: 320px; }
+      #main-grid > .row-span-2 { grid-row: span 1 / span 1 !important; grid-column: 1 / -1; min-height: 420px; }
+      #tracking-map { min-height: 280px; }
+      #tv-frame-container { aspect-ratio: 16 / 9; flex: none !important; min-height: 0; }
+      #clock { font-size: clamp(48px, 12vw, 96px) !important; }
+      #app-root > .panel.flex-\[1\.5\] { flex: none !important; min-height: 160px; padding: 2.25rem 0.5rem 0.75rem !important; }
+    }
+    @media (max-width: 639px) {
+      #main-grid { grid-template-columns: minmax(0,1fr) !important; }
+      #jadwalSholat th, #jadwalSholat td { padding: 0.4rem 0.25rem !important; font-size: 12px; }
+    }
   </style>
 
 </head>
 <body class="font-['Inter'] text-white h-screen w-screen overflow-hidden flex flex-col">
 
-  <div class="flex flex-col gap-2 p-2 h-screen w-screen overflow-hidden box-border">
+  <div id="app-root" class="flex flex-col gap-2 p-2 h-screen w-screen overflow-hidden box-border">
 
     <!-- HEADER BAR -->
     <div class="panel fade-in flex-shrink-0 flex items-center justify-between px-5 py-2.5" style="border-radius: 16px;">
@@ -286,7 +310,7 @@
     </div>
 
     <!-- BARIS 1 & 2: MAP, TV, CALENDAR (rowspan 2) + EOQ + JAM/CUACA -->
-    <div class="grid grid-cols-3 gap-2 flex-[7] min-h-0" style="grid-template-rows: repeat(2, minmax(0,1fr));">
+    <div id="main-grid" class="grid grid-cols-3 gap-2 flex-[7] min-h-0" style="grid-template-rows: repeat(2, minmax(0,1fr));">
 
       <!-- KOTAK 1: LIVE TRACKING MAP -->
       <div class="panel fade-in p-3 min-h-0 overflow-hidden flex flex-col">
@@ -330,7 +354,7 @@
             LIVE
           </span>
         </div>
-        <div id="tv-frame-container" class="flex-1 min-h-0 flex flex-col justify-center rounded-xl overflow-hidden border border-[color:var(--panel-border-soft)]">
+        <div id="tv-frame-container" class="flex-1 min-h-0 flex flex-col rounded-xl overflow-hidden border border-[color:var(--panel-border-soft)]">
           <p class="text-center text-[color:var(--steel-500)] text-sm">Memuat TV...</p>
         </div>
       </div>
@@ -1723,31 +1747,62 @@ const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-const TV_HARDCODE_URL = 'https://20.detik.com/watch/livestreaming-trans7';
+// Daftar channel nasional. type "iframe" = halaman embed, "hls" = stream .m3u8 (hls.js).
+// Sumber: iptv-org/iptv (streams/id.m3u). Tandai unofficial=true bila bukan dari situs resmi stasiunnya.
+const TV_CHANNELS = [
+  { name: 'Trans7',   type: 'iframe', url: 'https://20.detik.com/watch/livestreaming-trans7' },
+  { name: 'TVRI',     type: 'hls', url: 'https://ott-balancer.tvri.go.id/live/eds/Nasional/hls/Nasional.m3u8' },
+  { name: 'TVRI Bengkulu', type: 'hls', url: 'https://ott-balancer.tvri.go.id/live/eds/Bengkulu/hls/Bengkulu.m3u8' },
+  { name: 'Metro TV', type: 'hls', url: 'https://edge.medcom.id/live-edge/smil:metro.smil/playlist.m3u8' },
+  { name: 'RCTI',     type: 'hls', unofficial: true, url: 'https://mncmedia.malingtv.workers.dev/rcti.m3u8' },
+  { name: 'MNCTV',    type: 'hls', unofficial: true, url: 'https://mncmedia.malingtv.workers.dev/mnctv.m3u8' },
+  { name: 'GTV',      type: 'hls', unofficial: true, url: 'https://mncmedia.malingtv.workers.dev/gtv.m3u8' },
+  { name: 'iNews',    type: 'hls', unofficial: true, url: 'https://mncmedia.malingtv.workers.dev/inews.m3u8' }
+];
+let tvIndex = 0, tvHls = null;
+try { const i = parseInt(localStorage.getItem('tvChannel'), 10); if (i >= 0 && i < TV_CHANNELS.length) tvIndex = i; } catch (e) {}
 
-function renderTvFrameHTML(src) {
+function renderTvFrameHTML(ch) {
   const container = document.getElementById('tv-frame-container');
   if (!container) return;
-  if (src) {
-    container.innerHTML = `
-      <div class="w-full h-full">
-        <iframe
-          class="w-full h-full rounded-lg border-0"
-          src="${src}"
-          frameborder="0"
-          allowfullscreen
-          allow="autoplay; encrypted-media"
-          scrolling="no"
-          loading="lazy">
-        </iframe>
-      </div>`;
+  if (tvHls) { tvHls.destroy(); tvHls = null; }
+  const options = TV_CHANNELS.map((c, i) => `<option value="${i}" ${i === tvIndex ? 'selected' : ''}>${c.name}</option>`).join('');
+  container.innerHTML = `
+    <div class="flex items-center gap-1.5 px-2 py-1 flex-shrink-0" style="background: rgba(7,11,20,0.85);">
+      <button id="tv-prev" class="px-2 text-white" aria-label="Channel sebelumnya">&#9664;</button>
+      <select id="tv-select" class="flex-1 min-w-0 text-xs rounded px-1 py-0.5" style="background:#111a2b;color:#fff;border:1px solid var(--panel-border-soft);">${options}</select>
+      <button id="tv-next" class="px-2 text-white" aria-label="Channel berikutnya">&#9654;</button>
+    </div>
+    <div id="tv-stage" class="relative w-full flex-1 min-h-0 bg-black"></div>`;
+  const stage = document.getElementById('tv-stage');
+  if (ch.type === 'iframe') {
+    stage.innerHTML = `<iframe class="w-full h-full border-0" src="${ch.url}" allowfullscreen allow="autoplay; encrypted-media" scrolling="no"></iframe>`;
   } else {
-    container.innerHTML = '<p class="text-center text-red-600">TV tidak tersedia.</p>';
+    stage.innerHTML = '<video id="tv-video" class="w-full h-full object-contain" autoplay muted playsinline></video><p id="tv-msg" class="hidden absolute inset-0 flex items-center justify-center text-sm text-red-300">Siaran tidak tersedia.</p>';
+    const v = document.getElementById('tv-video');
+    const fail = () => document.getElementById('tv-msg')?.classList.remove('hidden');
+    if (window.Hls && Hls.isSupported()) {
+      tvHls = new Hls();
+      tvHls.loadSource(ch.url);
+      tvHls.attachMedia(v);
+      tvHls.on(Hls.Events.ERROR, (_, d) => { if (d.fatal) fail(); });
+    } else if (v.canPlayType('application/vnd.apple.mpegurl')) {
+      v.src = ch.url; v.addEventListener('error', fail);
+    } else { fail(); }
   }
+  document.getElementById('tv-select').onchange = e => setTvChannel(+e.target.value);
+  document.getElementById('tv-prev').onclick = () => setTvChannel((tvIndex - 1 + TV_CHANNELS.length) % TV_CHANNELS.length);
+  document.getElementById('tv-next').onclick = () => setTvChannel((tvIndex + 1) % TV_CHANNELS.length);
+}
+
+function setTvChannel(i) {
+  tvIndex = i;
+  try { localStorage.setItem('tvChannel', i); } catch (e) {}
+  renderTvFrameHTML(TV_CHANNELS[i]);
 }
 
 function loadTvFrame() {
-  renderTvFrameHTML(TV_HARDCODE_URL);
+  renderTvFrameHTML(TV_CHANNELS[tvIndex]);
 }
 loadTvFrame();
 
